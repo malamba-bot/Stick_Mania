@@ -1,5 +1,4 @@
 import {globals} from '../main.js'
-import {Stickman} from '../prefabs/Stickman.js'
 
 export class MainMenu extends Phaser.Scene {
 
@@ -27,11 +26,8 @@ export class MainMenu extends Phaser.Scene {
             globals.height * 0.58, 
             'Start',
             button_config);
-
-
-        this.add.stickman(this, globals.width / 2, globals.height / 2);
     }
-            
+
     add_button(x, y, text, config) {
         let button_text = this.add.text(
             x, y, text, config
@@ -48,7 +44,7 @@ export class MainMenu extends Phaser.Scene {
         button_box.setDepth(button_text.depth - 1);
         button_box
             .on('pointerdown', () => { this.scene.start('Play') })
-            .on('pointerover', () => { button_box.setFillStyle(0x00FF00, 0.5) })
+            .on('pointerover', () => { button_box.setFillStyle(0x4DAD48) })
             .on('pointerout', () => { button_box.setFillStyle(null) })
     }
 
