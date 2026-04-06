@@ -22,5 +22,7 @@ export let game = new Phaser.Game(config);
 export const globals = {
     width: game.config.width,
     height: game.config.height,
+    TITLE_FONT_SIZE: 48,
+    REG_FONT_SIZE: 32,
 }
 
