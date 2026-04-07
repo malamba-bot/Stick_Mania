@@ -6,6 +6,12 @@ export class MainMenu extends Phaser.Scene {
         super('MainMenu');
     }
 
+    preload() {
+        // load assets here
+        this.load.image('background', 'src/assets/Background.png');
+    }
+
+
     create() {
         // Title text
         this.add.text(
