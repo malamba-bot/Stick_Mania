@@ -9,8 +9,24 @@ export class Stickman extends Phaser.GameObjects.Container {
     }
 
     construct_body() {
-        let text = this.scene.add.text(0, 0, "Hello world")
-            .setOrigin(0.5);
-        this.add(text);
+        this.scene.anims.createFromAseprite('player');
+
+        let animKey = this.scene.anims.exists('idle') ? 'idle' : 'Idle'; // i dont remeber if i made it caps XD, also jus safer
+
+        if (!this.scene.anims.exists(animKey)) {
+            this.scene.anims.create({
+                key: 'Idle',
+                frames: this.scene.anims.generateFrameNames('player'),
+                frameRate: 8,
+                repeat: -1
+            });
+            animKey = 'Idle';
+        }
+
+        let sprite = this.scene.add.sprite(-100, 150, 'player')
+            .setScale(0.6)
+            .setOrigin(0.5)
+            .play(animKey);
+        this.add(sprite);
     }
 }

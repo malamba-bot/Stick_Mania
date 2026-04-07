@@ -9,6 +9,7 @@ export class MainMenu extends Phaser.Scene {
     preload() {
         // load assets here
         this.load.image('background', 'src/assets/Background.png');
+        this.load.aseprite('player', 'src/assets/StickmanIdle.png', 'src/assets/StickmanIdle.json');
     }
 
 
