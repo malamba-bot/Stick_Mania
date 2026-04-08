@@ -19,7 +19,7 @@ export class Play extends Phaser.Scene {
 
     update() {
 
-        this.player.StickmanFSM.step();
+        //this.player.StickmanFSM.step();
 
     }
 }

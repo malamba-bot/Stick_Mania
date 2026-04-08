@@ -57,6 +57,8 @@ class IdleState extends State {
 class RightArmPunchState extends State {
 
     enter(scene, stickman) {
+
+        console.log('Entered Right Arm Punch State');
         
     }
 
