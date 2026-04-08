@@ -33,6 +33,8 @@ export class Stickman extends Phaser.GameObjects.Container {
             .setOrigin(0.5)
             .play(animKey);
         this.add(sprite);
+
+        console.log(sprite);
     }
 }
 
@@ -43,6 +45,11 @@ class IdleState extends State {
     }
 
     execute(scene, stickman) {
+
+        console.log("test");
+        if(scene.cursors.right.isDown) { 
+            this.StateMachine.transition('right_arm_punch');
+        }
 
     }
 }
