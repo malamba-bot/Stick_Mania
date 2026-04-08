@@ -1,4 +1,5 @@
 import {globals} from '../main.js'
+import {player_consts} from '../main.js'
 
 import {Stickman} from '../prefabs/Stickman.js'
 
@@ -13,7 +14,7 @@ export class Play extends Phaser.Scene {
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        this.player = new Stickman(this, globals.width / 2, globals.height / 2, true);
+        this.player = new Stickman(this, player_consts.start_x, player_consts.start_y, true);
 
     }
 

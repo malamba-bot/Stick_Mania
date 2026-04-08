@@ -26,7 +26,7 @@ export class Stickman extends Phaser.GameObjects.Container {
     }
 
     construct_body() {
-        let sprite = this.scene.add.sprite(player_consts.start_x, player_consts.start_y, 'player')
+        let sprite = this.scene.add.sprite(0, 0, 'player')
             .setScale(0.6)
             .setOrigin(0.5)
         this.add(sprite);
@@ -37,6 +37,7 @@ export class Stickman extends Phaser.GameObjects.Container {
         torso.setVisible(false);
 
         this.add(torso);
+        this.add(sprite);
     }
 
     init_animations() {
