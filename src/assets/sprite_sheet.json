@@ -1,0 +1,30 @@
+{
+  "sprites": [
+    {
+      "fileName": "img_0982.png",
+      "width": 1080,
+      "height": 1920,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "fileName": "img_0983.png",
+      "width": 1080,
+      "height": 1920,
+      "x": 1080,
+      "y": 0
+    },
+    {
+      "fileName": "img_0984.png",
+      "width": 1080,
+      "height": 1920,
+      "x": 2160,
+      "y": 0
+    }
+  ],
+  "packMode": "horizontal",
+  "padding": 0,
+  "backgroundColor": "rgba(0, 0, 0, 0)",
+  "spriteSheetWidth": 3240,
+  "spriteSheetHeight": 1920
+}
