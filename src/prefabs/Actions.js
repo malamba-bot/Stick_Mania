@@ -14,6 +14,28 @@ export class IdleState extends State {
     }
 }
 
+export class MovementState extends State {
+
+    enter(scene, stickman) {
+        console.log('Entered Movement State');
+    }
+
+    execute(scene, stickman) {
+
+    }
+}
+
+export class JumpState extends State {
+
+    enter(scene, stickman) {
+        console.log('Entered Jump State');
+    }
+
+    execute(scene, stickman) {
+        
+    }
+}
+
 export class RightArmPunchState extends State {
 
     enter(scene, stickman) {
