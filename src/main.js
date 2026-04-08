@@ -1,3 +1,4 @@
+import {Load} from './scenes/Load.js'
 import {MainMenu} from './scenes/MainMenu.js'
 import {Play} from './scenes/Play.js'
 
@@ -15,7 +16,7 @@ let config = {
     scale: {
         autoCenter: Phaser.Scale.CENTER_BOTH,
     },
-    scene: [MainMenu, Play],
+    scene: [Load, MainMenu, Play],
 }
 
 export let game = new Phaser.Game(config);
