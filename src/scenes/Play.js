@@ -19,7 +19,10 @@ export class Play extends Phaser.Scene {
 
     update() {
 
-        //this.player.StickmanFSM.step();
+        this.player.StickmanFSM.step();
+        if (this.cursors.left.isDown) {
+            console.log('this hoe moving left');
+        }
 
     }
 }

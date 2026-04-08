@@ -1,3 +1,5 @@
+import {IdleState, RightArmPunchState} from './Actions.js'
+
 export class Stickman extends Phaser.GameObjects.Container {
     constructor(scene, x, y) {
         super(scene, x, y);
@@ -7,10 +9,12 @@ export class Stickman extends Phaser.GameObjects.Container {
         this.construct_body();
         scene.add.existing(this);
 
-        scene.StickmanFSM = new StateMachine('idle', {
-            idle: new IdleState(),
-            right_arm_punch: new RightArmPunchState(),
-        }, [scene, this]);
+        this.StickmanFSM = new StateMachine('idle', 
+            {
+                idle: new IdleState(),
+                right_arm_punch: new RightArmPunchState(),
+            }, 
+            [scene, this]);
     }
 
     construct_body() {
@@ -38,31 +42,3 @@ export class Stickman extends Phaser.GameObjects.Container {
     }
 }
 
-class IdleState extends State {
-
-    enter(scene, stickman) {
-        console.log('Entered Idle State');
-    }
-
-    execute(scene, stickman) {
-
-        console.log("test");
-        if(scene.cursors.right.isDown) { 
-            this.StateMachine.transition('right_arm_punch');
-        }
-
-    }
-}
-
-class RightArmPunchState extends State {
-
-    enter(scene, stickman) {
-
-        console.log('Entered Right Arm Punch State');
-        
-    }
-
-    execute(scene, stickman) {
-
-    }
-}
