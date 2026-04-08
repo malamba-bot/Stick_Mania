@@ -2,37 +2,32 @@ export class IdleState extends State {
 
     enter(scene, stickman) {
         console.log('Entered Idle State');
+        stickman.move(0);
 
         //stickman.play('Idle');
         //stickman.sprite.setVelocityX(0);
     }
 
     execute(scene, stickman) {
-        if (scene.cursors.right.isDown) { 
-            stickman.StickmanFSM.transition('right_arm_punch');
+        if (scene.keys.A.isDown) {
+            stickman.StickmanFSM.transition('move_right');
         }
-
     }
 }
 
-export class MovementState extends State {
+export class MoveRightState extends State {
 
     enter(scene, stickman) {
-        console.log('Entered Movement State');
+        console.log('hoe moving right');
     }
 
     execute(scene, stickman) {
-
-        const { A, D } = scene.keys;
-
-        if(A.isDown) {
-            stickman.setVelocityX(-200);
+        if(scene.keys.A.isDown) {
+            stickman.move(-200);
             stickman.flipX = true;
             //stickman.play('run');
-        } else if (D.isDown) {
-            stickman.setVelocityX(200);
-            stickman.flipX = false;
-            //stickman.play('run');
+        } else if (scene.keys.D.isDown) {
+            stickman.StickmanFSM.transition('idle');
         } else {
             stickman.StickmanFSM.transition('idle');
         }
