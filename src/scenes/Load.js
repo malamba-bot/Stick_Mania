@@ -7,6 +7,7 @@ export class Load extends Phaser.Scene {
         this.load.setPath('../../assets/');
 
         this.load.image('background', 'Background.png');
+        this.load.image('grid_overlay', 'grid_overlay.png');
 
         // Load stickman assets here
         this.load.setPath('../../assets/stickman/');
