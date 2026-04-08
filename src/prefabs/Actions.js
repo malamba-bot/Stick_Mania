@@ -8,8 +8,6 @@ export class IdleState extends State {
     }
 
     execute(scene, stickman) {
-
-        console.log("test");
         if (scene.cursors.right.isDown) { 
             stickman.StickmanFSM.transition('right_arm_punch');
         }
