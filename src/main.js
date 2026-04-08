@@ -29,6 +29,6 @@ export const globals = {
 }
 
 export const player_consts = {
-    start_x: -100,
-    start_y: 150,
+    start_x: game.config.width / 2,
+    start_y: game.config.height * 0.7,
 }
