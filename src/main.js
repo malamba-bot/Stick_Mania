@@ -26,3 +26,8 @@ export const globals = {
     TITLE_FONT_SIZE: 48,
     REG_FONT_SIZE: 32,
 }
+
+export const player_consts = {
+    start_x: -100,
+    start_y: 150,
+}
