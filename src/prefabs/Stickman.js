@@ -6,6 +6,11 @@ export class Stickman extends Phaser.GameObjects.Container {
 
         this.construct_body();
         scene.add.existing(this);
+
+        scene.StickmanFSM = new StateMachine('idle', {
+            idle: new IdleState(),
+            right_arm_punch: new RightArmPunchState(),
+        }, [scene, this]);
     }
 
     construct_body() {
@@ -17,7 +22,7 @@ export class Stickman extends Phaser.GameObjects.Container {
             this.scene.anims.create({
                 key: 'Idle',
                 frames: this.scene.anims.generateFrameNames('player'),
-                frameRate: 8,
+                frameRate: 6,
                 repeat: -1
             });
             animKey = 'Idle';
@@ -28,5 +33,27 @@ export class Stickman extends Phaser.GameObjects.Container {
             .setOrigin(0.5)
             .play(animKey);
         this.add(sprite);
+    }
+}
+
+class IdleState extends State {
+
+    enter(scene, stickman) {
+        console.log('Entered Idle State');
+    }
+
+    execute(scene, stickman) {
+
+    }
+}
+
+class RightArmPunchState extends State {
+
+    enter(scene, stickman) {
+        
+    }
+
+    execute(scene, stickman) {
+
     }
 }
