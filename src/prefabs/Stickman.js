@@ -33,8 +33,9 @@ export class Stickman extends Phaser.GameObjects.Container {
 
 
         // Add physics bodies
-        let torso = this.scene.physics.add.image(0, 0, null);
+        let torso = this.scene.physics.add.image(-50, 0, null);
         torso.setVisible(false);
+        torso.setSize(20, 400);
 
         this.add(torso);
         this.add(sprite);
