@@ -1,4 +1,4 @@
-import {IdleState, RightArmPunchState} from './Actions.js'
+import {IdleState, RightArmPunchState, MoveRightState} from './Actions.js'
 import {globals, player_consts} from '../main.js'
 
 export class Stickman extends Phaser.GameObjects.Container {
@@ -18,6 +18,7 @@ export class Stickman extends Phaser.GameObjects.Container {
                 {
                     idle: new IdleState(),
                     right_arm_punch: new RightArmPunchState(),
+                    move_right: new MoveRightState(),
                 }, 
                 [scene, this]);
         } else {
@@ -25,10 +26,19 @@ export class Stickman extends Phaser.GameObjects.Container {
         }
     }
 
+    move(vel) {
+        this.each(child => {
+            child.setVelocityX(vel);
+        });
+    }
+
     construct_body() {
-        let sprite = this.scene.add.sprite(0, 0, 'player')
+        let sprite = this.scene.physics.add.sprite(0, 0, 'player')
             .setScale(0.6)
             .setOrigin(0.5)
+            .setSize(100, 1)
+            .setOffset(-1000, 0); // TODO
+
         this.add(sprite);
 
 
