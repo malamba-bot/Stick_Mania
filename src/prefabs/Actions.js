@@ -88,7 +88,7 @@ export class RightArmPunchState extends State {
     enter(scene, stickman) {
 
         console.log('Entered Right Arm Punch State');
-        
+        //Hi
     }
 
     execute(scene, stickman) {
