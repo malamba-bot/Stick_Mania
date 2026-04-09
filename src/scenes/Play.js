@@ -17,6 +17,7 @@ export class Play extends Phaser.Scene {
         {
             A: this.input.keyboard.addKey('a'),
             D: this.input.keyboard.addKey('d'),
+            W: this.input.keyboard.addKey('w'),
         }
 
         // grid overlay (DEV FEATURE)
