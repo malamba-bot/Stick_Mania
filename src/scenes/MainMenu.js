@@ -42,27 +42,4 @@ export class MainMenu extends Phaser.Scene {
             () =>  this.scene.start('Play') 
         );
     }
-
-
-    add_button(x, y, text, config) {
-        let button_text = this.add.text(
-            x, y, text, config
-        ).setOrigin(0.5)
-
-        let button_box = this.add.rectangle(
-            x, y, 
-            button_text.width, 
-            button_text.height, 
-            null
-        ).setInteractive( {useHandCursor: true} );
-
-        button_box.setStrokeStyle(2, 0xFFFFFF);
-        button_box.setDepth(button_text.depth - 1);
-        button_box
-            .on('pointerdown', () => { this.scene.start('Play') })
-            .on('pointerover', () => { button_box.setFillStyle(0x4DAD48) })
-            .on('pointerout', () => { button_box.setFillStyle(null) })
-    }
-
-
 }
