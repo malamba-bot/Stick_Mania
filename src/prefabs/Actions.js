@@ -23,6 +23,7 @@ export class IdleState extends State {
 export class MoveRightState extends State {
 
     enter(scene, stickman) {
+        stickman.blocked.left = false;
     }
 
     execute(scene, stickman) {
@@ -42,6 +43,7 @@ export class MoveRightState extends State {
 export class MoveLeftState extends State {
 
     enter(scene, stickman) {
+        stickman.blocked.right = false;
     }
 
     execute(scene, stickman) {
