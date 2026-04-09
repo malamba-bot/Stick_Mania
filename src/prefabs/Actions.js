@@ -28,7 +28,7 @@ export class MoveRightState extends State {
     execute(scene, stickman) {
         if(scene.keys.D.isDown && stickman.blocked.right == false) {
             stickman.move(stickman.movement_speed);
-            stickman.flipX = true;
+            //stickman.flip(false);
             //stickman.play('run');
         } else if (scene.keys.A.isDown) {
             stickman.StickmanFSM.transition('move_left');
@@ -47,7 +47,7 @@ export class MoveLeftState extends State {
     execute(scene, stickman) {
         if(scene.keys.A.isDown && stickman.blocked.left == false) {
             stickman.move(-stickman.movement_speed);
-            stickman.flipX = true;
+            //stickman.flip(true);
             //stickman.play('run');
         } else if (scene.keys.D.isDown) {
             stickman.StickmanFSM.transition('move_right');

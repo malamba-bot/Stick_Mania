@@ -93,5 +93,11 @@ export class Stickman extends Phaser.GameObjects.Container {
         }
     }
 
+    /*flip(bool) {
+        this.each(child => {
+            child.flipX = bool;
+        });
+    }*/
+
 }
 
