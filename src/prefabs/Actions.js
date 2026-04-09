@@ -2,7 +2,7 @@ export class IdleState extends State {
 
     enter(scene, stickman) {
         console.log('Entered Idle State');
-        stickman.move(0);
+        stickman.setVelocityX(0);
 
         //stickman.play('Idle');
     }
@@ -23,12 +23,14 @@ export class IdleState extends State {
 export class MoveRightState extends State {
 
     enter(scene, stickman) {
-        stickman.blocked.left = false;
+        stickman.setFlipX(false);
     }
 
     execute(scene, stickman) {
-        if(scene.keys.D.isDown && stickman.blocked.right == false) {
-            stickman.move(stickman.movement_speed);
+        if(scene.keys.D.isDown) {
+            const frame_speed = stickman.movement_speed * (scene.game.loop.delta / 1000);
+            stickman.setVelocityX(frame_speed);
+            //stickman.move(stickman.movement_speed);
             //stickman.flip(false);
             //stickman.play('run');
         } else if (scene.keys.A.isDown) {
@@ -43,12 +45,14 @@ export class MoveRightState extends State {
 export class MoveLeftState extends State {
 
     enter(scene, stickman) {
-        stickman.blocked.right = false;
+        stickman.setFlipX(true);
     }
 
     execute(scene, stickman) {
-        if(scene.keys.A.isDown && stickman.blocked.left == false) {
-            stickman.move(-stickman.movement_speed);
+        if(scene.keys.A.isDown) {
+            const frame_speed = stickman.movement_speed * (scene.game.loop.delta / 1000);
+            stickman.setVelocityX(-frame_speed);
+            //stickman.move(-stickman.movement_speed);
             //stickman.flip(true);
             //stickman.play('run');
         } else if (scene.keys.D.isDown) {
