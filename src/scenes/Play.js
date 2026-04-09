@@ -11,7 +11,12 @@ export class Play extends Phaser.Scene {
 
     create() {
         this.add.image(0, 0, 'background').setOrigin(0);
-        this.player = new Stickman(this, player_consts.start_x, player_consts.start_y, true);
+        this.player = new Stickman(
+            this, 
+            player_consts.start_x, 
+            player_consts.start_y, 
+            'base_stance',
+            true);
 
         this.keys = 
         {
@@ -39,6 +44,6 @@ export class Play extends Phaser.Scene {
 
     update() {
         this.player.StickmanFSM.step();
-        this.player.checkCollideWorldBounds();
+        //this.player.setAngle(0);
     }
 }

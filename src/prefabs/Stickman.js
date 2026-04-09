@@ -1,15 +1,17 @@
 import {IdleState, RightArmPunchState, MoveRightState, MoveLeftState, JumpState} from './Actions.js'
 import {globals, player_consts} from '../main.js'
 
-export class Stickman extends Phaser.GameObjects.Container {
+export class Stickman extends Phaser.GameObjects.Sprite {
 
-    constructor(scene, x, y, is_playable) {
-        super(scene, x, y);
+    constructor(scene, x, y, texture, is_playable) {
+        super(scene, x, y, texture);
 
         this.scene = scene;
 
         //Constant values
-        this.movement_speed = 200;
+        this.movement_speed = 400;
+
+        this.setScale(0.6);
 
         this.init_animations();
         this.construct_body();
@@ -31,28 +33,30 @@ export class Stickman extends Phaser.GameObjects.Container {
         }
     }
 
-    move(vel) {
-        this.each(child => {
-            child.setVelocityX(vel);
-        });
-    }
-
     construct_body() {
-        this.blocked = {
-            left: false,
-            right: false,
-        }
+        // START AI GENERATED @claude.ai
+        // create shapes that consitute compound body
+        const { Bodies, Body } = Phaser.Physics.Matter.Matter
 
-        this.sprite = this.scene.physics.add.sprite(0, 0, 'base_stance')
-            .setOrigin(0.5)
-            .setCollideWorldBounds(true)
-        
-        this.add(this.sprite);
+        const torso = Bodies.rectangle(35, 114, 4, 94); 
+        const head = Bodies.circle(35, 34, 31); 
+        const groin = Bodies.circle(35, 168, 10);
+        const thighs = Bodies.rectangle(40, 180, 28, 20);
+        const calves = Bodies.rectangle(40, 210, 40, 50);
+        const compound = Body.create({ parts: [torso, head, groin, thighs, calves] });
+        Body.setCentre(compound, { x: 0, y: 0}, true);
+        // END AI GENERATED
 
-        // Add physics bodies
-        this.create_physics_body(-50, -3, 10, 65, false); // torso
-        this.create_physics_body(-68, -100, 80, 0, true); // head
-        this.create_physics_body(-50, 43, 50, 0, true); // legs
+
+        this.scene.matter.add.gameObject(this)
+            .setOrigin(0)
+            .setExistingBody(compound)
+            .setFixedRotation()
+            .setMass(500)
+            //.setFrictionAir(100)
+           // .setFrictionStatic(100);
+
+        this.setPosition(globals.width / 4, globals.height / 2);
     }
 
     create_physics_body(x, y, w, h, circle) {
@@ -68,18 +72,6 @@ export class Stickman extends Phaser.GameObjects.Container {
         this.add(body);
     }
 
-    checkCollideWorldBounds() {
-        this.each(child => {
-            if (child.body.blocked.left) {
-                this.blocked.left = true;
-                this.sprite.x = this.scene.physics.world.bounds.left - 316;
-            } else if (child.body.blocked.right) {
-                this.blocked.right = true;
-                this.sprite.x = this.scene.physics.world.bounds.right - 395;
-            }
-        });
-    }
-
     init_animations() {
         this.scene.anims.createFromAseprite('player');
 
@@ -92,12 +84,6 @@ export class Stickman extends Phaser.GameObjects.Container {
             });
         }
     }
-
-    /*flip(bool) {
-        this.each(child => {
-            child.flipX = bool;
-        });
-    }*/
 
 }
 

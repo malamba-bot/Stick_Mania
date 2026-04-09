@@ -9,9 +9,11 @@ let config = {
     height: 800,
     backgroundColor: '#000000',
     physics: { 
-        default: 'arcade',
-        arcade: {
+        default: 'matter',
+        matter: {
             debug: true,
+            gravity: { y: 2 },
+            setBounds: true,
         }
     },
     scale: {
