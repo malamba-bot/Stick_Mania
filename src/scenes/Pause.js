@@ -1,18 +1,28 @@
 import {globals} from '../main.js'
+import {Button} from '../prefabs/Button.js'
 
 export class Pause extends Phaser.Scene {
     constructor() {
         super('Pause');
     }
+    init(data) {
+        this.keys = 
+        {
+            ESC: this.input.keyboard.addKey('esc')
+        }
+        
 
+    }
     create() {
-
+        console.log('Pause scene created');
         const screenWidth = this.sys.game.config.width;
         const screenHeight = this.sys.game.config.height;
+        let button_config =
+        {
+            fontSize: globals.REG_FONT_SIZE,
+            padding: 10,
+        }
 
-        // Box size
-        const boxWidth = 800;
-        const boxHeight = 800;
 
         // Background rectangle (dark transparent overlay)
         const background = this.add.rectangle(
@@ -25,57 +35,43 @@ export class Pause extends Phaser.Scene {
         ); 
         background.setOrigin(0.5);
 
-        // Outline rectangle
-        const outline = this.add.graphics();
-        outline.lineStyle(4, 0xffffff, 1);
-        outline.strokeRect(
-            (screenWidth - boxWidth) / 2,
-            (screenHeight - boxHeight) / 2,
-            boxWidth,
-            boxHeight
-        );
 
         const centerX = this.sys.game.config.width / 2;
         const centerY = this.sys.game.config.height / 2;
 
-        const buttonStyle = {
-            fontSize: '32px',
-            color: '#000000',
-            backgroundColor: '#ffffff',
-            padding: { x: 20, y: 10 },
-            fixedWidth: 200,
-            align: 'center',
-            stroke: '#000000',
-            strokeThickness: 2
-        };
 
         this.keys.ESC.on('down', () => {
-            this.scene.exit();
-            this.scene.launch('Play');
+            this.scene.stop('Pause');
+            this.scene.resume('Play');
         });
 
         // Restart Button
-        const restartButton = this.add.text(centerX, centerY + 80, 'Restart', buttonStyle)
-            .setOrigin(0.5)
-            .setInteractive({ useHandCursor: true })
-            .on('pointerover', () => restartButton.setScale(1.1))
-            .on('pointerout', () => restartButton.setScale(1))
-            .on('pointerdown', () => {
-                this.click.play();
-                this.scene.stop('Pause');
-                this.scene.start('Play');
-            });
+        new Button(
+                    this,
+                    globals.width / 2, 
+                    globals.height * 0.58, 
+                    'Resume',
+                    button_config,
+                    () => {
+                        this.scene.stop('Pause');
+                        this.scene.resume('Play');
+                    }
+
+                );
+
 
         // Main Menu Button
-        const menuButton = this.add.text(centerX, centerY, 'Main Menu', buttonStyle)
-            .setOrigin(0.5)
-            .setInteractive({ useHandCursor: true })
-            .on('pointerover', () => menuButton.setScale(1.1))
-            .on('pointerout', () => menuButton.setScale(1))
-            .on('pointerdown', () => {
-                this.click.play();
-                this.scene.stop('Pause');
-                this.scene.start('MainMenu');
-            });
+        new Button(
+                    this,
+                    globals.width / 2, 
+                    globals.height * 0.68, 
+                    'MAIN MENU',
+                    button_config,
+                    () => {
+                        this.scene.stop('Play');
+                        this.scene.stop('Pause');
+                        this.scene.start('MainMenu');
+                    }
+                );
     }
 }

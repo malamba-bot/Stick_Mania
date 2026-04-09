@@ -10,6 +10,7 @@ export class Play extends Phaser.Scene {
     
 
     create() {
+        console.log('Play scene created');
         this.add.image(0, 0, 'background').setOrigin(0);
         this.player = new Stickman(this, player_consts.start_x, player_consts.start_y, true);
 

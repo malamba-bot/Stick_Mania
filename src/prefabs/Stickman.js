@@ -27,7 +27,7 @@ export class Stickman extends Phaser.GameObjects.Container {
                 }, 
                 [scene, this]);
         } else {
-
+            
         }
     }
 

@@ -16,7 +16,7 @@ export class MainMenu extends Phaser.Scene {
         this.add.text(
             globals.width / 2, 
             globals.height * 0.4,
-            'Stick Mania',
+            'STICK EM UP',
             {fontSize: globals.TITLE_FONT_SIZE}
         ).setOrigin(0.5);
 
