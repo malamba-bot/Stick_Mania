@@ -9,7 +9,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         this.scene = scene;
 
         //Constant values
-        this.movement_speed = 400;
+        this.movement_speed = 5;
 
         this.setScale(0.6);
 
@@ -52,12 +52,11 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             .setOrigin(0)
             .setExistingBody(compound)
             .setFixedRotation()
-            .setMass(500)
-            //.setFrictionAir(100)
-           // .setFrictionStatic(100);
+            .setMass(10)
 
         this.setPosition(globals.width / 4, globals.height / 2);
     }
+
 
     create_physics_body(x, y, w, h, circle) {
         let body = this.scene.physics.add.image(x, y, null);
