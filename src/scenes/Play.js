@@ -18,7 +18,14 @@ export class Play extends Phaser.Scene {
             A: this.input.keyboard.addKey('a'),
             D: this.input.keyboard.addKey('d'),
             W: this.input.keyboard.addKey('w'),
+            ESC: this.input.keyboard.addKey('esc')
         }
+
+        // PAUSE MENU 
+        this.keys.ESC.on('down', () => {
+            this.scene.pause();
+            this.scene.launch('Pause');
+        });
 
         // grid overlay (DEV FEATURE)
         let overlay = this.add.image(globals.width / 2, globals.height / 2, 'grid_overlay');

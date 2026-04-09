@@ -5,6 +5,7 @@
 ## BRODY
 [] Add animations
 [] Implement an enemy AI
+[] UI/UX
 ## NICK
 [] Implement states
     [] Jumping

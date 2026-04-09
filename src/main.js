@@ -1,6 +1,7 @@
 import {Load} from './scenes/Load.js'
 import {MainMenu} from './scenes/MainMenu.js'
 import {Play} from './scenes/Play.js'
+import {Pause} from './scenes/Pause.js'
 
 let config = {
     type: Phaser.WEBGL,
@@ -16,7 +17,7 @@ let config = {
     scale: {
         autoCenter: Phaser.Scale.CENTER_BOTH,
     },
-    scene: [Load, MainMenu, Play],
+    scene: [Load, MainMenu, Play, Pause],
 }
 
 export let game = new Phaser.Game(config);
