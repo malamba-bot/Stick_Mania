@@ -38,13 +38,17 @@ export class Stickman extends Phaser.GameObjects.Container {
     }
 
     construct_body() {
+        this.blocked = {
+            left: false,
+            right: false,
+        }
+
         let sprite = this.scene.physics.add.sprite(0, 0, 'player')
             .setScale(0.6)
             .setOrigin(0.5)
             .setSize(100, 1)
             .setOffset(-1000, 0); // TODO
         
-        console.log(sprite.x);
         this.add(sprite);
 
         // Add physics bodies
@@ -63,8 +67,17 @@ export class Stickman extends Phaser.GameObjects.Container {
             body.setSize(w, h);
 
         body.setCollideWorldBounds(true);
-        
         this.add(body);
+    }
+
+    checkCollideWorldBounds() {
+        this.each(child => {
+            if (child.body.blocked.left) {
+                this.blocked.left = true;
+            } else if (child.body.blocked.right) {
+                this.blocked.right = true;
+            }
+        });
     }
 
     init_animations() {
