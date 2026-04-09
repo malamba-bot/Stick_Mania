@@ -29,7 +29,7 @@ export class MoveRightState extends State {
     execute(scene, stickman) {
         if(scene.keys.D.isDown) {
             const frame_speed = stickman.movement_speed * (scene.game.loop.delta / 1000);
-            stickman.setVelocityX(frame_speed);
+            stickman.setVelocityX(stickman.movement_speed);
             //stickman.move(stickman.movement_speed);
             //stickman.flip(false);
             //stickman.play('run');
@@ -51,7 +51,7 @@ export class MoveLeftState extends State {
     execute(scene, stickman) {
         if(scene.keys.A.isDown) {
             const frame_speed = stickman.movement_speed * (scene.game.loop.delta / 1000);
-            stickman.setVelocityX(-frame_speed);
+            stickman.setVelocityX(-stickman.movement_speed);
             //stickman.move(-stickman.movement_speed);
             //stickman.flip(true);
             //stickman.play('run');
