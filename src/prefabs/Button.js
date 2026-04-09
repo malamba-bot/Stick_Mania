@@ -22,7 +22,7 @@ export class Button extends Phaser.GameObjects.Container {
 
         button_box
             .on('pointerdown', callback)
-            .on('pointerover', () => { button_box.setFillStyle(globals.colors.green) })
+            .on('pointerover', () => { button_box.setFillStyle(0x4DAD48) })
             .on('pointerout', () => { button_box.setFillStyle(null) })
 
         this.add(button_box);
