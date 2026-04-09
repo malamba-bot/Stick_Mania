@@ -5,7 +5,6 @@ export class IdleState extends State {
         stickman.move(0);
 
         //stickman.play('Idle');
-        //stickman.sprite.setVelocityX(0);
     }
 
     execute(scene, stickman) {

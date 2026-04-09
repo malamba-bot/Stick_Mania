@@ -38,9 +38,9 @@ export class Stickman extends Phaser.GameObjects.Container {
             .setOrigin(0.5)
             .setSize(100, 1)
             .setOffset(-1000, 0); // TODO
-
+        
+        console.log(sprite.x);
         this.add(sprite);
-
 
         // Add physics bodies
         this.create_physics_body(-50, -3, 10, 65, false); // torso
@@ -56,6 +56,8 @@ export class Stickman extends Phaser.GameObjects.Container {
             body.setCircle(w / 2);
         } else
             body.setSize(w, h);
+
+        body.setCollideWorldBounds(true);
         
         this.add(body);
     }
