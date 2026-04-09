@@ -23,11 +23,10 @@ export class IdleState extends State {
 export class MoveRightState extends State {
 
     enter(scene, stickman) {
-        console.log('hoe moving right');
     }
 
     execute(scene, stickman) {
-        if(scene.keys.D.isDown) {
+        if(scene.keys.D.isDown && stickman.blocked.right == false) {
             stickman.move(stickman.movement_speed);
             //stickman.flip(false);
             //stickman.play('run');
@@ -43,11 +42,10 @@ export class MoveRightState extends State {
 export class MoveLeftState extends State {
 
     enter(scene, stickman) {
-        console.log('hoe moving Left');
     }
 
     execute(scene, stickman) {
-        if(scene.keys.A.isDown) {
+        if(scene.keys.A.isDown && stickman.blocked.left == false) {
             stickman.move(-stickman.movement_speed);
             //stickman.flip(true);
             //stickman.play('run');
