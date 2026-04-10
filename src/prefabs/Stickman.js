@@ -5,12 +5,26 @@ import {DijkstraPathfinding} from './Dijkstra.js'
 
 export class Stickman extends Phaser.GameObjects.Sprite {
 
+    //TakeDamage Method
+    takeDamage(amount) {
+    this.health -= amount;
+
+    if (this.health < 0) {
+        this.health = 0;
+    }
+}
+
     constructor(scene, x, y, texture, is_playable) {
+
         super(scene, x, y, texture);
 
         this.scene = scene;
 
         //Constant values
+        this.maxHealth = 100;
+        this.health = 100;
+
+
         this.movement_speed = 5;
 
         this.setScale(0.6);
