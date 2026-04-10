@@ -1,4 +1,5 @@
 import {IdleState, RightArmPunchState, MoveRightState, MoveLeftState, JumpState} from './Actions.js'
+import {EnemyIdleState, EnemyChaseState} from './EnemyActions.js'
 import {globals, player_consts} from '../main.js'
 import {DijkstraPathfinding} from './Dijkstra.js'
 
@@ -20,7 +21,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         scene.add.existing(this);
 
         if (is_playable) {
-            this.StickmanFSM = new Stateachine('idle', 
+            this.StickmanFSM = new StateMachine('idle', 
                 {
                     idle: new IdleState(),
                     right_arm_punch: new RightArmPunchState(),
@@ -30,8 +31,12 @@ export class Stickman extends Phaser.GameObjects.Sprite {
                 }, 
                 [scene, this]);
         } else {
-            // Enemy pathfinding is not initialized here.
-            // If you need pathfinding, create it in the scene and pass a grid.
+            this.StateMachine = new StateMachine('idle',
+                {
+                    idle: new EnemyIdleState(),
+                    chase: new EnemyChaseState(),
+                },
+                [scene, this]);
         }
     }
 

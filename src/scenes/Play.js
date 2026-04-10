@@ -66,8 +66,6 @@ export class Play extends Phaser.Scene {
         let o_key = this.input.keyboard.addKey('o');
         o_key.on('down', () => overlay.setVisible(overlay_visible = !overlay_visible));
 
-        this.enemy = this.matter.add.sprite(globals.width / 2, globals.height / 2, 'base_stance').setScale(0.6);
-
         // START AI GENERATED @Chatgpt.com
         // Ground collision detection for matter physics
         this.matter.world.on('beforeupdate', () => {
@@ -119,6 +117,5 @@ export class Play extends Phaser.Scene {
             this.enemy.setVelocity(0, 0);
         }
 
-        //this.player.setAngle(0);
     }
 }
