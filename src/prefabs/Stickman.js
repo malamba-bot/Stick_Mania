@@ -1,5 +1,6 @@
 import {IdleState, RightArmPunchState, MoveRightState, MoveLeftState, JumpState} from './Actions.js'
 import {globals, player_consts} from '../main.js'
+import {DijkstraPathfinding} from './Dijkstra.js'
 
 export class Stickman extends Phaser.GameObjects.Sprite {
 
@@ -17,7 +18,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         this.setScale(0.6);
 
         this.init_animations();
-        this.construct_body();
+        this.construct_body(x, y);
 
         scene.add.existing(this);
 
@@ -32,12 +33,13 @@ export class Stickman extends Phaser.GameObjects.Sprite {
                 }, 
                 [scene, this]);
         } else {
-
+            // Enemy pathfinding is not initialized here.
+            // If you need pathfinding, create it in the scene and pass a grid.
         }
 
     }
 
-    construct_body() {
+    construct_body(x, y) {
         // START AI GENERATED @claude.ai
         // create shapes that consitute compound body
         const { Bodies, Body } = Phaser.Physics.Matter.Matter
@@ -58,8 +60,12 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             .setFixedRotation()
             .setMass(10)
 
+<<<<<<< Updated upstream
         this.setPosition(globals.width / 4, globals.height / 2);
             
+=======
+        this.setPosition(x, y);
+>>>>>>> Stashed changes
     }
 
 
