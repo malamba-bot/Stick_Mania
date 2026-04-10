@@ -32,6 +32,39 @@ export class Play extends Phaser.Scene {
             SPACE: this.input.keyboard.addKey('space')
         }
 
+        // gameTimer will go off every 45 seconds and give a random number from 1-3 which represent the debuffs we have in the game
+        // I will add a function that later calls each debuff and spawns their respective icons
+
+        var gameTimer = this.time.addEvent({
+            delay: 45000,
+            callback: onEvent,
+            loop: true,
+
+        });
+
+        gameTimer.paused = false;
+
+        function onEvent() {
+            console.log(Phaser.Math.Between(1,3));
+            console.log('45 seconds have passed');
+        }
+
+        /*
+        var debuffTimer = this.time.addEvent({
+
+            delay: 300,
+            callback: this.randomNum,
+            callbackScope: this,
+            loop: true,
+
+        })
+
+        function randomNum(){
+            console.log("3 seconds have passed")
+            return Phaser.Math.Between(1,3)
+        }
+        */
+
         // PAUSE MENU 
         this.keys.ESC.on('down', () => {
             this.scene.pause();
