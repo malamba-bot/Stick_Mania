@@ -18,10 +18,8 @@ export class Play extends Phaser.Scene {
             'base_stance',
             true);
 
-<<<<<<< Updated upstream
         this.matter.world.setBounds(0, 0, globals.width, globals.height);
 
-<<<<<<< HEAD
         this.matter.world.on('collisionactive', (event) => {
             for (const pair of event.pairs) {
                 const bodyA = pair.bodyA;
@@ -37,18 +35,14 @@ export class Play extends Phaser.Scene {
             }
         });
         //END AI GENERATED
-=======
         this.enemy = new Stickman(
             this, 
             globals.width * 0.75, 
             player_consts.start_y, 
             'base_stance',
             false);
->>>>>>> Stashed changes
-=======
         const snowflakeImg = this.add.image(40,80, 'snowflake');
         snowflakeImg.setScale(0.15);
->>>>>>> 062a956f32b96cfe9312e272418953171b25aefa
 
         this.keys = 
         {
