@@ -10,6 +10,13 @@ export class Play extends Phaser.Scene {
     
 
     create() {
+
+        //Health UI
+        this.healthText = this.add.text(20, 20, 'Health: 100', {
+        fontSize: '20px',
+        color: '#ffffff'
+        }).setScrollFactor(0).setDepth(100);
+    
         this.add.image(0, 0, 'background').setOrigin(0);
         this.player = new Stickman(
             this, 
@@ -119,7 +126,9 @@ export class Play extends Phaser.Scene {
     }
 
     update() {
+        this.healthText.setText('Health: ' + this.player.health);
         this.player.StickmanFSM.step();
+        console.log(typeof this.player.health, this.player.health);
         //this.player.setAngle(0);
     }
 }
