@@ -24,6 +24,7 @@ export class MoveRightState extends State {
 
     enter(scene, stickman) {
         stickman.setFlipX(false);
+        stickman.attach_body('facing_right');
     }
 
     execute(scene, stickman) {
@@ -50,6 +51,7 @@ export class MoveLeftState extends State {
 
     enter(scene, stickman) {
         stickman.setFlipX(true);
+        stickman.attach_body('facing_left');
     }
 
     execute(scene, stickman) {
