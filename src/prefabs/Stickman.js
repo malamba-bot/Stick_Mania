@@ -10,6 +10,9 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
         //Constant values
         this.movement_speed = 5;
+        this.jump_velocity = -10;
+
+        this.isGrounded = false;
 
         this.setScale(0.6);
 
@@ -31,6 +34,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         } else {
 
         }
+
     }
 
     construct_body() {
@@ -55,6 +59,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             .setMass(10)
 
         this.setPosition(globals.width / 4, globals.height / 2);
+            
     }
 
 
