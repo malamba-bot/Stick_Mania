@@ -16,10 +16,12 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
         this.setScale(0.6);
 
+        this.scene.matter.add.gameObject(this)
+        scene.add.existing(this);
+
         this.init_animations();
         this.construct_body();
 
-        scene.add.existing(this);
 
         if (is_playable) {
             this.StickmanFSM = new StateMachine('idle', 
@@ -38,41 +40,46 @@ export class Stickman extends Phaser.GameObjects.Sprite {
     }
 
     construct_body() {
-        // START AI GENERATED @claude.ai
-        // create shapes that consitute compound body
-        const { Bodies, Body } = Phaser.Physics.Matter.Matter
-
-        const torso = Bodies.rectangle(56, 114, 4, 94); 
-        const head = Bodies.circle(56, 34, 31); 
-        const groin = Bodies.circle(56, 168, 10);
-        const thighs = Bodies.rectangle(61, 180, 28, 20);
-        const calves = Bodies.rectangle(61, 210, 40, 50);
-        const compound = Body.create({ parts: [torso, head, groin, thighs, calves] });
-        Body.setCentre(compound, { x: 0, y: 0}, true);
-        // END AI GENERATED
-
-        this.scene.matter.add.gameObject(this)
-            .setOrigin(0)
-            .setExistingBody(compound)
-            .setFixedRotation()
-            .setMass(10)
-
-        this.setPosition(globals.width / 4, globals.height / 2);
+        this.generate_hitboxes();
+        this.setPosition(100, 100);
+        this.attach_body('facing_right');
+        //this.setPosition(globals.width / 4, globals.height / 2);
             
     }
 
+    generate_hitboxes() {
+        this.hitboxes = {};
+        const make_parts = (x) => 
+        {
+            // START AI GENERATED @claude.ai
+            // create shapes that consitute compound body
+            const { Bodies, Body } = Phaser.Physics.Matter.Matter
 
-    create_physics_body(x, y, w, h, circle) {
-        let body = this.scene.physics.add.image(x, y, null);
-        body.setVisible(false);
+            let torso = Bodies.rectangle(0, 0, 4, 94);
+            let head = Bodies.circle(x, -20, 31); 
+            let groin = Bodies.circle(0, 0, 10);
+            let thighs = Bodies.rectangle(0, 0, 28, 20);
+            let calves = Bodies.rectangle(0, 0, 40, 50);
+            return Body.create({ parts: [torso, head, groin, thighs, calves] });
+            // END AI GENERATED
+        }
 
-        if (circle) {
-            body.setCircle(w / 2);
-        } else
-            body.setSize(w, h);
+        this.hitboxes['facing_right'] = make_parts(0);
+        this.hitboxes['facing_left'] = make_parts(100);
+        //compound = Body.create({ parts: [torso, head, groin, thighs, calves] });
+        
+        // Facing left hitbox
+    }
 
-        body.setCollideWorldBounds(true);
-        this.add(body);
+
+    attach_body(key) {
+        const {Body} = Phaser.Physics.Matter.Matter;
+        const hitbox = this.hitboxes[key];
+        Body.setPosition(hitbox, { x: this.x, y: this.y });
+        this
+            .setExistingBody(hitbox)
+            .setFixedRotation()
+            .setMass(10)
     }
 
     init_animations() {

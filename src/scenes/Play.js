@@ -10,6 +10,7 @@ export class Play extends Phaser.Scene {
     
 
     create() {
+        this.matter.world.setBounds(0, 0, globals.width, globals.height);
         this.add.image(0, 0, 'background').setOrigin(0);
         this.player = new Stickman(
             this, 
@@ -46,7 +47,6 @@ export class Play extends Phaser.Scene {
         {
             A: this.input.keyboard.addKey('a'),
             D: this.input.keyboard.addKey('d'),
-            W: this.input.keyboard.addKey('w'),
             ESC: this.input.keyboard.addKey('esc'),
             SPACE: this.input.keyboard.addKey('space')
         }
