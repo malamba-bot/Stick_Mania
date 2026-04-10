@@ -11,3 +11,6 @@
     [] Jumping
     [] Punching
     [] Kicking
+## DOMINIC
+[] UI/UX
+[] Add physics bodies
