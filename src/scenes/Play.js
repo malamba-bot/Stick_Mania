@@ -18,6 +18,30 @@ export class Play extends Phaser.Scene {
             'base_stance',
             true);
 
+        this.matter.world.setBounds(0, 0, globals.width, globals.height);
+            
+        // START AI GENERATED @Chatgpt.com
+        // Ground collision detection for matter physics
+        this.matter.world.on('beforeupdate', () => {
+            this.player.isGrounded = false;
+        });
+
+        this.matter.world.on('collisionactive', (event) => {
+            for (const pair of event.pairs) {
+                const bodyA = pair.bodyA;
+                const bodyB = pair.bodyB;
+
+                if (
+                    (bodyA.parent === this.player.body && bodyB === this.matter.world.walls.bottom) ||
+                    (bodyB.parent === this.player.body && bodyA === this.matter.world.walls.bottom)
+                ) {
+                    this.player.isGrounded = true;
+                    break;
+                }
+            }
+        });
+        //END AI GENERATED
+
         this.keys = 
         {
             A: this.input.keyboard.addKey('a'),

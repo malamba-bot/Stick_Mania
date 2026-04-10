@@ -14,7 +14,7 @@ export class IdleState extends State {
         if (scene.keys.D.isDown) {
             stickman.StickmanFSM.transition('move_right');
         }
-        if (scene.keys.W.isDown) {
+        if (scene.keys.W.isDown && stickman.isGrounded) {
             stickman.StickmanFSM.transition('jump');
         }
     }
@@ -35,6 +35,8 @@ export class MoveRightState extends State {
             //stickman.play('run');
         } else if (scene.keys.A.isDown) {
             stickman.StickmanFSM.transition('move_left');
+        } else if (scene.keys.W.isDown && stickman.isGrounded) {
+            stickman.StickmanFSM.transition('jump');
         } else {
             stickman.StickmanFSM.transition('idle');
         }
@@ -57,6 +59,8 @@ export class MoveLeftState extends State {
             //stickman.play('run');
         } else if (scene.keys.D.isDown) {
             stickman.StickmanFSM.transition('move_right');
+        } else if (scene.keys.W.isDown && stickman.isGrounded) {
+            stickman.StickmanFSM.transition('jump');
         } else {
             stickman.StickmanFSM.transition('idle');
         }
@@ -68,15 +72,21 @@ export class JumpState extends State {
 
     enter(scene, stickman) {
         console.log('Entered Jump State');
+
     }
 
     execute(scene, stickman) {
+
+        if(stickman.isGrounded) {
+            stickman.setVelocityY(stickman.jump_velocity);
+            stickman.isGrounded = false;
+        }
 
         if (scene.keys.A.isDown) {
             stickman.StickmanFSM.transition('move_left');
         } else if (scene.keys.D.isDown) {
             stickman.StickmanFSM.transition('move_right');
-        } else if (!scene.keys.W.isDown){
+        } else {
             stickman.StickmanFSM.transition('idle');
         }
 
