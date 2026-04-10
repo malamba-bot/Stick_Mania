@@ -26,6 +26,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
 
         this.movement_speed = 5;
+        this.jump_velocity = -10;
 
         this.setScale(0.6);
 
