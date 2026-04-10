@@ -76,8 +76,9 @@ export class JumpState extends State {
 
     enter(scene, stickman) {
         console.log('Entered Jump State');
+        console.log(stickman.jump_velocity);
         stickman.setVelocityY(stickman.jump_velocity);
-            stickman.isGrounded = false;
+        stickman.isGrounded = false;
 
     }
 
