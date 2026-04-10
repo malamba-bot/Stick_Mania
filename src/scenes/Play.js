@@ -20,13 +20,8 @@ export class Play extends Phaser.Scene {
 
 <<<<<<< Updated upstream
         this.matter.world.setBounds(0, 0, globals.width, globals.height);
-            
-        // START AI GENERATED @Chatgpt.com
-        // Ground collision detection for matter physics
-        this.matter.world.on('beforeupdate', () => {
-            this.player.isGrounded = false;
-        });
 
+<<<<<<< HEAD
         this.matter.world.on('collisionactive', (event) => {
             for (const pair of event.pairs) {
                 const bodyA = pair.bodyA;
@@ -50,6 +45,10 @@ export class Play extends Phaser.Scene {
             'base_stance',
             false);
 >>>>>>> Stashed changes
+=======
+        const snowflakeImg = this.add.image(40,80, 'snowflake');
+        snowflakeImg.setScale(0.15);
+>>>>>>> 062a956f32b96cfe9312e272418953171b25aefa
 
         this.keys = 
         {
@@ -73,6 +72,43 @@ export class Play extends Phaser.Scene {
         let o_key = this.input.keyboard.addKey('o');
         o_key.on('down', () => overlay.setVisible(overlay_visible = !overlay_visible));
 
+        this.enemy = this.matter.add.sprite(globals.width / 2, globals.height / 2, 'base_stance').setScale(0.6);
+
+        // START AI GENERATED @Chatgpt.com
+        // Ground collision detection for matter physics
+        this.matter.world.on('beforeupdate', () => {
+            this.player.isGrounded = false;
+        });
+
+        this.matter.world.on('collisionactive', (event) => {
+            for (const pair of event.pairs) {
+                const bodyA = pair.bodyA;
+                const bodyB = pair.bodyB;
+
+                if (
+                    (bodyA.parent === this.player.body && bodyB === this.matter.world.walls.bottom) ||
+                    (bodyB.parent === this.player.body && bodyA === this.matter.world.walls.bottom)
+                ) {
+                    this.player.isGrounded = true;
+                    break;
+                }
+            }
+        });
+        //END AI GENERATED
+
+        this.matter.world.on('collisionstart', (event) => {
+            for (const pair of event.pairs) {
+                const a = pair.bodyA.gameObject;
+                const b = pair.bodyB.gameObject;
+
+                if (
+                    (a === this.player && b === this.enemy) ||
+                    (a === this.enemy && b === this.player)
+                ) {
+                    console.log('Player hit the enemy!');
+                }
+            }
+        });
 
     }
 

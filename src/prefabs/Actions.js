@@ -107,3 +107,24 @@ export class RightArmPunchState extends State {
 
     }
 }
+
+export class freezeDebuff extends State {
+
+    enter(scene, stickman) {
+
+        console.log("this bish ain't movin")
+
+        var timer = this.time.addEvent({
+            delay: 300,
+            callback: callback,
+            callbackScope: thisArg,
+            repeat: 1,
+        });
+
+    }
+
+    execute(scene, stickman) {
+    
+    }
+}
+
