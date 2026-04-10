@@ -27,6 +27,27 @@ export class Play extends Phaser.Scene {
 
         this.matter.world.setBounds(0, 0, globals.width, globals.height);
 
+        this.matter.world.on('collisionactive', (event) => {
+            for (const pair of event.pairs) {
+                const bodyA = pair.bodyA;
+                const bodyB = pair.bodyB;
+
+                if (
+                    (bodyA.parent === this.player.body && bodyB === this.matter.world.walls.bottom) ||
+                    (bodyB.parent === this.player.body && bodyA === this.matter.world.walls.bottom)
+                ) {
+                    this.player.isGrounded = true;
+                    break;
+                }
+            }
+        });
+        //END AI GENERATED
+        this.enemy = new Stickman(
+            this, 
+            globals.width * 0.75, 
+            player_consts.start_y, 
+            'base_stance',
+            false);
         const snowflakeImg = this.add.image(40,80, 'snowflake');
         snowflakeImg.setScale(0.15);
 
@@ -85,8 +106,6 @@ export class Play extends Phaser.Scene {
         let o_key = this.input.keyboard.addKey('o');
         o_key.on('down', () => overlay.setVisible(overlay_visible = !overlay_visible));
 
-        this.enemy = this.matter.add.sprite(globals.width / 2, globals.height / 2, 'base_stance').setScale(0.6);
-
         // START AI GENERATED @Chatgpt.com
         // Ground collision detection for matter physics
         this.matter.world.on('beforeupdate', () => {
@@ -128,6 +147,17 @@ export class Play extends Phaser.Scene {
     update() {
         this.healthText.setText('Health: ' + this.player.health);
         this.player.StickmanFSM.step();
+
+        const speed = 2.2;
+        const dist = Phaser.Math.Distance.Between(this.enemy.x, this.enemy.y, this.player.x, this.player.y);
+
+        if (dist > 8) {
+            const angle = Phaser.Math.Angle.Between(this.enemy.x, this.enemy.y, this.player.x, this.player.y);
+            this.enemy.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed);
+        } else {
+            this.enemy.setVelocity(0, 0);
+        }
+
         console.log(typeof this.player.health, this.player.health);
         //this.player.setAngle(0);
     }
