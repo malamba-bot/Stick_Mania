@@ -22,6 +22,12 @@ export class Play extends Phaser.Scene {
             ESC: this.input.keyboard.addKey('esc')
         }
 
+        //HEALTH
+        this.healthText = this.add.text(20, 20, 'Health: 100', {
+        fontSize: '20px',
+        color: '#ffffff'
+        }).setScrollFactor(0); 
+
         // PAUSE MENU 
         this.keys.ESC.on('down', () => {
             this.scene.pause();
@@ -39,6 +45,7 @@ export class Play extends Phaser.Scene {
     }
 
     update() {
+        this.healthText.setText('Health: ' + this.player.health);
         this.player.StickmanFSM.step();
         this.player.checkCollideWorldBounds();
     }

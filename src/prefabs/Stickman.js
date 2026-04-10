@@ -3,12 +3,24 @@ import {globals, player_consts} from '../main.js'
 
 export class Stickman extends Phaser.GameObjects.Container {
 
+    //TakeDamage method
+    takeDamage(amount) {
+    this.health -= amount;
+
+    if (this.health < 0) {
+        this.health = 0;
+    }
+}
+
     constructor(scene, x, y, is_playable) {
         super(scene, x, y);
 
-        this.scene = scene;
+        
 
+        this.scene = scene;
         //Constant values
+        this.maxHealth = 100;
+        this.health = 100;
         this.movement_speed = 200;
 
         this.init_animations();
