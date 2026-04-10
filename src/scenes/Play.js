@@ -20,6 +20,9 @@ export class Play extends Phaser.Scene {
 
         this.matter.world.setBounds(0, 0, globals.width, globals.height);
 
+        const snowflakeImg = this.add.image(40,80, 'snowflake');
+        snowflakeImg.setScale(0.15);
+
         this.keys = 
         {
             A: this.input.keyboard.addKey('a'),
