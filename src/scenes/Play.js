@@ -10,6 +10,13 @@ export class Play extends Phaser.Scene {
     
 
     create() {
+
+        //Health UI
+        this.healthText = this.add.text(20, 20, 'Health: 100', {
+        fontSize: '20px',
+        color: '#ffffff'
+        }).setScrollFactor(0).setDepth(100);
+    
         this.add.image(0, 0, 'background').setOrigin(0);
         this.player = new Stickman(
             this, 
@@ -52,6 +59,39 @@ export class Play extends Phaser.Scene {
             ESC: this.input.keyboard.addKey('esc'),
             SPACE: this.input.keyboard.addKey('space')
         }
+
+        // gameTimer will go off every 45 seconds and give a random number from 1-3 which represent the debuffs we have in the game
+        // I will add a function that later calls each debuff and spawns their respective icons
+
+        var gameTimer = this.time.addEvent({
+            delay: 45000,
+            callback: onEvent,
+            loop: true,
+
+        });
+
+        gameTimer.paused = false;
+
+        function onEvent() {
+            console.log(Phaser.Math.Between(1,3));
+            console.log('45 seconds have passed');
+        }
+
+        /*
+        var debuffTimer = this.time.addEvent({
+
+            delay: 300,
+            callback: this.randomNum,
+            callbackScope: this,
+            loop: true,
+
+        })
+
+        function randomNum(){
+            console.log("3 seconds have passed")
+            return Phaser.Math.Between(1,3)
+        }
+        */
 
         // PAUSE MENU 
         this.keys.ESC.on('down', () => {
@@ -105,6 +145,7 @@ export class Play extends Phaser.Scene {
     }
 
     update() {
+        this.healthText.setText('Health: ' + this.player.health);
         this.player.StickmanFSM.step();
 
         const speed = 2.2;
@@ -117,5 +158,7 @@ export class Play extends Phaser.Scene {
             this.enemy.setVelocity(0, 0);
         }
 
+        console.log(typeof this.player.health, this.player.health);
+        //this.player.setAngle(0);
     }
 }
