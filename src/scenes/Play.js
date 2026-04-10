@@ -15,7 +15,7 @@ export class Play extends Phaser.Scene {
             this, 
             player_consts.start_x, 
             player_consts.start_y, 
-            'base_stance',
+            'player',
             true);
 
         this.keys = 

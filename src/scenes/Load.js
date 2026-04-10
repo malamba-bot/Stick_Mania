@@ -14,6 +14,8 @@ export class Load extends Phaser.Scene {
 
         this.load.aseprite('player', 'StickManIdle.png', 'StickManIdle.json');
         this.load.image('base_stance', 'base_stance.png');
+
+        this.load.json('stickmanShapes', 'stickmanMatter.json');
     }
 
     create() {
