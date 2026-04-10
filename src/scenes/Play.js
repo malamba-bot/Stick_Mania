@@ -2,7 +2,6 @@ import {globals} from '../main.js'
 import {player_consts} from '../main.js'
 
 import {Stickman} from '../prefabs/Stickman.js'
-import {DijkstraPathfinding} from '../prefabs/Dijkstra.js'
 
 export class Play extends Phaser.Scene {
     constructor() {
@@ -19,6 +18,7 @@ export class Play extends Phaser.Scene {
             'base_stance',
             true);
 
+<<<<<<< Updated upstream
         this.matter.world.setBounds(0, 0, globals.width, globals.height);
             
         // START AI GENERATED @Chatgpt.com
@@ -42,19 +42,14 @@ export class Play extends Phaser.Scene {
             }
         });
         //END AI GENERATED
-
+=======
         this.enemy = new Stickman(
             this, 
             globals.width * 0.75, 
             player_consts.start_y, 
             'base_stance',
-            false,
-            this.dijkstra);
-
-        // Initialize pathfinding grid (25x25 grid, all walkable for now) generated  by chat
-        const gridSize = 25;
-        const grid = Array(gridSize).fill().map(() => Array(gridSize).fill(0));
-        this.dijkstra = new DijkstraPathfinding(this, grid);
+            false);
+>>>>>>> Stashed changes
 
         this.keys = 
         {
@@ -83,7 +78,16 @@ export class Play extends Phaser.Scene {
 
     update() {
         this.player.StickmanFSM.step();
-        this.enemy.StickmanFSM.step();
+
+        const speed = 2.2;
+        const dist = Phaser.Math.Distance.Between(this.enemy.x, this.enemy.y, this.player.x, this.player.y);
+
+        if (dist > 8) {
+            const angle = Phaser.Math.Angle.Between(this.enemy.x, this.enemy.y, this.player.x, this.player.y);
+            this.enemy.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed);
+        } else {
+            this.enemy.setVelocity(0, 0);
+        }
 
         //this.player.setAngle(0);
     }

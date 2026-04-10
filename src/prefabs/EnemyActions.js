@@ -56,5 +56,6 @@ export class EnemyChaseState extends State {
         } else {
             enemy.setVelocity(0);
         }
+        
     }
 }

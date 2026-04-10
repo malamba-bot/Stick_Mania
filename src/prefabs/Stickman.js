@@ -61,8 +61,12 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             .setMass(10)
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         this.setPosition(globals.width / 4, globals.height / 2);
             
+=======
+        this.setPosition(x, y);
+>>>>>>> Stashed changes
 =======
         this.setPosition(x, y);
 >>>>>>> Stashed changes
