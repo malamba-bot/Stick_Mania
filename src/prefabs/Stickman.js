@@ -11,9 +11,6 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
         //Constant values
         this.movement_speed = 5;
-        this.jump_velocity = -10;
-
-        this.isGrounded = false;
 
         this.setScale(0.6);
 
@@ -23,7 +20,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         scene.add.existing(this);
 
         if (is_playable) {
-            this.StickmanFSM = new StateMachine('idle', 
+            this.StickmanFSM = new Stateachine('idle', 
                 {
                     idle: new IdleState(),
                     right_arm_punch: new RightArmPunchState(),
@@ -36,7 +33,6 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             // Enemy pathfinding is not initialized here.
             // If you need pathfinding, create it in the scene and pass a grid.
         }
-
     }
 
     construct_body(x, y) {
@@ -60,16 +56,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             .setFixedRotation()
             .setMass(10)
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        this.setPosition(globals.width / 4, globals.height / 2);
-            
-=======
         this.setPosition(x, y);
->>>>>>> Stashed changes
-=======
-        this.setPosition(x, y);
->>>>>>> Stashed changes
     }
 
 
