@@ -1,5 +1,7 @@
 import {IdleState, RightArmPunchState, MoveRightState, MoveLeftState, JumpState} from './Actions.js'
+import {EnemyIdleState, EnemyChaseState} from './EnemyActions.js'
 import {globals, player_consts} from '../main.js'
+import {DijkstraPathfinding} from './Dijkstra.js'
 
 export class Stickman extends Phaser.GameObjects.Sprite {
 
@@ -24,14 +26,11 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
 
         this.movement_speed = 5;
-        this.jump_velocity = -10;
-
-        this.isGrounded = false;
 
         this.setScale(0.6);
 
         this.init_animations();
-        this.construct_body();
+        this.construct_body(x, y);
 
         scene.add.existing(this);
 
@@ -46,12 +45,16 @@ export class Stickman extends Phaser.GameObjects.Sprite {
                 }, 
                 [scene, this]);
         } else {
-
+            this.StateMachine = new StateMachine('idle',
+                {
+                    idle: new EnemyIdleState(),
+                    chase: new EnemyChaseState(),
+                },
+                [scene, this]);
         }
-
     }
 
-    construct_body() {
+    construct_body(x, y) {
         // START AI GENERATED @claude.ai
         // create shapes that consitute compound body
         const { Bodies, Body } = Phaser.Physics.Matter.Matter
@@ -72,8 +75,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             .setFixedRotation()
             .setMass(10)
 
-        this.setPosition(globals.width / 4, globals.height / 2);
-            
+        this.setPosition(x, y);
     }
 
 
