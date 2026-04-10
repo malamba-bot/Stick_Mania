@@ -42,15 +42,14 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         // create shapes that consitute compound body
         const { Bodies, Body } = Phaser.Physics.Matter.Matter
 
-        const torso = Bodies.rectangle(35, 114, 4, 94); 
-        const head = Bodies.circle(35, 34, 31); 
-        const groin = Bodies.circle(35, 168, 10);
-        const thighs = Bodies.rectangle(40, 180, 28, 20);
-        const calves = Bodies.rectangle(40, 210, 40, 50);
+        const torso = Bodies.rectangle(56, 114, 4, 94); 
+        const head = Bodies.circle(56, 34, 31); 
+        const groin = Bodies.circle(56, 168, 10);
+        const thighs = Bodies.rectangle(61, 180, 28, 20);
+        const calves = Bodies.rectangle(61, 210, 40, 50);
         const compound = Body.create({ parts: [torso, head, groin, thighs, calves] });
         Body.setCentre(compound, { x: 0, y: 0}, true);
         // END AI GENERATED
-
 
         this.scene.matter.add.gameObject(this)
             .setOrigin(0)
