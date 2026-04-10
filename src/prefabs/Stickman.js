@@ -17,6 +17,8 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         scene.add.existing(this);
         this.construct_body();
 
+        
+
         this.play('Idle');
 
         if (is_playable) {

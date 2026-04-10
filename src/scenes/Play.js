@@ -15,7 +15,7 @@ export class Play extends Phaser.Scene {
             this, 
             player_consts.start_x, 
             player_consts.start_y, 
-            'player',
+            'base_stance',
             true);
 
         this.keys = 
@@ -43,6 +43,12 @@ export class Play extends Phaser.Scene {
     }
 
     update() {
+        console.log(
+        'Sprite:', this.player.x.toFixed(1), this.player.y.toFixed(1),
+        '| Body:', this.player.body.position.x.toFixed(1), this.player.body.position.y.toFixed(1)
+    );
+
+    console.log(this.player.displayWidth, this.player.displayHeight);
         this.player.StickmanFSM.step();
         //this.player.setAngle(0);
     }
