@@ -42,14 +42,15 @@ export class Stickman extends Phaser.GameObjects.Sprite {
     construct_body() {
         this.generate_hitboxes();
         this.setPosition(100, 100);
-        this.attach_body('facing_left');
-        //this.setPosition(globals.width / 4, globals.height / 2);
+        this.attach_body('facing_right');
             
     }
 
+    /*
+        * Generates compound hitboxes for each character action and stores it in a dictionary alongside the relevant key. 
+        * These entries are used by the state machine to create and bind new hitboxes when actions are taken.
+        */
     generate_hitboxes() {
-        this.hitboxes = {};
-        let hitbox_coords = this.scene.cache.json.get('hitboxes');
         const make_parts = (state) => 
         {
             // START AI GENERATED @claude.ai
@@ -57,19 +58,21 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             const { Bodies, Body } = Phaser.Physics.Matter.Matter
             const coords = hitbox_coords[state];
 
-            let torso = Bodies.rectangle(coords.torso[0], coords.torso[1], coords.torso[2], coords.torso[3]);
-            let head = Bodies.circle(0, -20, 31); 
-            let groin = Bodies.circle(0, 0, 10);
-            let thighs = Bodies.rectangle(0, 0, 28, 20);
-            let calves = Bodies.rectangle(0, 0, 40, 50);
+            let torso  = Bodies.rectangle(coords.torso[0],  coords.torso[1],  coords.torso[2],  coords.torso[3]);
+            let head   = Bodies.circle(coords.head[0], coords.head[1], coords.head[2]);
+            let groin  = Bodies.circle(coords.groin[0], coords.groin[1], coords.groin[2]);
+            let thighs = Bodies.rectangle(coords.thighs[0], coords.thighs[1], coords.thighs[2], coords.thighs[3]);
+            let calves = Bodies.rectangle(coords.calves[0], coords.calves[1], coords.calves[2], coords.calves[3]);
             return Body.create({ parts: [torso, head, groin, thighs, calves] });
             // END AI GENERATED
         }
 
-        //this.hitboxes['facing_right'] = make_parts(0);
-        this.hitboxes['facing_left'] = make_parts('facing_left');
-    }
+        this.hitboxes = {};
+        let hitbox_coords = this.scene.cache.json.get('hitboxes');
 
+        this.hitboxes['facing_left'] = make_parts('facing_left');
+        this.hitboxes['facing_right'] = make_parts('facing_right');
+    }
 
     attach_body(key) {
         const {Body} = Phaser.Physics.Matter.Matter;
