@@ -82,26 +82,44 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             let groin  = Bodies.circle(coords.groin[0], coords.groin[1], coords.groin[2]);
             let thighs = Bodies.rectangle(coords.thighs[0], coords.thighs[1], coords.thighs[2], coords.thighs[3]);
             let calves = Bodies.rectangle(coords.calves[0], coords.calves[1], coords.calves[2], coords.calves[3]);
-            return Body.create({ parts: [torso, head, groin, thighs, calves] });
+            let fist = coords.fist 
+            ? Bodies.circle(coords.fist[0], coords.fist[1], coords.fist[2]) 
+            : null;
+
+         //   return Body.create({ parts: [torso, head, groin, thighs, calves] });
+            const parts = [torso, head, groin, thighs, calves];
+            if (fist) parts.push(fist);
+            console.log(state, 'parts count:', parts.length); 
+            return Body.create({ parts });
             // END AI GENERATED
         }
 
+        //Automatically create hitboxes
         this.hitboxes = {};
         let hitbox_coords = this.scene.cache.json.get('hitboxes');
 
-        this.hitboxes['facing_left'] = make_parts('facing_left');
-        this.hitboxes['facing_right'] = make_parts('facing_right');
+        this.hitboxes = {};
+
+        for (let key in hitbox_coords) {
+        this.hitboxes[key] = make_parts(key);
+        }
     }
 
     attach_body(key) {
-        const {Body} = Phaser.Physics.Matter.Matter;
-        const hitbox = this.hitboxes[key];
-        Body.setPosition(hitbox, { x: this.x, y: this.y });
-        this
-            .setExistingBody(hitbox)
-            .setFixedRotation()
-            .setMass(10)
+    const { Body } = Phaser.Physics.Matter.Matter;
+    const hitbox = this.hitboxes[key];
+
+    Body.setPosition(hitbox, { x: this.x, y: this.y });
+
+    if (this.body) {
+        this.scene.matter.world.remove(this.body);
     }
+
+    this
+        .setExistingBody(hitbox)
+        .setFixedRotation()
+        .setMass(10);
+}
 
     init_animations() {
         this.scene.anims.createFromAseprite('player');

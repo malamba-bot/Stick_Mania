@@ -55,6 +55,7 @@ export class Play extends Phaser.Scene {
             A: this.input.keyboard.addKey('a'),
             D: this.input.keyboard.addKey('d'),
             W: this.input.keyboard.addKey('w'),
+            X: this.input.keyboard.addKey('x'),
             ESC: this.input.keyboard.addKey('esc'),
             SPACE: this.input.keyboard.addKey('space')
         }
@@ -127,13 +128,13 @@ export class Play extends Phaser.Scene {
         });
         //END AI GENERATED
 
-        this.keys = 
-        {
-            A: this.input.keyboard.addKey('a'),
-            D: this.input.keyboard.addKey('d'),
-            ESC: this.input.keyboard.addKey('esc'),
-            SPACE: this.input.keyboard.addKey('space')
-        }
+     // dupplicate  this.keys = 
+      //  {
+     //       A: this.input.keyboard.addKey('a'),
+     //       D: this.input.keyboard.addKey('d'),
+     //       ESC: this.input.keyboard.addKey('esc'),
+     //       SPACE: this.input.keyboard.addKey('space')
+      //  }
 
         this.matter.world.on('collisionstart', (event) => {
             for (const pair of event.pairs) {

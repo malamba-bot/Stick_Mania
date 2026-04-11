@@ -8,13 +8,17 @@ export class IdleState extends State {
     }
 
     execute(scene, stickman) {
-        if (scene.keys.A.isDown) {
+           if (Phaser.Input.Keyboard.JustDown(scene.keys.X)) {
+        stickman.StickmanFSM.transition('right_arm_punch');
+        return; 
+        }
+       if (scene.keys.A.isDown) {
             stickman.StickmanFSM.transition('move_left');
         }
-        if (scene.keys.D.isDown) {
+       if (scene.keys.D.isDown) {
             stickman.StickmanFSM.transition('move_right');
         }
-        if (scene.keys.SPACE.isDown && stickman.isGrounded) {
+       if (scene.keys.SPACE.isDown && stickman.isGrounded) {
             stickman.StickmanFSM.transition('jump');
         }
     }
@@ -101,14 +105,19 @@ export class JumpState extends State {
 export class RightArmPunchState extends State {
 
     enter(scene, stickman) {
+        console.log('Punch');
 
-        console.log('Entered Right Arm Punch State');
-    
+        stickman.setVelocityX(0);
+        stickman.attach_body('punch_right');
+
+        scene.time.delayedCall(200, () => {
+            scene.keys.X.reset();
+            stickman.attach_body('facing_right');
+            stickman.StickmanFSM.transition('idle');
+        });
     }
 
-    execute(scene, stickman) {
-
-    }
+    execute(scene, stickman) {}
 }
 
 export class freezeDebuff extends State {
