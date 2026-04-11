@@ -6,6 +6,8 @@ export class Load extends Phaser.Scene {
     preload() {
         this.load.setPath('../../assets/');
 
+        this.load.json('hitboxes', 'json/hitboxes.json');
+
         this.load.image('background', 'Background.png');
         this.load.image('grid_overlay', 'grid_overlay.png');
 
