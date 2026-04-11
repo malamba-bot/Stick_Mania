@@ -1,18 +1,32 @@
 import {IdleState, RightArmPunchState, MoveRightState, MoveLeftState, JumpState} from './Actions.js'
+import {EnemyIdleState, EnemyChaseState} from './EnemyActions.js'
 import {globals, player_consts} from '../main.js'
+import {DijkstraPathfinding} from './Dijkstra.js'
 
 export class Stickman extends Phaser.GameObjects.Sprite {
 
+    //TakeDamage Method
+    takeDamage(amount) {
+    this.health -= amount;
+
+    if (this.health < 0) {
+        this.health = 0;
+    }
+}
+
     constructor(scene, x, y, texture, is_playable) {
+
         super(scene, x, y, texture);
 
         this.scene = scene;
 
         //Constant values
+        this.maxHealth = 100;
+        this.health = 100;
+
+
         this.movement_speed = 5;
         this.jump_velocity = -10;
-
-        this.isGrounded = false;
 
         this.setScale(0.6);
 
@@ -20,9 +34,12 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         scene.add.existing(this);
 
         this.init_animations();
-        this.construct_body();
+        this.construct_body(x, y);
+        this.attach_statemachine(is_playable);
 
+    }
 
+    attach_statemachine(is_playable) {
         if (is_playable) {
             this.StickmanFSM = new StateMachine('idle', 
                 {
@@ -32,18 +49,20 @@ export class Stickman extends Phaser.GameObjects.Sprite {
                     move_left: new MoveLeftState(),
                     jump: new JumpState(),
                 }, 
-                [scene, this]);
+                [this.scene, this]);
         } else {
-
+            this.StateMachine = new StateMachine('idle',
+                {
+                    idle: new EnemyIdleState(),
+                    chase: new EnemyChaseState(),
+                },
+                [this.scene, this]);
         }
-
     }
 
     construct_body() {
         this.generate_hitboxes();
-        this.setPosition(100, 100);
         this.attach_body('facing_right');
-            
     }
 
     /*
