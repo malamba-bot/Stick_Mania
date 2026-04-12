@@ -16,6 +16,7 @@ export class Play extends Phaser.Scene {
             D: this.input.keyboard.addKey('d'),
             W: this.input.keyboard.addKey('w'),
             K: this.input.keyboard.addKey('k'),
+            L: this.input.keyboard.addKey('l'),
             ESC: this.input.keyboard.addKey('esc'),
             SPACE: this.input.keyboard.addKey('space')
         }
@@ -157,12 +158,12 @@ export class Play extends Phaser.Scene {
                 if(!objA || !objB) continue;
 
                 //player punch hits enemy
-                if(bodyA.label === 'playerPunch' && objB === this.enemy) {
+                if(bodyA.label === 'playerPunch' || bodyA.label === 'playerKick' && objB === this.enemy) {
                     objB.takeDamage(10);
                     console.log('This hoe hit an enemy!', objA.health);
                 }
 
-                if(bodyB.label === 'playerPunch' && objA === this.enemy) {
+                if(bodyB.label === 'playerPunch' || bodyB.label === 'playerKick' && objA === this.enemy) {
                     objA.takeDamage(10);
                     console.log('This hoe hit the enemy!', objB.health);
                 }
@@ -184,7 +185,7 @@ export class Play extends Phaser.Scene {
 
             if (dist > 8) {
                 const angle = Phaser.Math.Angle.Between(this.enemy.x, this.enemy.y, this.player.x, this.player.y);
-                this.enemy.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed);
+                //this.enemy.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed);
             } else {
                 this.enemy.setVelocity(0, 0);
             }

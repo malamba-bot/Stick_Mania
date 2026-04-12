@@ -1,4 +1,4 @@
-import {IdleState, RightArmPunchState, MoveRightState, MoveLeftState, JumpState, PunchState} from './Actions.js'
+import {IdleState, MoveRightState, MoveLeftState, JumpState, PunchState, KickState} from './Actions.js'
 import {EnemyIdleState, EnemyChaseState} from './EnemyActions.js'
 import {globals, player_consts} from '../main.js'
 import {DijkstraPathfinding} from './Dijkstra.js'
@@ -45,11 +45,11 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             this.StickmanFSM = new StateMachine('idle', 
                 {
                     idle: new IdleState(),
-                    right_arm_punch: new RightArmPunchState(),
                     move_right: new MoveRightState(),
                     move_left: new MoveLeftState(),
                     jump: new JumpState(),
                     punch: new PunchState(),
+                    kick: new KickState()
                 }, 
                 [this.scene, this]);
         } else {
@@ -72,7 +72,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         * These entries are used by the state machine to create and bind new hitboxes when actions are taken.
         */
     generate_hitboxes() {
-        const make_parts = (state, attacking) => 
+        const make_parts = (state, attackType) => 
         {
             // START AI GENERATED @claude.ai
             // create shapes that consitute compound body
@@ -84,9 +84,13 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             let groin  = Bodies.circle(coords.groin[0], coords.groin[1], coords.groin[2]);
             let thighs = Bodies.rectangle(coords.thighs[0], coords.thighs[1], coords.thighs[2], coords.thighs[3]);
             let calves = Bodies.rectangle(coords.calves[0], coords.calves[1], coords.calves[2], coords.calves[3]);
-            if (attacking) {
+            if (attackType === 'punch') {
                 let hurtbox = Bodies.circle(coords.hurtbox[0], coords.hurtbox[1], coords.hurtbox[2], { label: 'playerPunch' });
                 return Body.create({ parts: [torso, head, groin, thighs, calves, hurtbox] });
+            }
+            if (attackType === 'kick') {
+                let hurtbox = Bodies.circle(coords.hurtbox[0], coords.hurtbox[1], coords.hurtbox[2], { label: 'playerKick' });
+                return Body.create({ parts: [torso, head, groin, thighs, calves, hurtbox]});
             }
             return Body.create({ parts: [torso, head, groin, thighs, calves] });
             // END AI GENERATED
@@ -97,8 +101,10 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
         this.hitboxes['facing_left'] = make_parts('facing_left', false);
         this.hitboxes['facing_right'] = make_parts('facing_right', false);
-        this.hitboxes['punching_left'] = make_parts('punching_left', true);
-        this.hitboxes['punching_right'] = make_parts('punching_right', true);
+        this.hitboxes['punching_left'] = make_parts('punching_left', 'punch');
+        this.hitboxes['punching_right'] = make_parts('punching_right', 'punch');
+        this.hitboxes['kicking_left'] = make_parts('kicking_left', 'kick');
+        this.hitboxes['kicking_right'] = make_parts('kicking_right', 'kick');
     }
 
     attach_body(key) {
@@ -118,6 +124,15 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             this.scene.anims.create({
                 key: 'Idle',
                 frames: this.scene.anims.generateFrameNames('player'),
+                frameRate: 6,
+                repeat: -1
+            });
+        }
+
+        if(!this.scene.anims.exists('Punch')) {
+            this.scene.anims.create({
+                key: 'Punch',
+                frames: this.scene.anims.generateFrameNames('punch', { start: 0, end: 2 }),
                 frameRate: 6,
                 repeat: -1
             });
