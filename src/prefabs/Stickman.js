@@ -32,12 +32,12 @@ export class Stickman extends Phaser.GameObjects.Sprite {
     }
 
     takeDamage(amount) {
-    this.health -= amount;
+        this.health -= amount;
 
-    if (this.health < 0) {
-        this.health = 0;
+        if (this.health < 0) {
+            this.health = 0;
+        }
     }
-}
 
 
     attach_statemachine(is_playable) {
@@ -85,7 +85,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             let thighs = Bodies.rectangle(coords.thighs[0], coords.thighs[1], coords.thighs[2], coords.thighs[3]);
             let calves = Bodies.rectangle(coords.calves[0], coords.calves[1], coords.calves[2], coords.calves[3]);
             if (attacking) {
-                let hurtbox = Bodies.circle(coords.hurtbox[0], coords.hurtbox[1], coords.hurtbox[2]);
+                let hurtbox = Bodies.circle(coords.hurtbox[0], coords.hurtbox[1], coords.hurtbox[2], { label: 'playerPunch' });
                 return Body.create({ parts: [torso, head, groin, thighs, calves, hurtbox] });
             }
             return Body.create({ parts: [torso, head, groin, thighs, calves] });

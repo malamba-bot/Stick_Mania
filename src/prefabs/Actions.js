@@ -78,8 +78,8 @@ export class PunchState extends State {
 
     enter(scene, stickman) {
         stickman.direction == 'R' ?
-            stickman.attach_body('punching_left') :
-            stickman.attach_body('punching_right');
+            stickman.attach_body('punching_right') :
+            stickman.attach_body('punching_left');
     }
 
     execute(scene, stickman) {
