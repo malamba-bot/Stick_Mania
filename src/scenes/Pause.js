@@ -5,6 +5,10 @@ export class Pause extends Phaser.Scene {
         super('Pause');
     }
 
+    init(scene) {
+       this.scene = scene; 
+    }
+
     create() {
 
         const screenWidth = this.sys.game.config.width;
@@ -49,7 +53,7 @@ export class Pause extends Phaser.Scene {
             strokeThickness: 2
         };
 
-        this.keys.ESC.on('down', () => {
+        this.scene.keys.ESC.on('down', () => {
             this.scene.exit();
             this.scene.launch('Play');
         });
