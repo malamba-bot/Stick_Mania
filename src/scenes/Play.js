@@ -10,6 +10,16 @@ export class Play extends Phaser.Scene {
     
 
     create() {
+        this.keys = 
+        {
+            A: this.input.keyboard.addKey('a'),
+            D: this.input.keyboard.addKey('d'),
+            W: this.input.keyboard.addKey('w'),
+            K: this.input.keyboard.addKey('k'),
+            ESC: this.input.keyboard.addKey('esc'),
+            SPACE: this.input.keyboard.addKey('space')
+        }
+
         //Health UI
         this.healthText = this.add.text(20, 20, 'Health: 100', {
         fontSize: '20px',
@@ -49,15 +59,7 @@ export class Play extends Phaser.Scene {
             false);
         const snowflakeImg = this.add.image(40,80, 'snowflake');
         snowflakeImg.setScale(0.15);
-
-        this.keys = 
-        {
-            A: this.input.keyboard.addKey('a'),
-            D: this.input.keyboard.addKey('d'),
-            W: this.input.keyboard.addKey('w'),
-            ESC: this.input.keyboard.addKey('esc'),
-            SPACE: this.input.keyboard.addKey('space')
-        }
+        this.enemy = null;
 
         // gameTimer will go off every 45 seconds and give a random number from 1-3 which represent the debuffs we have in the game
         // I will add a function that later calls each debuff and spawns their respective icons
@@ -95,7 +97,7 @@ export class Play extends Phaser.Scene {
         // PAUSE MENU 
         this.keys.ESC.on('down', () => {
             this.scene.pause();
-            this.scene.launch('Pause');
+            this.scene.launch('Pause', this);
         });
 
         // grid overlay (DEV FEATURE)
@@ -127,14 +129,6 @@ export class Play extends Phaser.Scene {
         });
         //END AI GENERATED
 
-        this.keys = 
-        {
-            A: this.input.keyboard.addKey('a'),
-            D: this.input.keyboard.addKey('d'),
-            ESC: this.input.keyboard.addKey('esc'),
-            SPACE: this.input.keyboard.addKey('space')
-        }
-
         this.matter.world.on('collisionstart', (event) => {
             for (const pair of event.pairs) {
                 const a = pair.bodyA.gameObject;
@@ -154,16 +148,19 @@ export class Play extends Phaser.Scene {
         this.healthText.setText('Health: ' + this.player.health);
         this.player.StickmanFSM.step();
 
-        const speed = 2.2;
-        const dist = Phaser.Math.Distance.Between(this.enemy.x, this.enemy.y, this.player.x, this.player.y);
+        // TODO MOVE THIS LOGIC TO ENEMY CLASS
+        if (this.enemy != null) {
+            const speed = 2.2;
+            const dist = Phaser.Math.Distance.Between(this.enemy.x, this.enemy.y, this.player.x, this.player.y);
 
-        if (dist > 8) {
-            const angle = Phaser.Math.Angle.Between(this.enemy.x, this.enemy.y, this.player.x, this.player.y);
-            this.enemy.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed);
-        } else {
-            this.enemy.setVelocity(0, 0);
+            if (dist > 8) {
+                const angle = Phaser.Math.Angle.Between(this.enemy.x, this.enemy.y, this.player.x, this.player.y);
+                this.enemy.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed);
+            } else {
+                this.enemy.setVelocity(0, 0);
+            }
         }
 
-        console.log(typeof this.player.health, this.player.health);
+        //console.log(typeof this.player.health, this.player.health);
     }
 }
