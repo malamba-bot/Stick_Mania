@@ -142,7 +142,7 @@ export class Play extends Phaser.Scene {
                     (a === this.player && b === this.enemy) ||
                     (a === this.enemy && b === this.player)
                 ) {
-                    console.log('Player hit the enemy!');
+                    //console.log('Player hit the enemy!');
                 }
             }
         });*/
