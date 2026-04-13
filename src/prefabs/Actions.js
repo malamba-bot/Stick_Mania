@@ -1,7 +1,6 @@
 export class IdleState extends State {
 
     enter(scene, stickman) {
-        console.log('Entered Idle State');
         stickman.setVelocityX(0);
 
         //stickman.stop();
