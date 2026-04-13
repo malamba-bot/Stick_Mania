@@ -160,12 +160,12 @@ export class Play extends Phaser.Scene {
                 //player punch hits enemy
                 if(bodyA.label === 'playerPunch' || bodyA.label === 'playerKick' && objB === this.enemy) {
                     objB.takeDamage(10);
-                    console.log('This hoe hit an enemy!', objA.health);
+                    console.log('This hoe hit an enemy!', objA.health.value);
                 }
 
                 if(bodyB.label === 'playerPunch' || bodyB.label === 'playerKick' && objA === this.enemy) {
                     objA.takeDamage(10);
-                    console.log('This hoe hit the enemy!', objB.health);
+                    console.log('This hoe hit the enemy!', objB.health.value);
                 }
             }
         });
