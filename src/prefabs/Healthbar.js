@@ -40,8 +40,10 @@ export class HealthBar {
     if (this.value < 30) {
       this.bar.fillStyle(0xff0000);
     }
-    else {
-      this.bar.fillStyle(0x00ff00);
+    else if (this.value >= 30 && this.value < 50) {
+      this.bar.fillStyle(0xffff00);
+    } else {
+        this.bar.fillStyle(0x00ff00);
     }
 
     var d = Math.floor(this.p * this.value);
