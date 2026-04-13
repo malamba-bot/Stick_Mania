@@ -1,4 +1,4 @@
-import {IdleState, MoveRightState, MoveLeftState, JumpState, PunchState} from './Actions.js'
+import {IdleState, RightArmPunchState, MoveRightState, MoveLeftState, JumpState, PunchState} from './Actions.js'
 import {EnemyIdleState, EnemyChaseState} from './EnemyActions.js'
 import {globals, player_consts} from '../main.js'
 import {DijkstraPathfinding} from './Dijkstra.js'
@@ -45,6 +45,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             this.StickmanFSM = new StateMachine('idle', 
                 {
                     idle: new IdleState(),
+                    right_arm_punch: new RightArmPunchState(),
                     move_right: new MoveRightState(),
                     move_left: new MoveLeftState(),
                     jump: new JumpState(),
@@ -83,15 +84,13 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             let groin  = Bodies.circle(coords.groin[0], coords.groin[1], coords.groin[2]);
             let thighs = Bodies.rectangle(coords.thighs[0], coords.thighs[1], coords.thighs[2], coords.thighs[3]);
             let calves = Bodies.rectangle(coords.calves[0], coords.calves[1], coords.calves[2], coords.calves[3]);
-
-            let parts = [torso, head, groin, thighs, calves];
             if (attacking) {
                 let hurtbox = Bodies.circle(coords.hurtbox[0], coords.hurtbox[1], coords.hurtbox[2]);
-                parts.push(hurtbox);
+                let hitbox = Body.create({ parts: [torso, head, groin, thighs, calves, hurtbox] });
+            } else {
+                let hitbox = Body.create({ parts: [torso, head, groin, thighs, calves] });
+                Body.setCentre(hitbox, { x: 0, y: 0 }, true);
             }
-            let hitbox = Body.create({ parts: parts });
-            Body.setCentre(hitbox, { x:coords.torso[0], y:coords.torso[1] + 10 }, false);
-            return hitbox;
             // END AI GENERATED
         }
 
@@ -107,14 +106,11 @@ export class Stickman extends Phaser.GameObjects.Sprite {
     attach_body(key) {
         const {Body} = Phaser.Physics.Matter.Matter;
         const hitbox = this.hitboxes[key];
-        Body.setPosition(hitbox, { 
-            x: this.x, 
-            y: this.y});
+        Body.setPosition(hitbox, { x: this.x, y: this.y });
         this
             .setExistingBody(hitbox)
             .setFixedRotation()
             .setMass(10)
-            .setOrigin(0.5)
     }
 
     init_animations() {

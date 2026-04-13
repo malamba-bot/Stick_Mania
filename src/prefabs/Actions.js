@@ -1,7 +1,6 @@
 export class IdleState extends State {
 
     enter(scene, stickman) {
-        console.log('Entered Idle State');
         stickman.setVelocityX(0);
 
         //stickman.play('Idle');
@@ -111,19 +110,6 @@ export class JumpState extends State {
         } else {
             stickman.StickmanFSM.transition('idle');
         }
-
-    }
-}
-
-export class RightArmPunchState extends State {
-
-    enter(scene, stickman) {
-
-        console.log('Entered Right Arm Punch State');
-    
-    }
-
-    execute(scene, stickman) {
 
     }
 }
