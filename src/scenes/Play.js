@@ -172,11 +172,14 @@ export class Play extends Phaser.Scene {
     }
 
     update() {
-        this.healthText.setText('Health: ' + this.player.health);
+        this.healthText.setText('Health: ' + this.player.health.value);
+
+        this.player.health.healthBarFollow(this.player);
         this.player.StickmanFSM.step();
 
         // Enemy testing heatlh
-        this.enemyHealthText.setText('Enemy Health: ' + this.enemy.health);
+        this.enemyHealthText.setText('Enemy Health: ' + this.enemy.health.value);
+        this.enemy.health.healthBarFollow(this.enemy);
 
         // TODO MOVE THIS LOGIC TO ENEMY CLASS
         if (this.enemy != null) {
