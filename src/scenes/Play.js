@@ -16,6 +16,7 @@ export class Play extends Phaser.Scene {
             D: this.input.keyboard.addKey('d'),
             W: this.input.keyboard.addKey('w'),
             K: this.input.keyboard.addKey('k'),
+            L: this.input.keyboard.addKey('l'),
             ESC: this.input.keyboard.addKey('esc'),
             SPACE: this.input.keyboard.addKey('space')
         }
@@ -59,7 +60,10 @@ export class Play extends Phaser.Scene {
             false);
         const snowflakeImg = this.add.image(40,80, 'snowflake');
         snowflakeImg.setScale(0.15);
-        this.enemy = null;
+        //this.enemy = null;    < --------- Why? -Nick
+
+        // Added enemy health text for testing purposes
+        this.enemyHealthText = this.add.text(20, 50, 'Enemy Health: 100', { fontSize: '20px', color: '#ffffff' }).setDepth(100);
 
         // gameTimer will go off every 45 seconds and give a random number from 1-3 which represent the debuffs we have in the game
         // I will add a function that later calls each debuff and spawns their respective icons
@@ -129,7 +133,8 @@ export class Play extends Phaser.Scene {
         });
         //END AI GENERATED
 
-        this.matter.world.on('collisionstart', (event) => {
+        // OLD CODE FOR PLAYER BUMPING INTO ENEMY, LEAVING FOR REFERENCE - NICK
+        /*this.matter.world.on('collisionstart', (event) => {
             for (const pair of event.pairs) {
                 const a = pair.bodyA.gameObject;
                 const b = pair.bodyB.gameObject;
@@ -140,13 +145,38 @@ export class Play extends Phaser.Scene {
                     //console.log('Player hit the enemy!');
                 }
             }
-        });
+        });*/
 
+        this.matter.world.on('collisionstart', (event) => {
+            for(const pair of event.pairs) {
+                const bodyA = pair.bodyA;
+                const bodyB = pair.bodyB;
+
+                const objA = bodyA.parent?.gameObject;
+                const objB = bodyB.parent?.gameObject;
+
+                if(!objA || !objB) continue;
+
+                //player punch hits enemy
+                if(bodyA.label === 'playerPunch' || bodyA.label === 'playerKick' && objB === this.enemy) {
+                    objB.takeDamage(10);
+                    console.log('This hoe hit an enemy!', objA.health);
+                }
+
+                if(bodyB.label === 'playerPunch' || bodyB.label === 'playerKick' && objA === this.enemy) {
+                    objA.takeDamage(10);
+                    console.log('This hoe hit the enemy!', objB.health);
+                }
+            }
+        });
     }
 
     update() {
         this.healthText.setText('Health: ' + this.player.health);
         this.player.StickmanFSM.step();
+
+        // Enemy testing heatlh
+        this.enemyHealthText.setText('Enemy Health: ' + this.enemy.health);
 
         // TODO MOVE THIS LOGIC TO ENEMY CLASS
         if (this.enemy != null) {
@@ -155,7 +185,7 @@ export class Play extends Phaser.Scene {
 
             if (dist > 8) {
                 const angle = Phaser.Math.Angle.Between(this.enemy.x, this.enemy.y, this.player.x, this.player.y);
-                this.enemy.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed);
+                //this.enemy.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed);
             } else {
                 this.enemy.setVelocity(0, 0);
             }
