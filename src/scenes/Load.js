@@ -17,6 +17,8 @@ export class Load extends Phaser.Scene {
         this.load.aseprite('player', 'StickManIdle.png', 'StickManIdle.json');
         this.load.image('base_stance', 'base_stance.png');
         this.load.image('snowflake', '../snowflake.png');
+
+        this.load.spritesheet('punch', 'punching_spritesheet.png', { frameWidth: 1080, frameHeight: 1920});
     }
 
     create() {
