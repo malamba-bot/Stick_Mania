@@ -84,19 +84,14 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             let groin  = Bodies.circle(coords.groin[0], coords.groin[1], coords.groin[2]);
             let thighs = Bodies.rectangle(coords.thighs[0], coords.thighs[1], coords.thighs[2], coords.thighs[3]);
             let calves = Bodies.rectangle(coords.calves[0], coords.calves[1], coords.calves[2], coords.calves[3]);
+
+            let parts = [torso, head, groin, thighs, calves];
             if (attackType === 'punch') {
                 let hurtbox = Bodies.circle(coords.hurtbox[0], coords.hurtbox[1], coords.hurtbox[2], { label: 'playerPunch' });
-                return Body.create({ parts: [torso, head, groin, thighs, calves, hurtbox] });
+                parts.push(hurtbox)
             }
             if (attackType === 'kick') {
                 let hurtbox = Bodies.circle(coords.hurtbox[0], coords.hurtbox[1], coords.hurtbox[2], { label: 'playerKick' });
-                return Body.create({ parts: [torso, head, groin, thighs, calves, hurtbox]});
-            }
-            return Body.create({ parts: [torso, head, groin, thighs, calves] });
-
-            let parts = [torso, head, groin, thighs, calves];
-            if (attacking) {
-                let hurtbox = Bodies.circle(coords.hurtbox[0], coords.hurtbox[1], coords.hurtbox[2]);
                 parts.push(hurtbox);
             }
             let hitbox = Body.create({ parts: parts });
