@@ -1,5 +1,5 @@
 import {IdleState, MoveRightState, MoveLeftState, JumpState, PunchState, KickState} from './Actions.js'
-import {EnemyIdleState, EnemyChaseState} from './EnemyActions.js'
+import {EnemyIdleState, EnemyChaseState, EnemyPunchState, EnemyKickState, EnemyJumpState} from './EnemyActions.js'
 import {globals, player_consts} from '../main.js'
 import {DijkstraPathfinding} from './Dijkstra.js'
 
@@ -18,9 +18,13 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
 
         this.movement_speed = 5;
-        this.jump_velocity = -10;
+        this.jump_velocity = -20;
 
         this.setScale(0.6);
+        
+        // Store the display size to maintain consistent texture scaling across all states
+        this.targetDisplayWidth = this.displayWidth;
+        this.targetDisplayHeight = this.displayHeight;
 
         this.scene.matter.add.gameObject(this)
         scene.add.existing(this);
@@ -57,6 +61,9 @@ export class Stickman extends Phaser.GameObjects.Sprite {
                 {
                     idle: new EnemyIdleState(),
                     chase: new EnemyChaseState(),
+                    punch: new EnemyPunchState(),
+                    kick: new EnemyKickState(),
+                    jump: new EnemyJumpState(),
                 },
                 [this.scene, this]);
         }
@@ -122,6 +129,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             .setFixedRotation()
             .setMass(10)
             .setOrigin(0.5)
+            .setDisplaySize(this.targetDisplayWidth, this.targetDisplayHeight);
     }
 
     init_animations() {
