@@ -2,11 +2,11 @@
 export class EnemyIdleState extends State {
 
     enter(scene, enemy) {
-        console.log('Entered Enemy Idle State');
-        enemy.setVelocity(0, 0);
+        enemy.setVelocityX(0);
         enemy.direction === 'R'
             ? enemy.attach_body('facing_right')
             : enemy.attach_body('facing_left');
+        enemy.play('Idle');
     }
 
     execute(scene, enemy) {
@@ -15,7 +15,6 @@ export class EnemyIdleState extends State {
         // Attack if close enough
         if (dist < 125) {
             const rand = Phaser.Math.Between(1, 3);
-            console.log(rand);
             if (rand === 1) {
                 enemy.StateMachine.transition('punch');
             } else if (rand === 2) {
@@ -34,17 +33,20 @@ export class EnemyIdleState extends State {
 
 export class EnemyChaseState extends State {
     enter(scene, enemy) {
-        console.log('Entered Enemy Chase State');
+        enemy.direction === 'R'
+            ? enemy.attach_body('facing_right')
+            : enemy.attach_body('facing_left');
+
+        enemy.play('Walk');
     }
     
     execute(scene, enemy) {
         const dist = enemy.getDist(scene.player);
         
         // Exit chase and stop if within x pixels
-        if (dist < 175) {
-            enemy.setVelocity(0, 0);
+        // TODO change this if you want AI to chill
+        if (dist < 0) {
             enemy.StateMachine.transition('idle');
-            return;
         }
         
         // Chase player
