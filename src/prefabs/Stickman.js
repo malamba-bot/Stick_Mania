@@ -16,6 +16,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         this.maxHealth = 100;
         //this.health = 100;
         this.direction = 'R';
+        this.attacking = false;
 
         this.health = new HealthBar(scene, x, y, 100);
 
@@ -151,9 +152,8 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         if(!this.scene.anims.exists('Punch')) {
             this.scene.anims.create({
                 key: 'Punch',
-                frames: this.scene.anims.generateFrameNames('punch', { start: 0, end: 2 }),
-                frameRate: 6,
-                repeat: -1
+                frames: this.scene.anims.generateFrameNames('punch', { start: 0, end: 7 }),
+                frameRate: 12,
             });
         }
     }

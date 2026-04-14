@@ -2,12 +2,10 @@ export class IdleState extends State {
 
     enter(scene, stickman) {
         stickman.setVelocityX(0);
-
-        //stickman.stop();
-        //stickman.play('Idle');
         stickman.direction === 'R'
             ? stickman.attach_body('facing_right')
             : stickman.attach_body('facing_left');
+        stickman.play('Idle');
     }
 
     execute(scene, stickman) {
@@ -102,15 +100,19 @@ export class JumpState extends State {
 export class PunchState extends State {
 
     enter(scene, stickman) {
+        stickman.attacking = true;
         stickman.direction == 'R'
             ? stickman.attach_body('punching_right')
             : stickman.attach_body('punching_left');
 
-        //stickman.setScale(0.2);
         stickman.play('Punch');
+        stickman.once('animationcomplete', () => {
+            stickman.attacking = false
+        });
     }
 
     execute(scene, stickman) {
+        if (stickman.attacking) return;
         if (scene.keys.SPACE.isDown && stickman.isGrounded) {
             stickman.StickmanFSM.transition('jump');
         } else if (scene.keys.D.isDown) {
