@@ -40,6 +40,16 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
     }
 
+    flip_left() {
+        this.setFlipX(true);
+        this.direction = 'L';
+    }
+
+    flip_right() {
+        this.setFlipX(false);
+        this.direction = 'R';
+    }
+
     takeDamage(amount) {
         this.health.decrease(amount);
 
@@ -138,8 +148,6 @@ export class Stickman extends Phaser.GameObjects.Sprite {
     }
 
     init_animations() {
-        this.scene.anims.createFromAseprite('player');
-
         if (!this.scene.anims.exists('Idle')) {
             this.scene.anims.create({
                 key: 'Idle',
@@ -154,6 +162,25 @@ export class Stickman extends Phaser.GameObjects.Sprite {
                 key: 'Punch',
                 frames: this.scene.anims.generateFrameNames('punch', { start: 0, end: 7 }),
                 frameRate: 12,
+            });
+        }
+
+
+        if(!this.scene.anims.exists('Walk')) {
+            this.scene.anims.create({
+                key: 'Walk',
+                frames: this.scene.anims.generateFrameNames('walk', { start: 0, end: 5 }),
+                frameRate: 12,
+                repeat: -1,
+            });
+        }
+
+
+        if(!this.scene.anims.exists('Jump')) {
+            this.scene.anims.create({
+                key: 'Jump',
+                frames: this.scene.anims.generateFrameNames('jump', { start: 0, end: 9 }),
+                frameRate: 10,
             });
         }
     }
