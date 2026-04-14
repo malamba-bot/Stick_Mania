@@ -19,6 +19,9 @@ export class Load extends Phaser.Scene {
         this.load.image('snowflake', '../snowflake.png');
 
         this.load.spritesheet('punch', 'punching_spritesheet.png', { frameWidth: 1080, frameHeight: 1920});
+        this.load.spritesheet('walk', 'walk_spritesheet.png', { frameWidth: 1080, frameHeight: 1920});
+        this.load.spritesheet('jump', 'jump_spritesheet.png', { frameWidth: 1080, frameHeight: 1920});
+        this.load.spritesheet('kick', 'kick_spritesheet.png', { frameWidth: 1080, frameHeight: 1920}); 
     }
 
     create() {

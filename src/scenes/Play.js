@@ -160,23 +160,28 @@ export class Play extends Phaser.Scene {
                 //player punch hits enemy
                 if(bodyA.label === 'playerPunch' || bodyA.label === 'playerKick' && objB === this.enemy) {
                     objB.takeDamage(10);
-                    console.log('This hoe hit an enemy!', objA.health);
+                    console.log('This hoe hit an enemy!', objA.health.value);
                 }
 
                 if(bodyB.label === 'playerPunch' || bodyB.label === 'playerKick' && objA === this.enemy) {
                     objA.takeDamage(10);
-                    console.log('This hoe hit the enemy!', objB.health);
+                    console.log('This hoe hit the enemy!', objB.health.value);
                 }
             }
         });
     }
 
     update() {
-        this.healthText.setText('Health: ' + this.player.health);
+        this.healthText.setText('Health: ' + this.player.health.value);
+
+        this.player.health.healthBarFollow(this.player);
         this.player.StickmanFSM.step();
 
         // Enemy testing heatlh
-        this.enemyHealthText.setText('Enemy Health: ' + this.enemy.health);
+        this.enemyHealthText.setText('Enemy Health: ' + this.enemy.health.value);
+        this.enemy.health.healthBarFollow(this.enemy);
+
+        // TODO MOVE THIS LOGIC TO ENEMY CLASS
         if (this.enemy != null) {
             this.enemy.StateMachine.step();
         }
