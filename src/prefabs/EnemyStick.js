@@ -19,4 +19,9 @@ export class EnemyStick extends Stickman {
             
         }
     }
+
+    getDist(opp) {
+        return Phaser.Math.Distance.Between(
+            this.x, this.y, opp.x, opp.y);
+    }
 }
