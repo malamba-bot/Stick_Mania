@@ -10,9 +10,7 @@ export class EnemyIdleState extends State {
     }
 
     execute(scene, enemy) {
-        const dist = Phaser.Math.Distance.Between(
-            enemy.x, enemy.y, scene.player.x, scene.player.y
-        );
+        const dist = enemy.getDist(scene.player);
 
         // Attack if close enough
         if (dist < 125) {
@@ -40,9 +38,7 @@ export class EnemyChaseState extends State {
     }
     
     execute(scene, enemy) {
-        const dist = Phaser.Math.Distance.Between(
-            enemy.x, enemy.y, scene.player.x, scene.player.y
-        );
+        const dist = enemy.getDist(scene.player);
         
         // Exit chase and stop if within x pixels
         if (dist < 175) {
@@ -74,9 +70,7 @@ export class EnemyJumpState extends State {
     }
 
     execute(scene, enemy) {
-        const dist = Phaser.Math.Distance.Between(
-            enemy.x, enemy.y, scene.player.x, scene.player.y
-        );
+        const dist = enemy.getDist(scene.player);
 
         if (dist > 400) {
             enemy.StateMachine.transition('idle');
@@ -104,8 +98,7 @@ export class EnemyPunchState extends State {
     execute(scene, enemy) {
         if (enemy.attacking) return;
 
-        const dist = Phaser.Math.Distance.Between(
-            enemy.x, enemy.y, scene.player.x, scene.player.y);
+        const dist = enemy.getDist(scene.player);
 
         if (dist > 400) {
             enemy.StateMachine.transition('idle');
@@ -124,9 +117,7 @@ export class EnemyKickState extends State {
     }
 
     execute(scene, enemy) {
-        const dist = Phaser.Math.Distance.Between(
-            enemy.x, enemy.y, scene.player.x, scene.player.y
-        );
+        const dist = enemy.getDist(scene.player);
 
         if (dist > 400) {
             enemy.StateMachine.transition('idle');
