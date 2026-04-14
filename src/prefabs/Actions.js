@@ -26,9 +26,9 @@ export class IdleState extends State {
 export class MoveRightState extends State {
 
     enter(scene, stickman) {
-        stickman.setFlipX(false);
-        stickman.direction = 'R';
+        stickman.flip_right();
         stickman.attach_body('facing_right');
+        stickman.play('Walk');
     }
 
     execute(scene, stickman) {
@@ -39,7 +39,6 @@ export class MoveRightState extends State {
         if(scene.keys.D.isDown) {
             stickman.setVelocityX(stickman.movement_speed);
             //stickman.move(stickman.movement_speed);
-            //stickman.flip(false);
             //stickman.play('run');
         } else if (scene.keys.A.isDown) {
             stickman.StickmanFSM.transition('move_left');
@@ -55,9 +54,9 @@ export class MoveRightState extends State {
 export class MoveLeftState extends State {
 
     enter(scene, stickman) {
-        stickman.setFlipX(true);
-        stickman.direction = 'L';
+        stickman.flip_left();
         stickman.attach_body('facing_left');
+        stickman.play('Walk');
     }
 
     execute(scene, stickman) {
@@ -82,15 +81,21 @@ export class JumpState extends State {
     enter(scene, stickman) {
         stickman.setVelocityY(stickman.jump_velocity);
         stickman.isGrounded = false;
-
+        stickman.play('Jump');
     }
 
     execute(scene, stickman) {
         if (scene.keys.A.isDown) {
-            stickman.StickmanFSM.transition('move_left');
+            stickman.isGrounded ?
+                stickman.StickmanFSM.transition('move_left') :
+                stickman.flip_left();
+                stickman.setVelocityX(-stickman.movement_speed);
         } else if (scene.keys.D.isDown) {
-            stickman.StickmanFSM.transition('move_right');
-        } else {
+            stickman.isGrounded ?
+                stickman.StickmanFSM.transition('move_right') :
+                stickman.flip_right();
+                stickman.setVelocityX(stickman.movement_speed);
+        } else if (stickman.isGrounded){
             stickman.StickmanFSM.transition('idle');
         }
 
