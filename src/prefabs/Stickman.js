@@ -22,7 +22,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         this.movement_speed = 5;
         this.jump_velocity = -20;
 
-        this.setScale(0.6);
+        this.setScale(0.14);
         
         // Store the display size to maintain consistent texture scaling across all states
         this.targetDisplayWidth = this.displayWidth;
@@ -34,6 +34,8 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         this.init_animations();
         this.construct_body();
         this.attach_statemachine(is_playable);
+
+        this.play('Idle');
 
     }
 
@@ -140,7 +142,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         if (!this.scene.anims.exists('Idle')) {
             this.scene.anims.create({
                 key: 'Idle',
-                frames: this.scene.anims.generateFrameNames('player'),
+                frames: this.scene.anims.generateFrameNames('idle', { start: 0, end: 2}),
                 frameRate: 6,
                 repeat: -1
             });
