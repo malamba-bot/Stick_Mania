@@ -51,33 +51,18 @@ export class EnemyChaseState extends State {
             return;
         }
         
-        // Move towards player
-        const speed = 2.2;
-        const angle = Phaser.Math.Angle.Between(enemy.x, enemy.y, scene.player.x, scene.player.y);
-        
-        // Determine direction (left or right)
-        if (Math.cos(angle) > 0) {
-            if (enemy.direction !== 'R') {
-                enemy.setFlipX(false);
-                enemy.direction = 'R';
-                enemy.attach_body('facing_right');
-            }
-        } else {
-            if (enemy.direction !== 'L') {
-                enemy.setFlipX(true);
-                enemy.direction = 'L';
-                enemy.attach_body('facing_left');
-            }
-        }
+        // Chase player
+        enemy.reorient(scene.player);
+        const speed = 
+            enemy.direction == 'R' ? 2.2 : -2.2;
         
         // If player is in the air, make enemy jump instead of pathing on angle
         if (!scene.player.isGrounded && enemy.isGrounded) {
             enemy.StateMachine.transition('jump');
-            return;
         }
         
         // Only move horizontally, don't apply vertical velocity
-        enemy.setVelocityX(Math.cos(angle) * speed);
+        enemy.setVelocityX(speed);
     }
 }
 

@@ -2,6 +2,7 @@ import {globals} from '../main.js'
 import {player_consts} from '../main.js'
 
 import {Stickman} from '../prefabs/Stickman.js'
+import {EnemyStick} from '../prefabs/EnemyStick.js'
 
 export class Play extends Phaser.Scene {
     constructor() {
@@ -52,7 +53,7 @@ export class Play extends Phaser.Scene {
             }
         });
         //END AI GENERATED
-        this.enemy = new Stickman(
+        this.enemy = new EnemyStick(
             this, 
             globals.width * 0.75, 
             player_consts.start_y, 
