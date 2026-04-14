@@ -107,7 +107,7 @@ export class PunchState extends State {
             : stickman.attach_body('punching_left');
 
         //stickman.setScale(0.2);
-        //stickman.play('Punch');
+        // stickman.play('Punch');
     }
 
     execute(scene, stickman) {

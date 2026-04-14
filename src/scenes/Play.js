@@ -183,15 +183,7 @@ export class Play extends Phaser.Scene {
 
         // TODO MOVE THIS LOGIC TO ENEMY CLASS
         if (this.enemy != null) {
-            const speed = 2.2;
-            const dist = Phaser.Math.Distance.Between(this.enemy.x, this.enemy.y, this.player.x, this.player.y);
-
-            if (dist > 8) {
-                const angle = Phaser.Math.Angle.Between(this.enemy.x, this.enemy.y, this.player.x, this.player.y);
-                //this.enemy.setVelocity(Math.cos(angle) * speed, Math.sin(angle) * speed);
-            } else {
-                this.enemy.setVelocity(0, 0);
-            }
+            this.enemy.StateMachine.step();
         }
 
         //console.log(typeof this.player.health, this.player.health);
