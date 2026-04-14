@@ -78,8 +78,8 @@ export class Play extends Phaser.Scene {
         gameTimer.paused = false;
 
         function onEvent() {
-            console.log(Phaser.Math.Between(1,3));
-            console.log('45 seconds have passed');
+            //console.log(Phaser.Math.Between(1,3));
+            //console.log('45 seconds have passed');
         }
 
         /*

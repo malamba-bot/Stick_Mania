@@ -14,6 +14,19 @@ export class EnemyIdleState extends State {
             enemy.x, enemy.y, scene.player.x, scene.player.y
         );
 
+        // Attack if close enough
+        if (dist < 125) {
+            const rand = Phaser.Math.Between(1, 3);
+            console.log(rand);
+            if (rand === 1) {
+                enemy.StateMachine.transition('punch');
+            } else if (rand === 2) {
+                enemy.StateMachine.transition('kick');
+            } else if (rand === 3 && enemy.isGrounded) {
+                enemy.StateMachine.transition('jump');
+            }
+        }
+
         // Only re-engage chase if player moves far away (300+ pixels)
         if (dist > 300) {
             enemy.StateMachine.transition('chase');
@@ -36,21 +49,6 @@ export class EnemyChaseState extends State {
             enemy.setVelocity(0, 0);
             enemy.StateMachine.transition('idle');
             return;
-        }
-        
-        // Attack if close enough
-        if (dist < 125) {
-            const rand = Phaser.Math.Between(1, 3);
-            if (rand === 1) {
-                enemy.StateMachine.transition('punch');
-                return;
-            } else if (rand === 2) {
-                enemy.StateMachine.transition('kick');
-                return;
-            } else if (rand === 3 && enemy.isGrounded) {
-                enemy.StateMachine.transition('jump');
-                return;
-            }
         }
         
         // Move towards player
@@ -106,15 +104,22 @@ export class EnemyJumpState extends State {
 export class EnemyPunchState extends State {
 
     enter(scene, enemy) {
-        enemy.direction == 'R'
+        enemy.attacking = true;
+        scene.player.direction == 'R'
             ? enemy.attach_body('punching_right')
             : enemy.attach_body('punching_left');
+
+        enemy.play('Punch');
+        enemy.once('animationcomplete', () => {
+            enemy.attacking = false
+        });
     }
 
     execute(scene, enemy) {
+        if (enemy.attacking) return;
+
         const dist = Phaser.Math.Distance.Between(
-            enemy.x, enemy.y, scene.player.x, scene.player.y
-        );
+            enemy.x, enemy.y, scene.player.x, scene.player.y);
 
         if (dist > 400) {
             enemy.StateMachine.transition('idle');
