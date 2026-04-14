@@ -89,8 +89,9 @@ export class EnemyJumpState extends State {
 export class EnemyPunchState extends State {
 
     enter(scene, enemy) {
+        enemy.reorient(scene.player);
         enemy.attacking = true;
-        scene.player.direction == 'R'
+        enemy.direction == 'R'
             ? enemy.attach_body('punching_right')
             : enemy.attach_body('punching_left');
 
