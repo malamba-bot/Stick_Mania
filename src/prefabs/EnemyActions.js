@@ -38,12 +38,6 @@ export class EnemyChaseState extends State {
             return;
         }
         
-
-        if (dist > 600) {
-            enemy.StateMachine.transition('idle');
-            return;
-        }
-
         // Attack if close enough
         if (dist < 125) {
             const rand = Phaser.Math.Between(1, 3);
