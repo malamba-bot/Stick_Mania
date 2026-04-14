@@ -32,7 +32,7 @@ export class Play extends Phaser.Scene {
             this, 
             player_consts.start_x, 
             player_consts.start_y, 
-            'base_stance',
+            'idle',
             true);
 
         this.matter.world.setBounds(0, 0, globals.width, globals.height);
@@ -56,7 +56,7 @@ export class Play extends Phaser.Scene {
             this, 
             globals.width * 0.75, 
             player_consts.start_y, 
-            'base_stance',
+            'idle',
             false);
         const snowflakeImg = this.add.image(40,80, 'snowflake');
         snowflakeImg.setScale(0.15);
