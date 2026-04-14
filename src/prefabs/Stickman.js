@@ -1,5 +1,5 @@
 import {IdleState, MoveRightState, MoveLeftState, JumpState, PunchState, KickState} from './Actions.js'
-import {EnemyIdleState, EnemyChaseState, EnemyPunchState, EnemyKickState, EnemyJumpState} from './EnemyActions.js'
+import {EnemyIdleState, EnemyChaseState, EnemyAttackState, EnemyPunchState, EnemyKickState, EnemyJumpState} from './EnemyActions.js'
 import {globals, player_consts} from '../main.js'
 import {DijkstraPathfinding} from './Dijkstra.js'
 import {HealthBar} from './Healthbar.js'
@@ -76,6 +76,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
                 {
                     idle: new EnemyIdleState(),
                     chase: new EnemyChaseState(),
+                    attack: new EnemyAttackState(),
                     punch: new EnemyPunchState(),
                     kick: new EnemyKickState(),
                     jump: new EnemyJumpState(),
