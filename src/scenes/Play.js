@@ -3,6 +3,7 @@ import {player_consts} from '../main.js'
 
 import {Stickman} from '../prefabs/Stickman.js'
 import {EnemyStick} from '../prefabs/EnemyStick.js'
+import {WaveSpawner} from '../prefabs/WaveSpawner.js'
 
 export class Play extends Phaser.Scene {
     constructor() {
@@ -190,6 +191,16 @@ export class Play extends Phaser.Scene {
                 }
             }
         });
+
+        // wave spawner
+        const waves = [
+            { enemyCount: 2, spawnInterval: 1000 },
+            { enemyCount: 4, spawnInterval: 1000 },
+            { enemyCount: 7, spawnInterval: 1000 }
+        ];
+
+        this.waveSpawner = new WaveSpawner(this, waves);
+        this.waveSpawner.startWave(0);
     }
 
     update() {
@@ -204,10 +215,12 @@ export class Play extends Phaser.Scene {
         this.enemy.health.healthBarFollow(this.enemy);
 
         // TODO MOVE THIS LOGIC TO ENEMY CLASS
+        /*
         if (this.enemy != null) {
             this.enemy.StateMachine.step();
         }
-
+        */
+       this.waveSpawner.update();
         //console.log(typeof this.player.health, this.player.health);
     }
 }
