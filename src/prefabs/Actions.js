@@ -160,19 +160,10 @@ export class freezeDebuff extends State {
         console.log("this bish ain't movin");
         stickman.play('Frozen');
         stickman.setVelocityX(0);
-        console.log("this bish ain't movin")
-
-            delay: 5000,
-            callback: ,
-            callbackScope: this,
-            repeat: 1,
-        });*/
 
         scene.time.delayedCall(5000, () => {
             stickman.StickmanFSM.transition('idle');
         }, [], this);
-
-        stickman.setVelocityX = 0;
 
     }
 
