@@ -45,7 +45,7 @@ export class StaminaBar {
       this.bar.fillStyle(0xffffff);
       this.bar.fillRect(this.x + 2, this.y + 2, 76, 12);
   
-      this.bar.fillStyle(0xffff00);
+      this.bar.fillStyle(0x0080fe);
     
   
       var d = Math.floor(this.p * this.value);
@@ -53,7 +53,7 @@ export class StaminaBar {
       this.bar.fillRect(this.x + 2, this.y + 2, d, 12);
     }
   
-    deleteHealthBar() {
+    deleteStaminaBar() {
       this.bar.clear();
     }
   
