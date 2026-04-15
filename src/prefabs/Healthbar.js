@@ -23,7 +23,6 @@ export class HealthBar {
 
     this.draw();
 
-    return (this.value === 0);
   }
 
   draw() {
@@ -57,7 +56,7 @@ export class HealthBar {
 
   healthBarFollow(object) {
     this.x = object.x - 41;
-    this.y = object.y - 150;
+    this.y = object.y - 166;
     this.draw();
   }
 
