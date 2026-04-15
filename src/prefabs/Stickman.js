@@ -37,7 +37,6 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         this.construct_body();
         this.attach_statemachine(is_playable);
 
-        this.knockback(this);
         this.play('Idle');
 
     }
@@ -155,11 +154,6 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
     knockback(opp) {
         const direction = this.x > opp.x ? 1 : -1;
-        console.log(this.body);
-        console.log(this.body.parent);
-        console.log(this.scene.matter.body);
-
-        // bypass applyForce entirely
         this.scene.matter.body.setVelocity(
             this.body, 
             { x: 3 * direction, y: -3}
