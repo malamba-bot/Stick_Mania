@@ -162,6 +162,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
     }
 
     knockback(opp, move) {
+        this.isGrounded = false;
         this.FSM.transition('freeze');
         const direction = this.x > opp.x ? 1 : -1;
         const force = move == 'punch' ?
