@@ -3,6 +3,7 @@ import {EnemyIdleState, EnemyChaseState, EnemyAttackState, EnemyPunchState, Enem
 import {globals, player_consts} from '../main.js'
 import {DijkstraPathfinding} from './Dijkstra.js'
 import {HealthBar} from './Healthbar.js'
+import {StaminaBar} from './StaminaBar.js'
 
 export class Stickman extends Phaser.GameObjects.Sprite {
 
@@ -21,6 +22,10 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         this.attacking = false;
 
         this.health = new HealthBar(scene, x, y, 100);
+
+        if(is_playable) {
+            this.stamina = new StaminaBar(scene, x, y, this.maxStamina);
+        }
 
         this.movement_speed = 5;
         this.jump_velocity = -20;
