@@ -59,8 +59,10 @@ export class Play extends Phaser.Scene {
             player_consts.start_y, 
             'idle',
             false);
-        const snowflakeImg = this.add.image(40,80, 'snowflake');
+
+        const snowflakeImg = this.add.image(40,100, 'snowflake');
         snowflakeImg.setScale(0.15);
+        snowflakeImg.setVisible(false);
         //this.enemy = null;    < --------- Why? -Nick
 
         // Added enemy health text for testing purposes
