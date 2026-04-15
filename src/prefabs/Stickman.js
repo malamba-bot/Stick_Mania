@@ -187,6 +187,14 @@ export class Stickman extends Phaser.GameObjects.Sprite {
                 frameRate: 10,
             });
         }
+
+        if(!this.scene.anims.exists('Frozen')) {
+            this.scene.anims.create({
+                key: 'Frozen',
+                frames: this.scene.anims.generateFrameNames('frozen', { start: 0, end: 3 }),
+                frameRate: 10,
+            });
+        }
     }
 
     appliedDebuff() {
