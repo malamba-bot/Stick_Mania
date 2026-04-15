@@ -18,6 +18,7 @@ let config = {
     },
     scale: {
         autoCenter: Phaser.Scale.CENTER_BOTH,
+        mode: Phaser.Scale.FIT,
     },
     scene: [Load, MainMenu, Play, Pause],
 }
