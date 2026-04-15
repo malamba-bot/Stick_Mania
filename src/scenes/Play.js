@@ -78,9 +78,29 @@ export class Play extends Phaser.Scene {
 
         gameTimer.paused = false;
 
+        //Stamina debuff (still need to work on it)
+        function applyStaminaDebuff() {
+            //console.log('Stamina debuff applied!');
+            //this.staminaDrainMultiplier = 2;
+            //this.time.delayedCall(5000, () => {
+                //this.staminaDrainMultiplier = 1;
+                //console.log('Stamina debuff expired!');
+            //});
+
+        }
+
         function onEvent() {
             //console.log(Phaser.Math.Between(1,3));
             //console.log('45 seconds have passed');
+            //if (randomNum() === 1) {
+                //applyStaminaDebuff();
+            //}
+             //else if (randomNum() === 2) {
+                //apply another debuff
+            //}
+             //else if (randomNum() === 3) {
+                //apply another debuff
+            //}
         }
 
         /*
