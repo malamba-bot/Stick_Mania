@@ -157,7 +157,8 @@ export class freezeDebuff extends State {
 
     enter(scene, stickman) {
 
-        console.log("this bish ain't movin")
+        console.log("this bish ain't movin");
+        stickman.play('Frozen');
 
         var timer = this.time.addEvent({
             delay: 5000,
@@ -165,6 +166,8 @@ export class freezeDebuff extends State {
             callbackScope: thisArg,
             repeat: 1,
         });
+
+        stickman.setVelocityX = 0;
 
     }
 
