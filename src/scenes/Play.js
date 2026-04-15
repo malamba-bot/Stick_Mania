@@ -63,16 +63,16 @@ export class Play extends Phaser.Scene {
         const snowflakeImg = this.add.image(40,100, 'snowflake');
         snowflakeImg.setScale(0.15);
         snowflakeImg.setVisible(false);
-        //this.enemy = null;    < --------- Why? -Nick
 
         // Added enemy health text for testing purposes
+        // TODO remove
         this.enemyHealthText = this.add.text(20, 50, 'Enemy Health: 100', { fontSize: '20px', color: '#ffffff' }).setDepth(100);
 
         // gameTimer will go off every 45 seconds and give a random number from 1-3 which represent the debuffs we have in the game
         // I will add a function that later calls each debuff and spawns their respective icons
 
         var gameTimer = this.time.addEvent({
-            delay: 5000,
+            delay: 500000,
             callback: this.player.appliedDebuff,
             callbackScope: this.player,
             loop: true,
@@ -182,15 +182,16 @@ export class Play extends Phaser.Scene {
                 if(!objA || !objB) continue;
 
                 //player punch hits enemy
-                if(bodyA.label === 'playerPunch' || bodyA.label === 'playerKick' && objB === this.enemy) {
+                if(objA === this.player && this.player.attacking && objB === this.enemy) {
                     objB.takeDamage(10);
                     console.log('This hoe hit an enemy!', objA.health.value);
                 }
 
-                if(bodyB.label === 'playerPunch' || bodyB.label === 'playerKick' && objA === this.enemy) {
+                if(objB === this.player && this.player.attacking && objA === this.enemy) {
                     objA.takeDamage(10);
-                    console.log('This hoe hit the enemy!', objB.health.value);
+                    console.log('This hoe hit an enemy!', objB.health.value);
                 }
+
             }
         });
     }

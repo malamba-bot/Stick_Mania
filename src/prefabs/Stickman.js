@@ -16,7 +16,6 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         this.maxHealth = 100;
         this.maxStamina = 100;
         this.staminaDrainMultiplier = 1;
-        //this.health = 100;
         this.direction = 'R';
         this.attacking = false;
 
@@ -111,12 +110,8 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             let calves = Bodies.rectangle(coords.calves[0], coords.calves[1], coords.calves[2], coords.calves[3]);
 
             let parts = [torso, head, groin, thighs, calves];
-            if (attackType === 'punch') {
-                let hurtbox = Bodies.circle(coords.hurtbox[0], coords.hurtbox[1], coords.hurtbox[2], { label: 'playerPunch' });
-                parts.push(hurtbox)
-            }
-            if (attackType === 'kick') {
-                let hurtbox = Bodies.circle(coords.hurtbox[0], coords.hurtbox[1], coords.hurtbox[2], { label: 'playerKick' });
+            if (attackType) {
+                let hurtbox = Bodies.circle(coords.hurtbox[0], coords.hurtbox[1], coords.hurtbox[2]);
                 parts.push(hurtbox);
             }
             let hitbox = Body.create({ parts: parts });
@@ -130,10 +125,10 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
         this.hitboxes['facing_left'] = make_parts('facing_left', false);
         this.hitboxes['facing_right'] = make_parts('facing_right', false);
-        this.hitboxes['punching_left'] = make_parts('punching_left', 'punch');
-        this.hitboxes['punching_right'] = make_parts('punching_right', 'punch');
-        this.hitboxes['kicking_left'] = make_parts('kicking_left', 'kick');
-        this.hitboxes['kicking_right'] = make_parts('kicking_right', 'kick');
+        this.hitboxes['punching_left'] = make_parts('punching_left', true);
+        this.hitboxes['punching_right'] = make_parts('punching_right', true);
+        this.hitboxes['kicking_left'] = make_parts('kicking_left', true);
+        this.hitboxes['kicking_right'] = make_parts('kicking_right', true);
     }
 
     attach_body(key) {
