@@ -104,6 +104,12 @@ export class JumpState extends State {
 export class PunchState extends State {
 
     enter(scene, stickman) {
+        if (stickman.stamina.value < 10) {
+            stickman.FSM.transition('idle');
+            return;
+        }
+        
+        stickman.stamina.decrease(10);
         stickman.attacking = true;
         stickman.direction == 'R'
             ? stickman.attach_body('punching_right')
@@ -133,6 +139,12 @@ export class PunchState extends State {
 export class KickState extends State {
 
     enter(scene, stickman) {
+        if (stickman.stamina.value < 10) {
+            stickman.FSM.transition('idle');
+            return;
+        }
+        
+        stickman.stamina.decrease(10);
         stickman.attacking = true;
         scene.time.delayedCall(300, () => {
             stickman.direction == 'R'

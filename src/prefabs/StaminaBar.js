@@ -9,18 +9,24 @@ export class StaminaBar {
       this.maxValue = stamina
       this.p = 76 / this.maxValue;
   
+      this.regenNum = 4;
+
       this.draw();
   
       scene.add.existing(this.bar);
 
       scene.time.addEvent({
           delay: 1000,
-          callback: this.increase,
-          args: [2],
+          callback: this.regenStam,
           callbackScope: this,
           loop: true
       });
     }
+
+    regenStam() {
+        this.increase(this.regenNum);
+    }
+
   
     decrease(amount) {
       this.value -= amount;
