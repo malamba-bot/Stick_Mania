@@ -197,7 +197,7 @@ export class Play extends Phaser.Scene {
 
         this.player.health.healthBarFollow(this.player);
         this.player.stamina.StaminaBarFollow(this.player);
-        this.player.StickmanFSM.step();
+        this.player.FSM.step();
 
         // Enemy testing heatlh
         this.enemyHealthText.setText('Enemy Health: ' + this.enemy.health.value);
@@ -205,7 +205,7 @@ export class Play extends Phaser.Scene {
 
         // TODO MOVE THIS LOGIC TO ENEMY CLASS
         if (this.enemy != null) {
-            this.enemy.StateMachine.step();
+            this.enemy.FSM.step();
         }
 
         //console.log(typeof this.player.health, this.player.health);

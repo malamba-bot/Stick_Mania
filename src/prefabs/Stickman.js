@@ -58,7 +58,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
     takeDamage(amount, opp) {
         this.invincible = true;
-        this.knockback(opp);
+        this.knockback(opp, opp.FSM.state);
         this.health.decrease(amount);
 
         if (this.health < 0) {
@@ -73,7 +73,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
     attach_statemachine(is_playable) {
         if (is_playable) {
-            this.StickmanFSM = new StateMachine('idle', 
+            this.FSM = new StateMachine('idle', 
                 {
                     idle: new IdleState(),
                     move_right: new MoveRightState(),
@@ -85,7 +85,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
                 }, 
                 [this.scene, this]);
         } else {
-            this.StateMachine = new StateMachine('idle',
+            this.FSM = new StateMachine('idle',
                 {
                     idle: new EnemyIdleState(),
                     chase: new EnemyChaseState(),
@@ -157,11 +157,15 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             .setDisplaySize(this.targetDisplayWidth, this.targetDisplayHeight);
     }
 
-    knockback(opp) {
+    knockback(opp, move) {
         const direction = this.x > opp.x ? 1 : -1;
+        const force = move == 'punch' ?
+            { x: 2 * direction, y: -3 } :
+            { x: 4 * direction, y: -10 };
+
         this.scene.matter.body.setVelocity(
             this.body, 
-            { x: 3 * direction, y: -3}
+            force
         );
     }
 
@@ -172,7 +176,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         console.log('45 seconds have passed');
         let randomNum = Phaser.Math.Between(1,1);
         if (randomNum === 1) {
-                this.StickmanFSM.transition('freeze');
+                this.FSM.transition('freeze');
         }
             //else if (randomNum() === 2) {
                 //apply another debuff

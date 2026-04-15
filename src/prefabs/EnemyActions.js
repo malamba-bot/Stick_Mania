@@ -12,7 +12,7 @@ export class EnemyIdleState extends State {
     execute(scene, enemy) {
         const dist = enemy.getDist(scene.player);
         if (dist > enemy.chill_distance) {
-            enemy.StateMachine.transition('chase');
+            enemy.FSM.transition('chase');
         }
     }
 }
@@ -21,9 +21,9 @@ export class EnemyAttackState extends State {
     enter(scene, enemy) {
         const rand = Phaser.Math.Between(1, 2);
         if (rand === 1) {
-            enemy.StateMachine.transition('punch');
+            enemy.FSM.transition('punch');
         } else if (rand === 2) {
-            enemy.StateMachine.transition('punch');
+            enemy.FSM.transition('punch');
         }
     }
 
@@ -47,9 +47,9 @@ export class EnemyChaseState extends State {
         // Exit chase and stop if within x pixels
         // TODO change this if you want AI to chill
         if (dist < enemy.chill_distance) {
-            enemy.StateMachine.transition('idle');
+            enemy.FSM.transition('idle');
         } else if (dist < enemy.attack_distance) {
-            enemy.StateMachine.transition('attack');
+            enemy.FSM.transition('attack');
         }
 
         // Chase player
@@ -60,7 +60,7 @@ export class EnemyChaseState extends State {
         // If player is in the air, make enemy jump instead of pathing on angle
         if (dist < -100 &&
             !scene.player.isGrounded && enemy.isGrounded) {
-            enemy.StateMachine.transition('jump');
+            enemy.FSM.transition('jump');
         }
 
         // Only move horizontally, don't apply vertical velocity
@@ -79,9 +79,9 @@ export class EnemyJumpState extends State {
         const dist = enemy.getDist(scene.player);
 
         if (dist > 400) {
-            enemy.StateMachine.transition('idle');
+            enemy.FSM.transition('idle');
         } else if (enemy.isGrounded) {
-            enemy.StateMachine.transition('chase');
+            enemy.FSM.transition('chase');
         }
     }
 }
@@ -106,7 +106,7 @@ export class EnemyPunchState extends State {
         if (enemy.attacking) return;
 
         //const dist = enemy.getDist(scene.player);
-            enemy.StateMachine.transition('chase');
+            enemy.FSM.transition('chase');
     }
 }
 
@@ -122,9 +122,9 @@ export class EnemyKickState extends State {
         const dist = enemy.getDist(scene.player);
 
         if (dist > 400) {
-            enemy.StateMachine.transition('idle');
+            enemy.FSM.transition('idle');
         } else {
-            enemy.StateMachine.transition('chase');
+            enemy.FSM.transition('chase');
         }
     }
 }
