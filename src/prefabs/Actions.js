@@ -64,7 +64,6 @@ export class MoveLeftState extends State {
             stickman.StickmanFSM.transition('jump');
         } else if(scene.keys.A.isDown) {
             stickman.setVelocityX(-stickman.movement_speed);
-            //stickman.play('run');
         } else if (scene.keys.D.isDown) {
             stickman.StickmanFSM.transition('move_right');
         } else {
