@@ -71,8 +71,8 @@ export class Load extends Phaser.Scene {
         if(!this.anims.exists('Jump')) {
             this.anims.create({
                 key: 'Jump',
-                frames: this.anims.generateFrameNames('jump', { start: 0, end: 9 }),
-                frameRate: 10,
+                frames: this.anims.generateFrameNames('jump', { start: 2, end: 9 }),
+                frameRate: 8,
             });
         }
 
