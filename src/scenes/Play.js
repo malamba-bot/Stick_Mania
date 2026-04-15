@@ -183,9 +183,9 @@ export class Play extends Phaser.Scene {
 
                 if(objA instanceof Stickman && objB instanceof Stickman) {
                     if (objA.attacking && !objB.invincible) 
-                        objB.takeDamage(10);
+                        objB.takeDamage(10, objA);
                     if (objB.attacking && !objA.invincible) 
-                        objA.takeDamage(10);
+                        objA.takeDamage(10, objB);
                     //console.log('This hoe hit an enemy!', objA.health.value);
                 }
             }
