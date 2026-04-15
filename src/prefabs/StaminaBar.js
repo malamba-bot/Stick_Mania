@@ -13,9 +13,13 @@ export class StaminaBar {
   
       scene.add.existing(this.bar);
 
-      this.time.addEvent({
-        
-      })
+      scene.time.addEvent({
+          delay: 1000,
+          callback: this.increase,
+          args: [2],
+          callbackScope: this,
+          loop: true
+      });
     }
   
     decrease(amount) {
