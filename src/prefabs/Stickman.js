@@ -117,17 +117,19 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
             let torso  = Bodies.rectangle(coords.torso[0],  coords.torso[1],  coords.torso[2],  coords.torso[3]);
             let head   = Bodies.circle(coords.head[0], coords.head[1], coords.head[2]);
+            /*
             let groin  = Bodies.circle(coords.groin[0], coords.groin[1], coords.groin[2]);
             let thighs = Bodies.rectangle(coords.thighs[0], coords.thighs[1], coords.thighs[2], coords.thighs[3]);
             let calves = Bodies.rectangle(coords.calves[0], coords.calves[1], coords.calves[2], coords.calves[3]);
+            */
 
-            let parts = [torso, head, groin, thighs, calves];
+            let parts = [torso, head];
             if (attackType) {
-                let hurtbox = Bodies.rectangle(coords.hurtbox[0], coords.hurtbox[1], coords.hurtbox[2], coords.hurtbox[3]);
+                let hurtbox = Bodies.circle(coords.hurtbox[0], coords.hurtbox[1], coords.hurtbox[2]);
                 parts.push(hurtbox);
             }
             let hitbox = Body.create({ parts: parts });
-            Body.setCentre(hitbox, { x:coords.torso[0], y:coords.torso[1] + 10 }, false);
+            Body.setCentre(hitbox, { x:coords.torso[0], y:coords.torso[1] - 30 }, false);
             return hitbox;
             // END AI GENERATED
         }
@@ -153,6 +155,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             .setExistingBody(hitbox)
             .setFixedRotation()
             .setMass(10)
+            .setFriction(0)
             .setOrigin(0.5)
             .setDisplaySize(this.targetDisplayWidth, this.targetDisplayHeight);
     }
