@@ -126,10 +126,8 @@ export class Play extends Phaser.Scene {
 
         // START AI GENERATED @Chatgpt.com
         // Ground collision detection for matter physics
-        this.matter.world.on('beforeupdate', () => {
-            this.player.isGrounded = false;
-        });
 
+        /*
         this.matter.world.on('collisionactive', (event) => {
             for (const pair of event.pairs) {
                 const bodyA = pair.bodyA;
@@ -144,6 +142,7 @@ export class Play extends Phaser.Scene {
                 }
             }
         });
+        */
         //END AI GENERATED
 
         this.matter.world.on('collisionstart', (event) => {
@@ -151,16 +150,22 @@ export class Play extends Phaser.Scene {
                 const bodyA = pair.bodyA;
                 const bodyB = pair.bodyB;
 
-                // Only compound bodies have parents, so this effectively checks if a Stickman is involved in the collision
                 const objA = bodyA.parent?.gameObject;
                 const objB = bodyB.parent?.gameObject;
 
-                if(!objA || !objB) continue;
+                // Only compound bodies have parents, so this effectively checks if a Stickman is involved in the collision
+                if (!objA && !objB) continue;
 
-                if (bodyA.label == 'hurtbox' && !objB.invincible) 
-                    objB.takeDamage(10, objA);
-                if (bodyB.label == 'hurtbox' && !objA.invincible) 
-                    objA.takeDamage(10, objB);
+                if(objA && objB) {
+                    if (bodyA.label == 'hurtbox' && !objB.invincible) 
+                        objB.takeDamage(10, objA);
+                    if (bodyB.label == 'hurtbox' && !objA.invincible) 
+                        objA.takeDamage(10, objB);
+                } else {
+                    const obj = objA ?? objB; // get the player body
+                    if (bodyA === walls.bottom || bodyB == walls.bottom) 
+                        obj.isGrounded = true;
+                }
             }
         });
     }
