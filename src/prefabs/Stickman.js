@@ -18,6 +18,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         this.staminaDrainMultiplier = 1;
         this.direction = 'R';
         this.attacking = false;
+        this.invincible = false;
 
         this.health = new HealthBar(scene, x, y, 100);
 
@@ -51,11 +52,16 @@ export class Stickman extends Phaser.GameObjects.Sprite {
     }
 
     takeDamage(amount) {
+        this.invincible = true;
         this.health.decrease(amount);
 
         if (this.health < 0) {
             this.health = 0;
         }
+
+        this.scene.time.delayedCall(500, () => {
+            this.invincible = false;
+        });
     }
 
 
