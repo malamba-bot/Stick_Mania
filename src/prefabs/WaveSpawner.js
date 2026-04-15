@@ -8,6 +8,7 @@ export class WaveSpawner {
         this.current_wave = 0;
         this.enemies = [];
         this.waveActive = false;
+        this.spawnedEnemies = 0;
     }
 
     startWave(waveIndex) {
@@ -17,6 +18,7 @@ export class WaveSpawner {
         const wave = this.waves[waveIndex];
         this.enemies = [];
         this.waveActive = true;
+        this.spawnedEnemies = 0;
 
         for  (let i = 0; i < wave.enemyCount; i++) {
             // Alternate sides: even indices on left, odd on right
@@ -37,6 +39,7 @@ export class WaveSpawner {
 
         const enemy = new EnemyStick(scene, spawnX, spawnY, 'idle', false);
         this.enemies.push(enemy);
+        this.spawnedEnemies += 1;
     }
     update() {
         if (!this.waveActive) return;
@@ -53,19 +56,21 @@ export class WaveSpawner {
         this.enemies = this.enemies.filter(enemy => {
             if (enemy.health.value <= 0) {
                 enemy.destroy();
+                enemy.health.deleteHealthBar();
                 return false;
             }
             return true;
         });
 
-        if(this.enemies.length === 0) {
+        const wave = this.waves[this.current_wave];
+
+        if (this.spawnedEnemies >= wave.enemyCount && this.enemies.length === 0) {
             this.completeWave();
         }
     }
 
     completeWave() {
         this.waveActive = false;
-        this.startWave(this.current_wave + 1);
 
         this.scene.time.delayedCall(2000, () => {
             this.startWave(this.current_wave + 1);
