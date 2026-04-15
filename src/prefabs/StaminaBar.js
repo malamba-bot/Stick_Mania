@@ -12,6 +12,10 @@ export class StaminaBar {
       this.draw();
   
       scene.add.existing(this.bar);
+
+      this.time.addEvent({
+        
+      })
     }
   
     decrease(amount) {
