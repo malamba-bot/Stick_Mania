@@ -6,7 +6,7 @@ export class Pause extends Phaser.Scene {
     }
 
     init(scene) {
-       this.scene = scene; 
+       this.pausedScene = scene; 
     }
 
     create() {
@@ -53,8 +53,8 @@ export class Pause extends Phaser.Scene {
             strokeThickness: 2
         };
 
-        this.scene.keys.ESC.on('down', () => {
-            this.scene.exit();
+        this.pausedScene.keys.ESC.on('down', () => {
+            this.scene.stop('Pause');
             this.scene.launch('Play');
         });
 
@@ -65,7 +65,7 @@ export class Pause extends Phaser.Scene {
             .on('pointerover', () => restartButton.setScale(1.1))
             .on('pointerout', () => restartButton.setScale(1))
             .on('pointerdown', () => {
-                this.click.play();
+                // this.click.play();
                 this.scene.stop('Pause');
                 this.scene.start('Play');
             });
@@ -77,8 +77,9 @@ export class Pause extends Phaser.Scene {
             .on('pointerover', () => menuButton.setScale(1.1))
             .on('pointerout', () => menuButton.setScale(1))
             .on('pointerdown', () => {
-                this.click.play();
+                // this.click.play();
                 this.scene.stop('Pause');
+                this.scene.stop('Play');
                 this.scene.start('MainMenu');
             });
     }
