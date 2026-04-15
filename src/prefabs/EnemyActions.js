@@ -134,16 +134,18 @@ export class EnemyFreezeDebuff extends State {
     enter(scene, enemy) {
         enemy.play('Frozen');
 
+        /* TODO
         scene.time.delayedCall(5000, () => {
             enemy.FSM.transition('idle');
         }, [], this);
+        */
 
     }
 
     execute(scene, enemy) {
         const { x, y } = enemy.body.velocity;
         const vel = Math.sqrt(x * x + y * y);
-        if (vel < 1 && enemy.isGrounded) {
+        if (vel < 0.2 && enemy.isGrounded) {
             enemy.FSM.transition('idle');
         }
     
