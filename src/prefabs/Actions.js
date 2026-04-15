@@ -164,10 +164,7 @@ export class KickState extends State {
 export class freezeDebuff extends State {
 
     enter(scene, stickman) {
-
-        console.log("this bish ain't movin");
         stickman.play('Frozen');
-        stickman.setVelocityX(0);
 
         scene.time.delayedCall(5000, () => {
             stickman.FSM.transition('idle');
@@ -176,6 +173,11 @@ export class freezeDebuff extends State {
     }
 
     execute(scene, stickman) {
+        const { x, y } = stickman.body.velocity;
+        const vel = Math.sqrt(x * x + y * y);
+        if (vel < 1) {
+            stickman.FSM.transition('idle');
+        }
     
     }
 }

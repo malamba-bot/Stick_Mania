@@ -38,21 +38,6 @@ export class Play extends Phaser.Scene {
 
         this.matter.world.setBounds(0, 0, globals.width, globals.height);
 
-        this.matter.world.on('collisionactive', (event) => {
-            for (const pair of event.pairs) {
-                const bodyA = pair.bodyA;
-                const bodyB = pair.bodyB;
-
-                if (
-                    (bodyA.parent === this.player.body && bodyB === this.matter.world.walls.bottom) ||
-                    (bodyB.parent === this.player.body && bodyA === this.matter.world.walls.bottom)
-                ) {
-                    this.player.isGrounded = true;
-                    break;
-                }
-            }
-        });
-        //END AI GENERATED
         this.enemy = new EnemyStick(
             this, 
             globals.width * 0.75, 
@@ -135,6 +120,10 @@ export class Play extends Phaser.Scene {
         let o_key = this.input.keyboard.addKey('o');
         o_key.on('down', () => overlay.setVisible(overlay_visible = !overlay_visible));
 
+        // Set friction on walls to zero
+        const walls = this.matter.world.walls;
+        walls.left.friction = walls.right.friction = 0;
+
         // START AI GENERATED @Chatgpt.com
         // Ground collision detection for matter physics
         this.matter.world.on('beforeupdate', () => {
@@ -157,37 +146,21 @@ export class Play extends Phaser.Scene {
         });
         //END AI GENERATED
 
-        // OLD CODE FOR PLAYER BUMPING INTO ENEMY, LEAVING FOR REFERENCE - NICK
-        /*this.matter.world.on('collisionstart', (event) => {
-            for (const pair of event.pairs) {
-                const a = pair.bodyA.gameObject;
-                const b = pair.bodyB.gameObject;
-                if (
-                    (a === this.player && b === this.enemy) ||
-                    (a === this.enemy && b === this.player)
-                ) {
-                    //console.log('Player hit the enemy!');
-                }
-            }
-        });*/
-
         this.matter.world.on('collisionstart', (event) => {
             for(const pair of event.pairs) {
                 const bodyA = pair.bodyA;
                 const bodyB = pair.bodyB;
 
+                // Only compound bodies have parents, so this effectively checks if a Stickman is involved in the collision
                 const objA = bodyA.parent?.gameObject;
                 const objB = bodyB.parent?.gameObject;
 
                 if(!objA || !objB) continue;
 
-                if(objA instanceof Stickman && objB instanceof Stickman) {
-                    if (objA.attacking && !objB.invincible) 
-                        objB.takeDamage(10, objA);
-                    if (objB.attacking && !objA.invincible) 
-                        objA.takeDamage(10, objB);
-                    //console.log('This hoe hit an enemy!', objA.health.value);
-                }
+                if (bodyA.label == 'hurtbox' && !objB.invincible) 
+                    objB.takeDamage(10, objA);
+                if (bodyB.label == 'hurtbox' && !objA.invincible) 
+                    objA.takeDamage(10, objB);
             }
         });
     }
