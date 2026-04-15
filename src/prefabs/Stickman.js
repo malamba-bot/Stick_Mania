@@ -14,6 +14,8 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
         //Constant values
         this.maxHealth = 100;
+        this.maxStamina = 100;
+        this.staminaDrainMultiplier = 1;
         //this.health = 100;
         this.direction = 'R';
         this.attacking = false;
