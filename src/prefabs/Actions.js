@@ -134,9 +134,11 @@ export class KickState extends State {
 
     enter(scene, stickman) {
         stickman.attacking = true;
-        stickman.direction == 'R'
-            ? stickman.attach_body('kicking_right')
-            : stickman.attach_body('kicking_left');
+        scene.time.delayedCall(300, () => {
+            stickman.direction == 'R'
+                ? stickman.attach_body('kicking_right')
+                : stickman.attach_body('kicking_left');
+        });
 
         stickman.play('Kick');
         stickman.once('animationcomplete', () => {
