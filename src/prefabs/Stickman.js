@@ -169,12 +169,20 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             });
         }
 
+        if(!this.scene.anims.exists('Kick')) {
+            this.scene.anims.create({
+                key: 'Kick',
+                frames: this.scene.anims.generateFrameNames('kick', { start: 0, end: 7 }),
+                frameRate: 12,
+            });
+        }
+
 
         if(!this.scene.anims.exists('Walk')) {
             this.scene.anims.create({
                 key: 'Walk',
                 frames: this.scene.anims.generateFrameNames('walk', { start: 0, end: 5 }),
-                frameRate: 12,
+                frameRate: 16,
                 repeat: -1,
             });
         }

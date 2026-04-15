@@ -134,12 +134,19 @@ export class PunchState extends State {
 export class KickState extends State {
 
     enter(scene, stickman) {
+        stickman.attacking = true;
         stickman.direction == 'R'
             ? stickman.attach_body('kicking_right')
-            : stickman.attach_body('kicking_left'); 
+            : stickman.attach_body('kicking_left');
+
+        stickman.play('Kick');
+        stickman.once('animationcomplete', () => {
+            stickman.attacking = false
+        });
     }
 
     execute(scene, stickman) {
+        if (stickman.attacking) return;
         if (scene.keys.SPACE.isDown && stickman.isGrounded) {
             stickman.StickmanFSM.transition('jump');
         } else if (scene.keys.D.isDown) {
@@ -149,8 +156,8 @@ export class KickState extends State {
         } else {
             stickman.StickmanFSM.transition('idle');
         }
-    }
 
+    }
 }
 
 export class freezeDebuff extends State {
