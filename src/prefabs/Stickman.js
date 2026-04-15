@@ -1,4 +1,4 @@
-import {IdleState, MoveRightState, MoveLeftState, JumpState, PunchState, KickState} from './Actions.js'
+import {IdleState, MoveRightState, MoveLeftState, JumpState, PunchState, KickState, freezeDebuff} from './Actions.js'
 import {EnemyIdleState, EnemyChaseState, EnemyAttackState, EnemyPunchState, EnemyKickState, EnemyJumpState} from './EnemyActions.js'
 import {globals, player_consts} from '../main.js'
 import {DijkstraPathfinding} from './Dijkstra.js'
@@ -70,7 +70,8 @@ export class Stickman extends Phaser.GameObjects.Sprite {
                     move_left: new MoveLeftState(),
                     jump: new JumpState(),
                     punch: new PunchState(),
-                    kick: new KickState()
+                    kick: new KickState(),
+                    freeze: new freezeDebuff()
                 }, 
                 [this.scene, this]);
         } else {
@@ -186,6 +187,22 @@ export class Stickman extends Phaser.GameObjects.Sprite {
                 frameRate: 10,
             });
         }
+    }
+
+    appliedDebuff() {
+    
+    console.log(Phaser.Math.Between(1,3));
+    console.log('45 seconds have passed');
+    let randomNum = Phaser.Math.Between(1,1);
+    if (randomNum === 1) {
+            this.StickmanFSM.transition('freeze');
+    }
+        //else if (randomNum() === 2) {
+            //apply another debuff
+    //}
+        //else if (randomNum() === 3) {
+            //apply another debuff
+    //}
     }
 
 }

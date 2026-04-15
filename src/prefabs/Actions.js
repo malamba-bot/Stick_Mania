@@ -160,7 +160,7 @@ export class freezeDebuff extends State {
         console.log("this bish ain't movin")
 
         var timer = this.time.addEvent({
-            delay: 300,
+            delay: 5000,
             callback: callback,
             callbackScope: thisArg,
             repeat: 1,

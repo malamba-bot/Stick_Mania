@@ -70,8 +70,8 @@ export class Play extends Phaser.Scene {
         // I will add a function that later calls each debuff and spawns their respective icons
 
         var gameTimer = this.time.addEvent({
-            delay: 45000,
-            callback: onEvent,
+            delay: 5000,
+            callback: this.player.appliedDebuff(),
             loop: true,
 
         });
