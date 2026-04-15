@@ -34,7 +34,6 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         this.scene.matter.add.gameObject(this)
         scene.add.existing(this);
 
-        this.init_animations();
         this.construct_body();
         this.attach_statemachine(is_playable);
 
@@ -151,59 +150,6 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             .setDisplaySize(this.targetDisplayWidth, this.targetDisplayHeight);
     }
 
-    init_animations() {
-        if (!this.scene.anims.exists('Idle')) {
-            this.scene.anims.create({
-                key: 'Idle',
-                frames: this.scene.anims.generateFrameNames('idle', { start: 0, end: 2}),
-                frameRate: 6,
-                repeat: -1
-            });
-        }
-
-        if(!this.scene.anims.exists('Punch')) {
-            this.scene.anims.create({
-                key: 'Punch',
-                frames: this.scene.anims.generateFrameNames('punch', { start: 0, end: 7 }),
-                frameRate: 12,
-            });
-        }
-
-        if(!this.scene.anims.exists('Kick')) {
-            this.scene.anims.create({
-                key: 'Kick',
-                frames: this.scene.anims.generateFrameNames('kick', { start: 0, end: 7 }),
-                frameRate: 12,
-            });
-        }
-
-
-        if(!this.scene.anims.exists('Walk')) {
-            this.scene.anims.create({
-                key: 'Walk',
-                frames: this.scene.anims.generateFrameNames('walk', { start: 0, end: 5 }),
-                frameRate: 16,
-                repeat: -1,
-            });
-        }
-
-
-        if(!this.scene.anims.exists('Jump')) {
-            this.scene.anims.create({
-                key: 'Jump',
-                frames: this.scene.anims.generateFrameNames('jump', { start: 0, end: 9 }),
-                frameRate: 10,
-            });
-        }
-
-        if(!this.scene.anims.exists('Frozen')) {
-            this.scene.anims.create({
-                key: 'Frozen',
-                frames: this.scene.anims.generateFrameNames('frozen', { start: 0, end: 4 }),
-                frameRate: 10,
-            });
-        }
-    }
 
     appliedDebuff() {
     
