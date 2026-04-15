@@ -12,6 +12,14 @@ export class StaminaBar {
       this.draw();
   
       scene.add.existing(this.bar);
+
+      scene.time.addEvent({
+          delay: 1000,
+          callback: this.increase,
+          args: [2],
+          callbackScope: this,
+          loop: true
+      });
     }
   
     decrease(amount) {
@@ -22,8 +30,16 @@ export class StaminaBar {
       }
   
       this.draw();
-  
-      return (this.value === 0);
+    }
+
+    increase(amount) {
+      this.value += amount;
+
+      if(this.value > 100) {
+        this.value = 100;
+      }
+
+      this.draw();
     }
   
     draw() {
@@ -37,25 +53,19 @@ export class StaminaBar {
       this.bar.fillStyle(0xffffff);
       this.bar.fillRect(this.x + 2, this.y + 2, 76, 12);
   
-      if (this.value < 30) {
-        this.bar.fillStyle(0xff0000);
-      }
-      else if (this.value >= 30 && this.value < 50) {
-        this.bar.fillStyle(0xffff00);
-      } else {
-          this.bar.fillStyle(0xffff00);
-      }
+      this.bar.fillStyle(0x0080fe);
+    
   
       var d = Math.floor(this.p * this.value);
   
       this.bar.fillRect(this.x + 2, this.y + 2, d, 12);
     }
   
-    deleteHealthBar() {
+    deleteStaminaBar() {
       this.bar.clear();
     }
   
-    healthBarFollow(object) {
+    StaminaBarFollow(object) {
       this.x = object.x - 41;
       this.y = object.y - 150;
       this.draw();
