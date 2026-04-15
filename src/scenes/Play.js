@@ -182,16 +182,13 @@ export class Play extends Phaser.Scene {
                 if(!objA || !objB) continue;
 
                 //player punch hits enemy
-                if(objA === this.player && this.player.attacking && objB === this.enemy) {
-                    objB.takeDamage(10);
-                    console.log('This hoe hit an enemy!', objA.health.value);
+                if(objA instanceof Stickman && objB instanceof Stickman) {
+                    if (objA.attacking) 
+                        objB.takeDamage(10);
+                    if (objB.attacking) 
+                        objA.takeDamage(10);
+                    //console.log('This hoe hit an enemy!', objA.health.value);
                 }
-
-                if(objB === this.player && this.player.attacking && objA === this.enemy) {
-                    objA.takeDamage(10);
-                    console.log('This hoe hit an enemy!', objB.health.value);
-                }
-
             }
         });
     }
