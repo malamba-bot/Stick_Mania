@@ -27,6 +27,61 @@ export class Load extends Phaser.Scene {
     }
 
     create() {
-        this.scene.start('MainMenu')
+        this.init_animations();
+        this.scene.start('MainMenu');
+    }
+
+    init_animations() {
+        if (!this.anims.exists('Idle')) {
+            this.anims.create({
+                key: 'Idle',
+                frames: this.anims.generateFrameNames('idle', { start: 0, end: 2}),
+                frameRate: 6,
+                repeat: -1
+            });
+        }
+
+        if(!this.anims.exists('Punch')) {
+            this.anims.create({
+                key: 'Punch',
+                frames: this.anims.generateFrameNames('punch', { start: 0, end: 7 }),
+                frameRate: 12,
+            });
+        }
+
+        if(!this.anims.exists('Kick')) {
+            this.anims.create({
+                key: 'Kick',
+                frames: this.anims.generateFrameNames('kick', { start: 0, end: 7 }),
+                frameRate: 12,
+            });
+        }
+
+
+        if(!this.anims.exists('Walk')) {
+            this.anims.create({
+                key: 'Walk',
+                frames: this.anims.generateFrameNames('walk', { start: 0, end: 5 }),
+                frameRate: 16,
+                repeat: -1,
+            });
+        }
+
+
+        if(!this.anims.exists('Jump')) {
+            this.anims.create({
+                key: 'Jump',
+                frames: this.anims.generateFrameNames('jump', { start: 0, end: 9 }),
+                frameRate: 10,
+            });
+        }
+
+        if(!this.anims.exists('Frozen')) {
+            this.anims.create({
+                key: 'Frozen',
+                frames: this.anims.generateFrameNames('frozen', { start: 0, end: 4 }),
+                frameRate: 10,
+            });
+        }
     }
 }
