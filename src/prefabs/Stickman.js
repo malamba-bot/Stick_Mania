@@ -191,18 +191,18 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
     appliedDebuff() {
     
-    console.log(Phaser.Math.Between(1,3));
-    console.log('45 seconds have passed');
-    let randomNum = Phaser.Math.Between(1,1);
-    if (randomNum === 1) {
-            this.StickmanFSM.transition('freeze');
-    }
-        //else if (randomNum() === 2) {
-            //apply another debuff
-    //}
-        //else if (randomNum() === 3) {
-            //apply another debuff
-    //}
+        console.log(Phaser.Math.Between(1,3));
+        console.log('45 seconds have passed');
+        let randomNum = Phaser.Math.Between(1,1);
+        if (randomNum === 1) {
+                this.StickmanFSM.transition('freeze');
+        }
+            //else if (randomNum() === 2) {
+                //apply another debuff
+        //}
+            //else if (randomNum() === 3) {
+                //apply another debuff
+        //}
     }
 
 }
