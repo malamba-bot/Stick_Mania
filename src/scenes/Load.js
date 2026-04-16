@@ -15,6 +15,10 @@ export class Load extends Phaser.Scene {
         this.load.image('low_stamina', 'staminaDecrease.png');
         this.load.image('tallymark', 'tallymark.png');
 
+        this.load.audio('kick_sound', 'kick.mp3');
+        this.load.audio('punch_sound', 'punch.mp3');
+        this.load.audio('jump_sound', 'jump.mp3');
+
         // Load stickman assets here
         this.load.setPath('../../assets/stickman/');
 
