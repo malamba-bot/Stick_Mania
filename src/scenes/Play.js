@@ -65,6 +65,9 @@ export class Play extends Phaser.Scene {
         snowflakeImg.setScale(0.15);
         snowflakeImg.setVisible(false);
 
+        const tallyMarkImg = this.add.image(350,360, 'tallymark');
+        tallyMarkImg.setScale(0.04);
+
         // Added enemy health text for testing purposes
         // TODO remove
         this.enemyHealthText = this.add.text(20, 50, 'Enemy Health: 100', { fontSize: '20px', color: '#ffffff' }).setDepth(100);
