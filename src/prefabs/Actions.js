@@ -80,6 +80,9 @@ export class JumpState extends State {
     enter(scene, stickman) {
         stickman.setVelocityY(stickman.jump_velocity);
         stickman.isGrounded = false;
+        scene.sound.play("jump_sound", {
+            volume: 0.5
+        });
         stickman.play('Jump');
     }
 
@@ -115,6 +118,9 @@ export class PunchState extends State {
             ? stickman.attach_body('punching_right')
             : stickman.attach_body('punching_left');
 
+        scene.sound.play("punch_sound", {
+            volume: 0.5
+        });
         stickman.play('Punch');
         stickman.once('animationcomplete', () => {
             stickman.attacking = false
@@ -152,6 +158,9 @@ export class KickState extends State {
                 : stickman.attach_body('kicking_left');
         });
 
+        scene.sound.play("kick_sound", {
+            volume: 0.5
+        });
         stickman.play('Kick');
         stickman.once('animationcomplete', () => {
             stickman.attacking = false
