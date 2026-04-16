@@ -169,7 +169,6 @@ export class Play extends Phaser.Scene {
 
         this.player.health.healthBarFollow(this.player);
         this.player.stamina.StaminaBarFollow(this.player);
-        this.player.FSM.step();
 
         // Enemy testing heatlh
         this.enemyHealthText.setText('Enemy Health: ' + this.enemy.health.value);
