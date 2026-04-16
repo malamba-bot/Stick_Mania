@@ -11,8 +11,10 @@ export class WaveSpawner {
         this.spawnedEnemies = 0;
         this.enemiesDefeated = 0;
 
-        this.waveText = this.scene.add.text(globals.width / 2, 50, 'Wave: 1', { fontSize: '32px', color: '#ffffff' }).setOrigin(0.5).setDepth(100);
+        // Wave text replaced by tally marks - Nina
+        //this.waveText = this.scene.add.text(globals.width / 2, 50, 'Wave: 1', { fontFamily: 'Eraser', fontSize: '32px', color: '#ffffff' }).setOrigin(0.5).setDepth(100);
         this.enemiesLeftText = this.scene.add.text(globals.width / 2, 100, 'Enemies Left: ', { fontSize: '24px', color: '#ffffff' }).setOrigin(0.5).setDepth(100);
+
     }
 
     startWave(waveIndex) {
@@ -25,20 +27,19 @@ export class WaveSpawner {
         this.spawnedEnemies = 0;
         this.enemiesDefeated = 0;
 
-        for  (let i = 0; i < wave.enemyCount; i++) {
-            // Alternate sides: even indices on left, odd on right
-            const side = i % 2 === 0 ? 'left' : 'right';
-            this.scene.time.delayedCall(
-                i * wave.spawnInterval, () => { 
-                    this.spawnEnemy(side);
-                });
-        }
+        this.spawnTimer = this.scene.time.addEvent({
+            delay: wave.spawnInterval,
+            callback: this.onSpawnTick,
+            callbackScope: this,
+            loop: true
+        });
+
         console.log(`Started wave ${waveIndex + 1} with ${wave.enemyCount} enemies.`);
     }
 
     spawnEnemy(side = 'right') {
         //const spawnX = side === 'left' ? -50 : scene.sys.canvas.width + 50;
-        const spawnX = 400;
+        const spawnX = side === 'left' ? 50 : globals.width - 50;
         const spawnY =  300;
 
         const enemy = new EnemyStick(this.scene, spawnX, spawnY, 'idle', false);
@@ -47,18 +48,20 @@ export class WaveSpawner {
     }
 
     update() {
-        this.waveText.setText('Wave: ' + (this.current_wave + 1));
+        //this.waveText.setText('Wave: ' + this.current_wave + 1);
         this.enemiesLeftText.setText('Enemies Left: ' + (this.waves[this.current_wave].enemyCount - this.enemiesDefeated));
+        //this.addNumTallymark(this.waves[this.current_wave].enemyCount - this.enemiesDefeated);
 
         if (!this.waveActive) return;
         
         //  state machine handling for each enemy stopping each enemys state machine from being handled
         //  in the play scene and instead being handled in the wave spawner
-        for (const enemy of this.enemies) {
+        for (const enemy of this.enemies) { // TODO move this to stick class
             enemy.health.healthBarFollow(enemy);
         }
 
         this.enemies = this.enemies.filter(enemy => {
+            console.log(enemy.health.value);
             if (enemy.health.value <= 0) {
                 enemy.destroy();
                 enemy.health.deleteHealthBar();
@@ -81,5 +84,32 @@ export class WaveSpawner {
         this.scene.time.delayedCall(2000, () => {
             this.startWave(this.current_wave + 1);
         });
+    }
+
+    onSpawnTick() {
+        const wave = this.waves[this.current_wave];
+
+        if(this.spawnedEnemies >= wave.enemyCount) {
+            this.spawnTimer.remove();
+            return;
+        }
+
+        if(this.enemies.length < 3) {
+            const side = this.spawnedEnemies % 2 === 0 ? 'left' : 'right';
+
+            this.spawnEnemy(side);
+        }
+    }
+    addNumTallymark(numTallies) {
+
+        this.tallyTextX = 0;
+        this.tallyTextY = 0;
+        this.tallyText = '';
+
+        for (let i = 0; i < numTallies; i++) {
+             this.tallyText += '|';
+        }
+
+        return this.tallyText;
     }
 }

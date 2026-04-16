@@ -10,13 +10,16 @@ export class Load extends Phaser.Scene {
 
         this.load.image('background', 'Background.png');
         this.load.image('grid_overlay', 'grid_overlay.png');
+        this.load.image('snowflake', 'snowflake.png');
+        this.load.image('lock', 'Lock.png');
+        this.load.image('low_stamina', 'staminaDecrease.png');
+        this.load.image('tallymark', 'tallymark.png');
 
         // Load stickman assets here
         this.load.setPath('../../assets/stickman/');
 
         this.load.aseprite('player', 'StickManIdle.png', 'StickManIdle.json');
         this.load.image('base_stance', 'base_stance.png');
-        this.load.image('snowflake', '../snowflake.png');
 
         this.load.spritesheet('idle', 'idle_spritesheet.png', { frameWidth: 1080, frameHeight: 1920});
         this.load.spritesheet('punch', 'punching_spritesheet.png', { frameWidth: 1080, frameHeight: 1920});
