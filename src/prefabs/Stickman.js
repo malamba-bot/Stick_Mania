@@ -52,6 +52,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
         this.construct_body();
         this.attach_statemachine(is_playable);
+        this.constructAudio();
 
         this.play('Idle');
 
@@ -157,6 +158,11 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         this.hitboxes['punching_right'] = make_parts('punching_right', true);
         this.hitboxes['kicking_left'] = make_parts('kicking_left', true);
         this.hitboxes['kicking_right'] = make_parts('kicking_right', true);
+    }
+
+    constructAudio(){
+        this.punchSound = this.scene.sound.add('punch_sound');
+        this.kickSound = this.scene.sound.add('kick_sound');
     }
 
     attach_body(key) {
