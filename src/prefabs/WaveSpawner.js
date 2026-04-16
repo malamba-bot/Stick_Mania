@@ -60,7 +60,7 @@ export class WaveSpawner {
             if (enemy.StateMachine) {
                 enemy.StateMachine.step();
             }
-            enemy.health.healthBarFollow(enemy);
+            if (enemy.active) enemy.health.healthBarFollow(enemy); 
         }
 
         this.enemies = this.enemies.filter(enemy => {
