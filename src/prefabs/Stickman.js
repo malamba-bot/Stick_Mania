@@ -1,13 +1,9 @@
-import {IdleState, MoveRightState, MoveLeftState, JumpState, PunchState, KickState, freezeDebuff, KnockbackState} from './Actions.js'
-import {EnemyIdleState, EnemyChaseState, EnemyAttackState, EnemyPunchState, EnemyKickState, EnemyJumpState} from './EnemyActions.js'
-import {globals, player_consts} from '../main.js'
 import {DijkstraPathfinding} from './Dijkstra.js'
 import {HealthBar} from './Healthbar.js'
-import {StaminaBar} from './StaminaBar.js'
 
 export class Stickman extends Phaser.GameObjects.Sprite {
 
-    constructor(scene, x, y, texture, is_playable) {
+    constructor(scene, x, y, texture) {
 
         super(scene, x, y, texture);
 
@@ -15,28 +11,12 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
         //Constant values
         this.maxHealth = 100;
-        this.maxStamina = 100;
-        this.staminaDrainMultiplier = 1;
         this.direction = 'R';
         this.isGrounded = true;
         this.attacking = false;
         this.invincible = false;
 
         this.health = new HealthBar(scene, x, y, 100);
-
-        if(is_playable) {
-            this.stamina = new StaminaBar(scene, x, y, this.maxStamina);
-            this.snowflakeIcon = scene.add.image(globals.width - 50, 40, 'snowflake')
-                .setScale(0.25)
-                .setVisible(false)
-                .setScrollFactor(0)
-                .setDepth(100);
-            this.staminaIcon = scene.add.image(globals.width - 100, 40, 'low_stamina')
-                .setScale(0.30)
-                .setVisible(false)
-                .setScrollFactor(0)
-                .setDepth(100);
-        }
 
         this.movement_speed = 5;
         this.jump_velocity = -20;
@@ -51,7 +31,6 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         scene.add.existing(this);
 
         this.construct_body();
-        this.attach_statemachine(is_playable);
         this.constructAudio();
 
         this.play('Idle');
@@ -82,36 +61,6 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         });
     }
 
-
-    attach_statemachine(is_playable) {
-        if (is_playable) {
-            this.FSM = new StateMachine('idle', 
-                {
-                    idle: new IdleState(),
-                    move_right: new MoveRightState(),
-                    move_left: new MoveLeftState(),
-                    jump: new JumpState(),
-                    punch: new PunchState(),
-                    kick: new KickState(),
-                    freeze: new freezeDebuff(),
-                    knockback: new KnockbackState()
-                }, 
-                [this.scene, this]);
-        } else {
-            this.FSM = new StateMachine('idle',
-                {
-                    idle: new EnemyIdleState(),
-                    chase: new EnemyChaseState(),
-                    attack: new EnemyAttackState(),
-                    punch: new EnemyPunchState(),
-                    kick: new EnemyKickState(),
-                    jump: new EnemyJumpState(),
-                    freeze: new freezeDebuff,
-                    knockback: new KnockbackState()
-                },
-                [this.scene, this]);
-        }
-    }
 
     construct_body() {
         this.generate_hitboxes();
@@ -199,42 +148,12 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         );
     }
 
-    applyStaminaDebuff() {
-        console.log('Stamina debuff applied');
-        this.stamina.regenAmount = 2;
-        if (this.staminaIcon) this.staminaIcon.setVisible(true);
-
-        this.scene.time.delayedCall(5000, () => {
-            this.stamina.regenAmount = 4;
-            if (this.staminaIcon) this.staminaIcon.setVisible(false);
-            console.log("Stamina debuff ended");
-        });
-    }
-
-
-    appliedDebuff() {
-    
-        console.log(Phaser.Math.Between(1,2));
-        console.log('45 seconds have passed');
-        let randomNum = Phaser.Math.Between(1,2);
-        if (randomNum === 1) {
-                this.FSM.transition('freeze');
-        }
-            else if (randomNum === 2) {
-                this.applyStaminaDebuff();
-        }
-            //else if (randomNum() === 3) {
-                //apply another debuff
-        //}
-    }
-
     // preUpdate will be called on sprites in the update list of a scene
     preUpdate(time, delta) {
         // since this is overriding the sprite object's preUpdate, run the usual preUpdate sequence before
         // doing anything else
         super.preUpdate(time, delta);
-        this.FSM.step();
+        this.health.healthBarFollow(this);
     }
-
 }
 

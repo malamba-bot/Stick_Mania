@@ -1,7 +1,7 @@
 import {globals} from '../main.js'
 import {player_consts} from '../main.js'
 
-import {Stickman} from '../prefabs/Stickman.js'
+import {PlayerStick} from '../prefabs/PlayerStick.js'
 import {WaveSpawner} from '../prefabs/WaveSpawner.js'
 
 export class Play extends Phaser.Scene {
@@ -29,12 +29,11 @@ export class Play extends Phaser.Scene {
         }).setScrollFactor(0).setDepth(100);*/
     
         this.add.image(0, 0, 'background').setOrigin(0);
-        this.player = new Stickman(
+        this.player = new PlayerStick(
             this, 
             player_consts.start_x, 
             player_consts.start_y, 
-            'idle',
-            true);
+            'idle');
 
         this.matter.world.setBounds(0, 0, globals.width, globals.height);
 
@@ -159,8 +158,6 @@ export class Play extends Phaser.Scene {
     }
 
     update() {
-        this.player.health.healthBarFollow(this.player);
-        this.player.stamina.StaminaBarFollow(this.player);
 
         // Enemy testing heatlh
         //this.enemyHealthText.setText('Enemy Health: ' + this.enemy.health.value);

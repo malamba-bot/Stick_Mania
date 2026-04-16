@@ -129,20 +129,6 @@ export class EnemyKickState extends State {
     }
 }
 
-export class EnemyFreezeDebuff extends State {
-
-    enter(scene, enemy) {
-        enemy.play('Frozen');
-
-        /* TODO
-        scene.time.delayedCall(5000, () => {
-            enemy.FSM.transition('idle');
-        }, [], this);
-        */
-
-    }
-}
-
 
 export class EnemyKnockbackState extends State {
     enter(scene, stickman) {
