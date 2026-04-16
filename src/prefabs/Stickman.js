@@ -64,7 +64,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
     construct_body() {
         this.generate_hitboxes();
-        this.attach_body('facing_right');
+        this.attach_body('idle');
     }
 
     /*
@@ -81,11 +81,6 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
             let torso  = Bodies.rectangle(coords.torso[0],  coords.torso[1],  coords.torso[2],  coords.torso[3]);
             let head   = Bodies.circle(coords.head[0], coords.head[1], coords.head[2]);
-            /* TODO REMOVE
-            let groin  = Bodies.circle(coords.groin[0], coords.groin[1], coords.groin[2]);
-            let thighs = Bodies.rectangle(coords.thighs[0], coords.thighs[1], coords.thighs[2], coords.thighs[3]);
-            let calves = Bodies.rectangle(coords.calves[0], coords.calves[1], coords.calves[2], coords.calves[3]);
-            */
 
             let parts = [torso, head];
             if (attackType) {
@@ -106,8 +101,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         this.hitboxes = {};
         let hitbox_coords = this.scene.cache.json.get('hitboxes');
 
-        this.hitboxes['facing_left'] = make_parts('facing_left', false);
-        this.hitboxes['facing_right'] = make_parts('facing_right', false);
+        this.hitboxes['idle'] = make_parts('idle', false);
         this.hitboxes['punching_left'] = make_parts('punching_left', true);
         this.hitboxes['punching_right'] = make_parts('punching_right', true);
         this.hitboxes['kicking_left'] = make_parts('kicking_left', true);

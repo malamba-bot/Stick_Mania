@@ -26,22 +26,18 @@ export class EnemyStick extends Stickman {
             },
             [this.scene, this]);
     }
-
-    reorient(opp) {
+ reorient(opp) {
         const angle = Phaser.Math.Angle.Between(this.x, this.y, opp.x, opp.y);
 
         // Determine direction (left or right)
         if (Math.cos(angle) > 0) {
             if (this.direction !== 'R') {
                 this.flip_right();
-                this.attach_body('facing_right');
             }
         } else {
             if (this.direction !== 'L') {
                 this.flip_left();
-                this.attach_body('facing_left');
             }
-
         }
     }
 

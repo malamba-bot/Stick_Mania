@@ -3,9 +3,7 @@ export class EnemyIdleState extends State {
     enter(scene, enemy) {
         //console.log('in idle state');
         enemy.setVelocityX(0);
-        enemy.direction === 'R'
-            ? enemy.attach_body('facing_right')
-            : enemy.attach_body('facing_left');
+        enemy.attach_body('idle');
         enemy.play('Idle');
     }
 
@@ -34,10 +32,7 @@ export class EnemyAttackState extends State {
 export class EnemyChaseState extends State {
     enter(scene, enemy) {
         //console.log('in chase state');
-        enemy.direction === 'R'
-            ? enemy.attach_body('facing_right')
-            : enemy.attach_body('facing_left');
-
+        enemy.attach_body('idle');
         enemy.play('Walk');
     }
 
@@ -45,7 +40,6 @@ export class EnemyChaseState extends State {
         const dist = enemy.getDist(scene.player);
 
         // Exit chase and stop if within x pixels
-        // TODO change this if you want AI to chill
         if (dist < enemy.chill_distance) {
             enemy.FSM.transition('idle');
         } else if (dist < enemy.attack_distance) {

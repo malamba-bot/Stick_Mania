@@ -2,9 +2,7 @@ export class IdleState extends State {
 
     enter(scene, stickman) {
         stickman.setVelocityX(0);
-        stickman.direction === 'R'
-            ? stickman.attach_body('facing_right')
-            : stickman.attach_body('facing_left');
+        stickman.attach_body('idle');
         stickman.play('Idle');
     }
 
@@ -27,7 +25,7 @@ export class MoveRightState extends State {
 
     enter(scene, stickman) {
         stickman.flip_right();
-        stickman.attach_body('facing_right');
+        stickman.attach_body('idle');
         stickman.play('Walk');
     }
 
@@ -55,7 +53,7 @@ export class MoveLeftState extends State {
 
     enter(scene, stickman) {
         stickman.flip_left();
-        stickman.attach_body('facing_left');
+        stickman.attach_body('idle');
         stickman.play('Walk');
     }
 
@@ -184,7 +182,7 @@ export class KickState extends State {
 export class FreezeState extends State {
 
     enter(scene, stickman) {
-        stickman.attach_body('facing_right');
+        stickman.attach_body('idle');
         stickman.play('Frozen');
         if (stickman.snowflakeIcon) stickman.snowflakeIcon.setVisible(true);
 
