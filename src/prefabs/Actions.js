@@ -179,9 +179,11 @@ export class freezeDebuff extends State {
 
         console.log("this bish ain't movin");
         stickman.play('Frozen');
+        if (stickman.snowflakeIcon) stickman.snowflakeIcon.setVisible(true);
         stickman.setVelocityX(0);
 
         scene.time.delayedCall(5000, () => {
+            if (stickman.snowflakeIcon) stickman.snowflakeIcon.setVisible(false);
             stickman.FSM.transition('idle');
         }, [], this);
 

@@ -25,6 +25,16 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
         if(is_playable) {
             this.stamina = new StaminaBar(scene, x, y, this.maxStamina);
+            this.snowflakeIcon = scene.add.image(globals.width - 50, 40, 'snowflake')
+                .setScale(0.25)
+                .setVisible(false)
+                .setScrollFactor(0)
+                .setDepth(100);
+            this.staminaIcon = scene.add.image(globals.width - 100, 40, 'low_stamina')
+                .setScale(0.30)
+                .setVisible(false)
+                .setScrollFactor(0)
+                .setDepth(100);
         }
 
         this.movement_speed = 5;
@@ -175,9 +185,11 @@ export class Stickman extends Phaser.GameObjects.Sprite {
     applyStaminaDebuff() {
         console.log('Stamina debuff applied');
         this.stamina.regenAmount = 2;
+        if (this.staminaIcon) this.staminaIcon.setVisible(true);
 
         this.scene.time.delayedCall(5000, () => {
             this.stamina.regenAmount = 4;
+            if (this.staminaIcon) this.staminaIcon.setVisible(false);
             console.log("Stamina debuff ended");
         });
     }
