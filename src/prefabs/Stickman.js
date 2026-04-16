@@ -1,5 +1,5 @@
-import {IdleState, MoveRightState, MoveLeftState, JumpState, PunchState, KickState, freezeDebuff} from './Actions.js'
-import {EnemyIdleState, EnemyChaseState, EnemyAttackState, EnemyPunchState, EnemyKickState, EnemyJumpState, EnemyFreezeDebuff} from './EnemyActions.js'
+import {IdleState, MoveRightState, MoveLeftState, JumpState, PunchState, KickState, freezeDebuff, KnockbackState} from './Actions.js'
+import {EnemyIdleState, EnemyChaseState, EnemyAttackState, EnemyPunchState, EnemyKickState, EnemyJumpState} from './EnemyActions.js'
 import {globals, player_consts} from '../main.js'
 import {DijkstraPathfinding} from './Dijkstra.js'
 import {HealthBar} from './Healthbar.js'
@@ -82,7 +82,8 @@ export class Stickman extends Phaser.GameObjects.Sprite {
                     jump: new JumpState(),
                     punch: new PunchState(),
                     kick: new KickState(),
-                    freeze: new freezeDebuff()
+                    freeze: new freezeDebuff(),
+                    knockback: new KnockbackState()
                 }, 
                 [this.scene, this]);
         } else {
@@ -94,7 +95,8 @@ export class Stickman extends Phaser.GameObjects.Sprite {
                     punch: new EnemyPunchState(),
                     kick: new EnemyKickState(),
                     jump: new EnemyJumpState(),
-                    freeze: new EnemyFreezeDebuff(),
+                    freeze: new freezeDebuff,
+                    knockback: new KnockbackState()
                 },
                 [this.scene, this]);
         }
@@ -163,7 +165,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
     knockback(opp, move) {
         this.isGrounded = false;
-        this.FSM.transition('freeze');
+        this.FSM.transition('knockback');
         const direction = this.x > opp.x ? 1 : -1;
         const force = move == 'punch' ?
             { x: 6 * direction, y: -3 } :
