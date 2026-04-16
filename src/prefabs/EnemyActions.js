@@ -18,13 +18,15 @@ export class EnemyIdleState extends State {
 }
 
 export class EnemyAttackState extends State {
-    enter(scene, enemy) {
-        const rand = Phaser.Math.Between(1, 2);
+  enter(scene, enemy) {
+        const rand = Phaser.Math.Between(1, 2); 
+        console.log('attack roll:', rand, 'isGrounded:', enemy.isGrounded); // ← ADD
+
         if (rand === 1) {
             enemy.FSM.transition('punch');
         } else if (rand === 2) {
-            enemy.FSM.transition('punch');
-        }
+            enemy.FSM.transition('kick');
+        } 
     }
 
     execute(scene, enemy) {
@@ -58,9 +60,13 @@ export class EnemyChaseState extends State {
             enemy.direction == 'R' ? 2.2 : -2.2;
 
         // If player is in the air, make enemy jump instead of pathing on angle
-        if (dist < -100 &&
-            !scene.player.isGrounded && enemy.isGrounded) {
-            enemy.FSM.transition('jump');
+   if (!scene.player.isGrounded && enemy.isGrounded) {
+            const now = scene.time.now;                                        
+            if (!enemy.lastJumpTime || now - enemy.lastJumpTime > 2000) {     
+                enemy.lastJumpTime = now;                                      
+                enemy.FSM.transition('jump');
+                return;
+            }                                                                 
         }
 
         // Only move horizontally, don't apply vertical velocity
@@ -113,10 +119,19 @@ export class EnemyPunchState extends State {
 export class EnemyKickState extends State {
 
     enter(scene, enemy) {
+        enemy.reorient(scene.player);
+        enemy.attacking = true;
+
         enemy.direction == 'R'
             ? enemy.attach_body('kicking_right')
             : enemy.attach_body('kicking_left');
-    }
+
+        enemy.play('Kick');
+
+        enemy.once('animationcomplete', () => {
+            enemy.attacking = false;
+    });
+}
 
     execute(scene, enemy) {
         const dist = enemy.getDist(scene.player);
