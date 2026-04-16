@@ -73,7 +73,7 @@ export class Play extends Phaser.Scene {
         // I will add a function that later calls each debuff and spawns their respective icons
 
         var gameTimer = this.time.addEvent({
-            delay: 500000,
+            delay: 45000,
             callback: this.player.appliedDebuff,
             callbackScope: this.player,
             loop: true,
@@ -157,20 +157,6 @@ export class Play extends Phaser.Scene {
             }
         });
         //END AI GENERATED
-
-        // OLD CODE FOR PLAYER BUMPING INTO ENEMY, LEAVING FOR REFERENCE - NICK
-        /*this.matter.world.on('collisionstart', (event) => {
-            for (const pair of event.pairs) {
-                const a = pair.bodyA.gameObject;
-                const b = pair.bodyB.gameObject;
-                if (
-                    (a === this.player && b === this.enemy) ||
-                    (a === this.enemy && b === this.player)
-                ) {
-                    //console.log('Player hit the enemy!');
-                }
-            }
-        });*/
 
         this.matter.world.on('collisionstart', (event) => {
             for(const pair of event.pairs) {
