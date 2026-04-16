@@ -118,9 +118,9 @@ export class PunchState extends State {
             ? stickman.attach_body('punching_right')
             : stickman.attach_body('punching_left');
 
-        scene.sound.play("punch_sound", {
-            volume: 0.5
-        });
+        stickman.punchSound.play({ seek: 0.3, volume: 0.5});
+        scene.time.delayedCall(400, () => {stickman.punchSound.play({ seek: 0.3, volume: 0.5});})
+        
         stickman.play('Punch');
         stickman.once('animationcomplete', () => {
             stickman.attacking = false
@@ -158,9 +158,8 @@ export class KickState extends State {
                 : stickman.attach_body('kicking_left');
         });
 
-        scene.sound.play("kick_sound", {
-            volume: 0.5
-        });
+        stickman.kickSound.play({ volume: 0.5 });
+        
         stickman.play('Kick');
         stickman.once('animationcomplete', () => {
             stickman.attacking = false
