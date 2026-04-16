@@ -217,6 +217,9 @@ export class Play extends Phaser.Scene {
     }
 
     update() {
+        //Guard
+        if (!this.player || !this.player.active) return; 
+    
         this.healthText.setText('Health: ' + this.player.health.value);
 
         this.player.health.healthBarFollow(this.player);

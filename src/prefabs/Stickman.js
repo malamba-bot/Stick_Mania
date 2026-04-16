@@ -71,9 +71,10 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         this.knockback(opp, opp.FSM.state);
         this.health.decrease(amount);
 
-        if (this.health < 0) {
-            this.health = 0;
-        }
+          if (this.health.value <= 0) {  
+            this.die();                
+            return;                   
+    }  
 
         this.scene.time.delayedCall(500, () => {
             this.invincible = false;
@@ -210,6 +211,16 @@ export class Stickman extends Phaser.GameObjects.Sprite {
                 //apply another debuff
         //}
     }
+
+//For player
+    die() {
+        this.health.deleteHealthBar();
+        this.setVelocity(0, 0);
+        this.scene.matter.world.remove(this.body);
+        const scene = this.scene; 
+        this.destroy();
+        scene.scene.restart();    
+}
 
 }
 
