@@ -192,17 +192,14 @@ export class freezeDebuff extends State {
 
 export class KnockbackState extends State {
     enter(scene, stickman) {
-        //stickman.play('Idle');
-        console.log("enter happened!");
+        stickman.play('Idle');
     }
 
     execute(scene, stickman) {
-        console.log("it happened!");
         const { x, y } = stickman.body.velocity;
         const vel = Math.sqrt(x * x + y * y);
         if (vel < 1 && stickman.isGrounded) {
-            console.log("it happened!");
-            //stickman.FSM.transition('idle');
+            stickman.FSM.transition('idle');
         }
     
     }

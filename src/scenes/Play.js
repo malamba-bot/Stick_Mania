@@ -121,7 +121,7 @@ export class Play extends Phaser.Scene {
         let o_key = this.input.keyboard.addKey('o');
         o_key.on('down', () => overlay.setVisible(overlay_visible = !overlay_visible));
 
-        // Set friction on walls to zero
+        // Set friction on walls to zero TODO check for removal
         const walls = this.matter.world.walls;
         walls.left.friction = walls.right.friction = 0;
         walls.bottom.friction = 100;
