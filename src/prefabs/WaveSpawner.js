@@ -50,9 +50,9 @@ export class WaveSpawner {
     }
     update() {
 
-        this.waveText.setText('Wave: ' + this.addNumTallymark(this.current_wave + 1));
+        //this.waveText.setText('Wave: ' + this.current_wave + 1);
         this.enemiesLeftText.setText('Enemies Left: ')
-        this.addNumTallymark(this.waves[this.current_wave].enemyCount - this.enemiesDefeated);
+        //this.addNumTallymark(this.waves[this.current_wave].enemyCount - this.enemiesDefeated);
 
         if (!this.waveActive) return;
         
