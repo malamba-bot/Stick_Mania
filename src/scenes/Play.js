@@ -124,7 +124,7 @@ export class Play extends Phaser.Scene {
         // Set friction on walls to zero
         const walls = this.matter.world.walls;
         walls.left.friction = walls.right.friction = 0;
-        walls.bottom.friction = 1000;
+        walls.bottom.friction = 100;
 
         this.matter.world.on('collisionstart', (event) => {
             for(const pair of event.pairs) {
@@ -164,6 +164,7 @@ export class Play extends Phaser.Scene {
     }
 
     update() {
+        console.log(this.enemy.FSM.state);
         this.healthText.setText('Health: ' + this.player.health.value);
 
         this.player.health.healthBarFollow(this.player);
@@ -180,7 +181,7 @@ export class Play extends Phaser.Scene {
             this.enemy.FSM.step();
         }
         */
-       this.waveSpawner.update();
+        this.waveSpawner.update();
         //console.log(typeof this.player.health, this.player.health);
     }
 }

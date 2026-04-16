@@ -35,19 +35,18 @@ export class WaveSpawner {
         }
         console.log(`Started wave ${waveIndex + 1} with ${wave.enemyCount} enemies.`);
     }
-    spawnEnemy(side = 'right') {
-        const scene = this.scene;
 
+    spawnEnemy(side = 'right') {
         //const spawnX = side === 'left' ? -50 : scene.sys.canvas.width + 50;
         const spawnX = 400;
         const spawnY =  300;
 
-        const enemy = new EnemyStick(scene, spawnX, spawnY, 'idle', false);
+        const enemy = new EnemyStick(this.scene, spawnX, spawnY, 'idle', false);
         this.enemies.push(enemy);
         this.spawnedEnemies += 1;
     }
-    update() {
 
+    update() {
         this.waveText.setText('Wave: ' + (this.current_wave + 1));
         this.enemiesLeftText.setText('Enemies Left: ' + (this.waves[this.current_wave].enemyCount - this.enemiesDefeated));
 
@@ -56,9 +55,6 @@ export class WaveSpawner {
         //  state machine handling for each enemy stopping each enemys state machine from being handled
         //  in the play scene and instead being handled in the wave spawner
         for (const enemy of this.enemies) {
-            if (enemy.StateMachine) {
-                enemy.StateMachine.step();
-            }
             enemy.health.healthBarFollow(enemy);
         }
 

@@ -176,6 +176,7 @@ export class KickState extends State {
 export class freezeDebuff extends State {
 
     enter(scene, stickman) {
+        stickman.attach_body('facing_right');
         stickman.play('Frozen');
 
         scene.time.delayedCall(5000, () => {
@@ -185,10 +186,23 @@ export class freezeDebuff extends State {
     }
 
     execute(scene, stickman) {
+    
+    }
+}
+
+export class KnockbackState extends State {
+    enter(scene, stickman) {
+        //stickman.play('Idle');
+        console.log("enter happened!");
+    }
+
+    execute(scene, stickman) {
+        console.log("it happened!");
         const { x, y } = stickman.body.velocity;
         const vel = Math.sqrt(x * x + y * y);
         if (vel < 1 && stickman.isGrounded) {
-            stickman.FSM.transition('idle');
+            console.log("it happened!");
+            //stickman.FSM.transition('idle');
         }
     
     }

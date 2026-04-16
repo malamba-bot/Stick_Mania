@@ -141,13 +141,23 @@ export class EnemyFreezeDebuff extends State {
         */
 
     }
+}
 
-    execute(scene, enemy) {
-        const { x, y } = enemy.body.velocity;
+
+export class EnemyKnockbackState extends State {
+    enter(scene, stickman) {
+        stickman.play('Idle');
+    }
+
+    execute(scene, stickman) {
+        console.log("it happened!");
+        const { x, y } = stickman.body.velocity;
         const vel = Math.sqrt(x * x + y * y);
-        if (vel < 0.2 && enemy.isGrounded) {
-            enemy.FSM.transition('idle');
+        /*
+        if (vel < 1 && stickman.isGrounded) {
+            stickman.FSM.transition('idle');
         }
+        */
     
     }
 }

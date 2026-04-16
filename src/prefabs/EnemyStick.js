@@ -6,6 +6,7 @@ export class EnemyStick extends Stickman {
         super(scene, x, y, texture, is_playable);
         this.chill_distance = 100;
         this.attack_distance = 0;
+        scene.sys.updateList.add(this);
     }
 
     reorient(opp) {
@@ -29,5 +30,13 @@ export class EnemyStick extends Stickman {
     getDist(opp) {
         return Phaser.Math.Distance.Between(
             this.x, this.y, opp.x, opp.y);
+    }
+
+    // preUpdate will be called on sprites in the update list of a scene
+    preUpdate(time, delta) {
+        // since this is overriding the sprite object's preUpdate, run the usual preUpdate sequence before
+        // doing anything else
+        super.preUpdate(time, delta);
+        this.FSM.step();
     }
 }
