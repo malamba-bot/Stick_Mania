@@ -2,7 +2,6 @@ import {globals} from '../main.js'
 import {player_consts} from '../main.js'
 
 import {Stickman} from '../prefabs/Stickman.js'
-import {EnemyStick} from '../prefabs/EnemyStick.js'
 import {WaveSpawner} from '../prefabs/WaveSpawner.js'
 
 export class Play extends Phaser.Scene {
@@ -24,10 +23,10 @@ export class Play extends Phaser.Scene {
         }
 
         //Health UI
-        this.healthText = this.add.text(20, 20, 'Health: 100', {
+        /*this.healthText = this.add.text(20, 20, 'Health: 100', {
         fontSize: '20px',
         color: '#ffffff'
-        }).setScrollFactor(0).setDepth(100);
+        }).setScrollFactor(0).setDepth(100);*/
     
         this.add.image(0, 0, 'background').setOrigin(0);
         this.player = new Stickman(
@@ -39,20 +38,16 @@ export class Play extends Phaser.Scene {
 
         this.matter.world.setBounds(0, 0, globals.width, globals.height);
 
-        this.enemy = new EnemyStick(
-            this, 
-            globals.width * 0.75, 
-            player_consts.start_y, 
-            'idle',
-            false);
-
         const snowflakeImg = this.add.image(40,100, 'snowflake');
         snowflakeImg.setScale(0.15);
         snowflakeImg.setVisible(false);
 
+        const tallyMarkImg = this.add.image(350,360, 'tallymark');
+        tallyMarkImg.setScale(0.04);
+
         // Added enemy health text for testing purposes
         // TODO remove
-        this.enemyHealthText = this.add.text(20, 50, 'Enemy Health: 100', { fontSize: '20px', color: '#ffffff' }).setDepth(100);
+        //this.enemyHealthText = this.add.text(20, 50, 'Enemy Health: 100', { fontSize: '20px', color: '#ffffff' }).setDepth(100);
 
         // gameTimer will go off every 45 seconds and give a random number from 1-3 which represent the debuffs we have in the game
         // I will add a function that later calls each debuff and spawns their respective icons
@@ -164,23 +159,12 @@ export class Play extends Phaser.Scene {
     }
 
     update() {
-        console.log(this.enemy.FSM.state);
-        this.healthText.setText('Health: ' + this.player.health.value);
-
         this.player.health.healthBarFollow(this.player);
         this.player.stamina.StaminaBarFollow(this.player);
 
         // Enemy testing heatlh
-        this.enemyHealthText.setText('Enemy Health: ' + this.enemy.health.value);
-        this.enemy.health.healthBarFollow(this.enemy);
-
-        // TODO MOVE THIS LOGIC TO ENEMY CLASS
-        /*
-        if (this.enemy != null) {
-            this.enemy.FSM.step();
-        }
-        */
+        //this.enemyHealthText.setText('Enemy Health: ' + this.enemy.health.value);
+        //this.enemy.health.healthBarFollow(this.enemy);
         this.waveSpawner.update();
-        //console.log(typeof this.player.health, this.player.health);
     }
 }

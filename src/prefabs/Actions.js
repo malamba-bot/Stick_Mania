@@ -178,8 +178,10 @@ export class freezeDebuff extends State {
     enter(scene, stickman) {
         stickman.attach_body('facing_right');
         stickman.play('Frozen');
+        if (stickman.snowflakeIcon) stickman.snowflakeIcon.setVisible(true);
 
         scene.time.delayedCall(5000, () => {
+            if (stickman.snowflakeIcon) stickman.snowflakeIcon.setVisible(false);
             stickman.FSM.transition('idle');
         }, [], this);
 
