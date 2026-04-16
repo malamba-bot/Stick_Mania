@@ -140,7 +140,12 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
             let parts = [torso, head];
             if (attackType) {
-                let hurtbox = Bodies.circle(coords.hurtbox[0], coords.hurtbox[1], coords.hurtbox[2], { label: 'hurtbox' });
+                let hurtbox = Bodies.circle(coords.hurtbox[0], coords.hurtbox[1], coords.hurtbox[2], 
+                    { 
+                        label: 'hurtbox',
+                        isSensor: true
+                    });
+
                 parts.push(hurtbox);
             }
             let hitbox = Body.create({ parts: parts });
