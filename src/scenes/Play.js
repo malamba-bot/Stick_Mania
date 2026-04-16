@@ -124,27 +124,7 @@ export class Play extends Phaser.Scene {
         // Set friction on walls to zero
         const walls = this.matter.world.walls;
         walls.left.friction = walls.right.friction = 0;
-
-        // START AI GENERATED @Chatgpt.com
-        // Ground collision detection for matter physics
-
-        /*
-        this.matter.world.on('collisionactive', (event) => {
-            for (const pair of event.pairs) {
-                const bodyA = pair.bodyA;
-                const bodyB = pair.bodyB;
-
-                if (
-                    (bodyA.parent === this.player.body && bodyB === this.matter.world.walls.bottom) ||
-                    (bodyB.parent === this.player.body && bodyA === this.matter.world.walls.bottom)
-                ) {
-                    this.player.isGrounded = true;
-                    break;
-                }
-            }
-        });
-        */
-        //END AI GENERATED
+        walls.bottom.friction = 1000;
 
         this.matter.world.on('collisionstart', (event) => {
             for(const pair of event.pairs) {
@@ -164,8 +144,10 @@ export class Play extends Phaser.Scene {
                         objA.takeDamage(10, objB);
                 } else {
                     const obj = objA ?? objB; // get the player body
-                    if (bodyA === walls.bottom || bodyB == walls.bottom) 
+                    if (bodyA === walls.bottom || bodyB == walls.bottom) {
                         obj.isGrounded = true;
+                    }
+                        
                 }
             }
         });
