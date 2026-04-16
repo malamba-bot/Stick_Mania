@@ -1,5 +1,5 @@
 import {IdleState, MoveRightState, MoveLeftState, JumpState, PunchState, KickState, freezeDebuff} from './Actions.js'
-import {EnemyIdleState, EnemyChaseState, EnemyAttackState, EnemyPunchState, EnemyKickState, EnemyJumpState} from './EnemyActions.js'
+import {EnemyIdleState, EnemyChaseState, EnemyAttackState, EnemyPunchState, EnemyKickState, EnemyJumpState, EnemyFreezeDebuff} from './EnemyActions.js'
 import {globals, player_consts} from '../main.js'
 import {DijkstraPathfinding} from './Dijkstra.js'
 import {HealthBar} from './Healthbar.js'
@@ -18,6 +18,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         this.maxStamina = 100;
         this.staminaDrainMultiplier = 1;
         this.direction = 'R';
+        this.isGrounded = true;
         this.attacking = false;
         this.invincible = false;
 
@@ -93,6 +94,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
                     punch: new EnemyPunchState(),
                     kick: new EnemyKickState(),
                     jump: new EnemyJumpState(),
+                    freeze: new EnemyFreezeDebuff(),
                 },
                 [this.scene, this]);
         }
@@ -117,7 +119,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
             let torso  = Bodies.rectangle(coords.torso[0],  coords.torso[1],  coords.torso[2],  coords.torso[3]);
             let head   = Bodies.circle(coords.head[0], coords.head[1], coords.head[2]);
-            /*
+            /* TODO REMOVE
             let groin  = Bodies.circle(coords.groin[0], coords.groin[1], coords.groin[2]);
             let thighs = Bodies.rectangle(coords.thighs[0], coords.thighs[1], coords.thighs[2], coords.thighs[3]);
             let calves = Bodies.rectangle(coords.calves[0], coords.calves[1], coords.calves[2], coords.calves[3]);
@@ -125,7 +127,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
             let parts = [torso, head];
             if (attackType) {
-                let hurtbox = Bodies.circle(coords.hurtbox[0], coords.hurtbox[1], coords.hurtbox[2]);
+                let hurtbox = Bodies.circle(coords.hurtbox[0], coords.hurtbox[1], coords.hurtbox[2], { label: 'hurtbox' });
                 parts.push(hurtbox);
             }
             let hitbox = Body.create({ parts: parts });
@@ -155,16 +157,17 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             .setExistingBody(hitbox)
             .setFixedRotation()
             .setMass(10)
-            .setFriction(0)
             .setOrigin(0.5)
             .setDisplaySize(this.targetDisplayWidth, this.targetDisplayHeight);
     }
 
     knockback(opp, move) {
+        this.isGrounded = false;
+        this.FSM.transition('freeze');
         const direction = this.x > opp.x ? 1 : -1;
         const force = move == 'punch' ?
-            { x: 2 * direction, y: -3 } :
-            { x: 4 * direction, y: -10 };
+            { x: 6 * direction, y: -3 } :
+            { x: 50 * direction, y: -50};
 
         this.scene.matter.body.setVelocity(
             this.body, 
