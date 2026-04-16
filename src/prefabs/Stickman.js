@@ -159,6 +159,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             .setExistingBody(hitbox)
             .setFixedRotation()
             .setMass(10)
+            .setFriction(0)
             .setOrigin(0.5)
             .setDisplaySize(this.targetDisplayWidth, this.targetDisplayHeight);
     }
