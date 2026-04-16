@@ -43,7 +43,19 @@ export class Play extends Phaser.Scene {
             for (const pair of event.pairs) {
                 const bodyA = pair.bodyA;
                 const bodyB = pair.bodyB;
-
+// testing
+                if (this.enemies) {
+                    for (const enemy of this.enemies) {
+                     if (!enemy.active) continue;
+                        if (
+                    (bodyA.parent === enemy.body && bodyB === this.matter.world.walls.bottom) ||
+                    (bodyB.parent === enemy.body && bodyA === this.matter.world.walls.bottom)
+                ) {
+                    enemy.isGrounded = true;
+                }
+            }
+        }
+//testing
                 if (
                     (bodyA.parent === this.player.body && bodyB === this.matter.world.walls.bottom) ||
                     (bodyB.parent === this.player.body && bodyA === this.matter.world.walls.bottom)
@@ -149,7 +161,19 @@ export class Play extends Phaser.Scene {
             for (const pair of event.pairs) {
                 const bodyA = pair.bodyA;
                 const bodyB = pair.bodyB;
-
+                        // Change the reference
+                       if (this.waveSpawner && this.waveSpawner.enemies) {
+                        for (const enemy of this.waveSpawner.enemies) {
+                            if (!enemy.active) continue;
+                            if (
+                                (bodyA.parent === enemy.body && bodyB === this.matter.world.walls.bottom) ||
+                                (bodyB.parent === enemy.body && bodyA === this.matter.world.walls.bottom)
+                ) {
+                    enemy.isGrounded = true;
+                }
+            }
+        }
+// 4/15/26
                 if (
                     (bodyA.parent === this.player.body && bodyB === this.matter.world.walls.bottom) ||
                     (bodyB.parent === this.player.body && bodyA === this.matter.world.walls.bottom)
@@ -198,6 +222,13 @@ export class Play extends Phaser.Scene {
         this.player.health.healthBarFollow(this.player);
         this.player.stamina.StaminaBarFollow(this.player);
         this.player.FSM.step();
+
+        //TEMP enable AI
+        this.waveSpawner.enemies.forEach(enemy => {
+            if (enemy && enemy.active) {
+            enemy.FSM.step();
+        }
+    });
 
         // Enemy testing heatlh
         this.enemyHealthText.setText('Enemy Health: ' + this.enemy.health.value);
