@@ -64,6 +64,7 @@ export class WaveSpawner {
         }
 
         this.enemies = this.enemies.filter(enemy => {
+            console.log(enemy.health.value);
             if (enemy.health.value <= 0) {
                 enemy.destroy();
                 enemy.health.deleteHealthBar();
