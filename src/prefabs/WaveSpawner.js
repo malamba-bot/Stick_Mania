@@ -11,8 +11,10 @@ export class WaveSpawner {
         this.spawnedEnemies = 0;
         this.enemiesDefeated = 0;
 
-        this.waveText = this.scene.add.text(globals.width / 2, 50, 'Wave: 1', { fontSize: '32px', color: '#ffffff' }).setOrigin(0.5).setDepth(100);
+        // Wave text replaced by tally marks - Nina
+        //this.waveText = this.scene.add.text(globals.width / 2, 50, 'Wave: 1', { fontFamily: 'Eraser', fontSize: '32px', color: '#ffffff' }).setOrigin(0.5).setDepth(100);
         this.enemiesLeftText = this.scene.add.text(globals.width / 2, 100, 'Enemies Left: ', { fontSize: '24px', color: '#ffffff' }).setOrigin(0.5).setDepth(100);
+
     }
 
     startWave(waveIndex) {
@@ -46,8 +48,9 @@ export class WaveSpawner {
     }
     update() {
 
-        this.waveText.setText('Wave: ' + (this.current_wave + 1));
-        this.enemiesLeftText.setText('Enemies Left: ' + (this.waves[this.current_wave].enemyCount - this.enemiesDefeated));
+        //this.waveText.setText('Wave: ' + this.current_wave + 1);
+        this.enemiesLeftText.setText('Enemies Left: ')
+        //this.addNumTallymark(this.waves[this.current_wave].enemyCount - this.enemiesDefeated);
 
         if (!this.waveActive) return;
         
@@ -98,5 +101,17 @@ export class WaveSpawner {
 
             this.spawnEnemy(side);
         }
+    }
+    addNumTallymark(numTallies) {
+
+        this.tallyTextX = 0;
+        this.tallyTextY = 0;
+        this.tallyText = '';
+
+        for (let i = 0; i < numTallies; i++) {
+             this.tallyText += '|';
+        }
+
+        return this.tallyText;
     }
 }
