@@ -42,7 +42,7 @@ export class WaveSpawner {
         const spawnX = side === 'left' ? 50 : globals.width - 50;
         const spawnY =  300;
 
-        const enemy = new EnemyStick(this.scene, spawnX, spawnY, 'idle', false);
+        const enemy = new EnemyStick(this.scene, spawnX, spawnY, 'idle');
         this.enemies.push(enemy);
         this.spawnedEnemies += 1;
     }

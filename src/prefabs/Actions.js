@@ -181,7 +181,7 @@ export class KickState extends State {
     }
 }
 
-export class freezeDebuff extends State {
+export class FreezeState extends State {
 
     enter(scene, stickman) {
         stickman.attach_body('facing_right');
