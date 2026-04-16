@@ -24,10 +24,10 @@ export class Play extends Phaser.Scene {
         }
 
         //Health UI
-        this.healthText = this.add.text(20, 20, 'Health: 100', {
+        /*this.healthText = this.add.text(20, 20, 'Health: 100', {
         fontSize: '20px',
         color: '#ffffff'
-        }).setScrollFactor(0).setDepth(100);
+        }).setScrollFactor(0).setDepth(100);*/
     
         this.add.image(0, 0, 'background').setOrigin(0);
         this.player = new Stickman(
@@ -54,12 +54,12 @@ export class Play extends Phaser.Scene {
             }
         });
         //END AI GENERATED
-        this.enemy = new EnemyStick(
+        /*this.enemy = new EnemyStick(
             this, 
             globals.width * 0.75, 
             player_consts.start_y, 
             'idle',
-            false);
+            false);*/
 
         const snowflakeImg = this.add.image(40,100, 'snowflake');
         snowflakeImg.setScale(0.15);
@@ -70,7 +70,7 @@ export class Play extends Phaser.Scene {
 
         // Added enemy health text for testing purposes
         // TODO remove
-        this.enemyHealthText = this.add.text(20, 50, 'Enemy Health: 100', { fontSize: '20px', color: '#ffffff' }).setDepth(100);
+        //this.enemyHealthText = this.add.text(20, 50, 'Enemy Health: 100', { fontSize: '20px', color: '#ffffff' }).setDepth(100);
 
         // gameTimer will go off every 45 seconds and give a random number from 1-3 which represent the debuffs we have in the game
         // I will add a function that later calls each debuff and spawns their respective icons
@@ -193,15 +193,15 @@ export class Play extends Phaser.Scene {
     }
 
     update() {
-        this.healthText.setText('Health: ' + this.player.health.value);
+        //this.healthText.setText('Health: ' + this.player.health.value);
 
         this.player.health.healthBarFollow(this.player);
         this.player.stamina.StaminaBarFollow(this.player);
         this.player.FSM.step();
 
         // Enemy testing heatlh
-        this.enemyHealthText.setText('Enemy Health: ' + this.enemy.health.value);
-        this.enemy.health.healthBarFollow(this.enemy);
+        //this.enemyHealthText.setText('Enemy Health: ' + this.enemy.health.value);
+        //this.enemy.health.healthBarFollow(this.enemy);
 
         // TODO MOVE THIS LOGIC TO ENEMY CLASS
         /*
