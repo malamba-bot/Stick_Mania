@@ -9,6 +9,10 @@ export class WaveSpawner {
         this.enemies = [];
         this.waveActive = false;
         this.spawnedEnemies = 0;
+        this.enemiesDefeated = 0;
+
+        this.waveText = this.scene.add.text(globals.width / 2, 50, 'Wave: 1', { fontSize: '32px', color: '#ffffff' }).setOrigin(0.5).setDepth(100);
+        this.enemiesLeftText = this.scene.add.text(globals.width / 2, 100, 'Enemies Left: ', { fontSize: '24px', color: '#ffffff' }).setOrigin(0.5).setDepth(100);
     }
 
     startWave(waveIndex) {
@@ -19,6 +23,7 @@ export class WaveSpawner {
         this.enemies = [];
         this.waveActive = true;
         this.spawnedEnemies = 0;
+        this.enemiesDefeated = 0;
 
         for  (let i = 0; i < wave.enemyCount; i++) {
             // Alternate sides: even indices on left, odd on right
@@ -42,6 +47,10 @@ export class WaveSpawner {
         this.spawnedEnemies += 1;
     }
     update() {
+
+        this.waveText.setText('Wave: ' + (this.current_wave + 1));
+        this.enemiesLeftText.setText('Enemies Left: ' + (this.waves[this.current_wave].enemyCount - this.enemiesDefeated));
+
         if (!this.waveActive) return;
         
         //  state machine handling for each enemy stopping each enemys state machine from being handled
@@ -57,6 +66,7 @@ export class WaveSpawner {
             if (enemy.health.value <= 0) {
                 enemy.destroy();
                 enemy.health.deleteHealthBar();
+                this.enemiesDefeated++;
                 return false;
             }
             return true;
