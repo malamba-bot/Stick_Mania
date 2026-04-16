@@ -25,21 +25,19 @@ export class WaveSpawner {
         this.spawnedEnemies = 0;
         this.enemiesDefeated = 0;
 
-        for  (let i = 0; i < wave.enemyCount; i++) {
-            // Alternate sides: even indices on left, odd on right
-            const side = i % 2 === 0 ? 'left' : 'right';
-            this.scene.time.delayedCall(
-                i * wave.spawnInterval, () => { 
-                    this.spawnEnemy(side);
-                });
-        }
+        this.spawnTimer = this.scene.time.addEvent({
+            delay: wave.spawnInterval,
+            callback: this.onSpawnTick,
+            callbackScope: this,
+            loop: true
+        });
+
         console.log(`Started wave ${waveIndex + 1} with ${wave.enemyCount} enemies.`);
     }
     spawnEnemy(side = 'right') {
         const scene = this.scene;
 
-        //const spawnX = side === 'left' ? -50 : scene.sys.canvas.width + 50;
-        const spawnX = 400;
+        const spawnX = side === 'left' ? 50 : globals.width - 50;
         const spawnY =  300;
 
         const enemy = new EnemyStick(scene, spawnX, spawnY, 'idle', false);
@@ -85,5 +83,20 @@ export class WaveSpawner {
         this.scene.time.delayedCall(2000, () => {
             this.startWave(this.current_wave + 1);
         });
+    }
+
+    onSpawnTick() {
+        const wave = this.waves[this.current_wave];
+
+        if(this.spawnedEnemies >= wave.enemyCount) {
+            this.spawnTimer.remove();
+            return;
+        }
+
+        if(this.enemies.length < 3) {
+            const side = this.spawnedEnemies % 2 === 0 ? 'left' : 'right';
+
+            this.spawnEnemy(side);
+        }
     }
 }
