@@ -204,5 +204,13 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         //}
     }
 
+    // preUpdate will be called on sprites in the update list of a scene
+    preUpdate(time, delta) {
+        // since this is overriding the sprite object's preUpdate, run the usual preUpdate sequence before
+        // doing anything else
+        super.preUpdate(time, delta);
+        this.FSM.step();
+    }
+
 }
 
