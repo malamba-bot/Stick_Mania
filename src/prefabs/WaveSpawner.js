@@ -10,6 +10,11 @@ export class WaveSpawner {
         this.waveActive = false;
         this.spawnedEnemies = 0;
         this.enemiesDefeated = 0;
+        this.number = 0;
+        this.waveNum = [];
+
+        let t_key = this.scene.input.keyboard.addKey('t');
+        t_key.on('down', () => {this.updateWaveDisplay()});
 
         // Wave text replaced by tally marks - Nina
         //this.waveText = this.scene.add.text(globals.width / 2, 50, 'Wave: 1', { fontFamily: 'Eraser', fontSize: '32px', color: '#ffffff' }).setOrigin(0.5).setDepth(100);
@@ -26,6 +31,8 @@ export class WaveSpawner {
         this.waveActive = true;
         this.spawnedEnemies = 0;
         this.enemiesDefeated = 0;
+
+        this.updateWaveDisplay();
 
         this.spawnTimer = this.scene.time.addEvent({
             delay: wave.spawnInterval,
@@ -61,7 +68,7 @@ export class WaveSpawner {
         }
 
         this.enemies = this.enemies.filter(enemy => {
-            console.log(enemy.health.value);
+            //console.log(enemy.health.value);
             if (enemy.health.value <= 0) {
                 enemy.destroy();
                 enemy.health.deleteHealthBar();
@@ -111,5 +118,51 @@ export class WaveSpawner {
         }
 
         return this.tallyText;
+    }
+
+    updateWaveDisplay() {
+
+        this.number++;
+        this.spacing = 30;
+        let startingX = 325;
+
+        this.waveNum.forEach(img => {
+            if(img) img.destroy()
+            });
+
+        this.waveNum = [];
+
+        let results = [];
+
+        const ten = Phaser.Math.FloorTo(this.number / 10);
+        for(let i = 0; i < ten; i++){
+            results.push('tallymarkX');
+        }
+
+        const ones = this.number % 10;
+
+        if(ones === 9) {
+            results.push('tallymark', 'tallymarkX');
+        } else if (ones >= 5) {
+            results.push('tallymarkV');
+            for(let i = 5; i < ones; i++) {
+                results.push('tallymark');
+            }
+        } else if (ones === 4) {
+            results.push('tallymark', 'tallymarkV');
+        } else {
+            for(let i = 0; i < ones; i++) {
+                results.push('tallymark');
+            }
+        }
+
+        results.forEach((textureKey, index) => {
+
+            let image = this.scene.add.image(startingX, globals.height/2 - 45, textureKey).setScale(0.15).setOrigin(0, 0.5);
+            this.waveNum.push(image);
+            startingX = startingX + image.displayWidth;
+            
+        });
+
     }
 }
