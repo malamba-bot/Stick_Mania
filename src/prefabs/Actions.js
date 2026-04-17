@@ -23,7 +23,7 @@ export class IdleState extends State {
             stickman.FSM.transition('jump');
         } else if (Phaser.Input.Keyboard.JustDown(scene.keys.L) 
             && stickman.stamina.value >= 20
-            && !stickman.fizzle(player_consts.combo_fizzle)) {
+            ) {
             stickman.FSM.transition('combo');
         }
     }
@@ -112,7 +112,7 @@ export class PunchState extends State {
     enter(scene, stickman) {
         stickman.stamina.decrease(10);
         if (stickman.fizzle(player_consts.basic_fizzle)) {
-            stickman.FSM.transition('idle');
+            stickman.FSM.transition('fizzle');
             return;
         }
         stickman.punch();
@@ -139,7 +139,7 @@ export class KickState extends State {
     enter(scene, stickman) {
         stickman.stamina.decrease(10);
         if (stickman.fizzle(player_consts.basic_fizzle)) {
-            stickman.FSM.transition('idle');
+            stickman.FSM.transition('fizzle');
             return;
         }
         stickman.kick();
@@ -162,6 +162,10 @@ export class KickState extends State {
 
 export class ComboState extends State {
     enter(scene, stickman) {
+        if (stickman.fizzle(player_consts.combo_fizzle)) {
+            stickman.FSM.transition('fizzle');
+            return;
+        }
         stickman.stamina.decrease(20);
         stickman.combo();
         const slide_speed = stickman.direction == 'R' ?
@@ -199,6 +203,16 @@ export class KnockbackState extends State {
             stickman.FSM.transition('idle');
         }
     
+    }
+}
+
+export class FizzleState extends State {
+    enter(scene, stickman) {
+        stickman.play('fizzling');
+        scene.time.delayedCall(500, () => {
+            if (stickman.active)
+                stickman.FSM.transition('idle');
+        })
     }
 }
 
