@@ -63,10 +63,8 @@ export class WaveSpawner {
         
         //  state machine handling for each enemy stopping each enemys state machine from being handled
         //  in the play scene and instead being handled in the wave spawner
-        for (const enemy of this.enemies) { // TODO move this to stick class
-            enemy.health.healthBarFollow(enemy);
-        }
 
+        /*
         this.enemies = this.enemies.filter(enemy => {
             //console.log(enemy.health.value);
             if (enemy.health.value <= 0) {
@@ -77,6 +75,7 @@ export class WaveSpawner {
             }
             return true;
         });
+        */
 
         const wave = this.waves[this.current_wave];
 

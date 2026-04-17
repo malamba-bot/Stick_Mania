@@ -24,9 +24,10 @@ export class EnemyAttackState extends State {
             enemy.FSM.transition('punch');
         } else if (rand === 2) {
             enemy.FSM.transition('kick');
-        } else {
+        } else if (rand == 3){
             scene.time.delayedCall(2000, () => {
-                enemy.FSM.transition('idle');
+                if (enemy.active)
+                    enemy.FSM.transition('idle');
             });
         }
     }
@@ -43,11 +44,12 @@ export class EnemyChaseState extends State {
     }
 
     execute(scene, enemy) {
+    if (!scene.player.active) return;
+
     const dist = enemy.getDist(scene.player);
 
     if (dist < enemy.attack_distance) {
         enemy.FSM.transition('attack');
-        return; 
     }
 
     if(scene.player.isGrounded) {

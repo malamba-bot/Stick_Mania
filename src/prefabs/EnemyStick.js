@@ -26,7 +26,7 @@ export class EnemyStick extends Stickman {
             },
             [this.scene, this]);
     }
- reorient(opp) {
+    reorient(opp) {
         const angle = Phaser.Math.Angle.Between(this.x, this.y, opp.x, opp.y);
 
         // Determine direction (left or right)
@@ -42,6 +42,7 @@ export class EnemyStick extends Stickman {
     }
 
     getDist(opp) {
+        if (!opp.active) return 0;
         return Phaser.Math.Distance.Between(
             this.x, this.y, opp.x, opp.y);
     }
@@ -49,8 +50,22 @@ export class EnemyStick extends Stickman {
     preUpdate(time, delta) {
         // since this is overriding the sprite object's preUpdate, run the usual preUpdate sequence before
         // doing anything else
-        super.preUpdate(time, delta);
+            super.preUpdate(time, delta);
         this.FSM.step();
+    }
+
+    destroy() {
+        if (this.scene) {
+            this.scene.enemiesDefeated++;
+            // AI GENERATED @claude.ai
+            const list = this.scene.waveSpawner.enemies;
+            const index = list.indexOf(this);
+            if (index !== -1) {
+                list.splice(index, 1);
+            }
+            // END AI GENERATED
+        }
+        super.destroy();
     }
 
 }

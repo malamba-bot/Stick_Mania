@@ -115,4 +115,10 @@ export class PlayerStick extends Stickman {
         this.FSM.step();
         this.stamina.StaminaBarFollow(this);
     }
+
+    destroy() {
+        if (this.scene)
+            this.scene.scene.start("MainMenu");
+        super.destroy();
+    }
 }

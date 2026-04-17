@@ -23,12 +23,6 @@ export class Play extends Phaser.Scene {
             SPACE: this.input.keyboard.addKey('space')
         }
 
-        //Health UI
-        /*this.healthText = this.add.text(20, 20, 'Health: 100', {
-        fontSize: '20px',
-        color: '#ffffff'
-        }).setScrollFactor(0).setDepth(100);*/
-    
         this.add.image(0, 0, 'background').setOrigin(0);
         this.player = new PlayerStick(
             this, 
@@ -166,7 +160,7 @@ export class Play extends Phaser.Scene {
         //console.log(this.player.displayHeight);
       // console.log(this.player.y);
         // TODO remove
-        //console.log(this.player.FSM.state);
+        console.log(this.player.FSM.state, this.player.isGrounded);
 
         //TEMP enable AI
         this.waveSpawner.enemies.forEach(enemy => {

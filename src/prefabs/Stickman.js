@@ -16,7 +16,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         this.invincible = false;
         this.ground_level = this.y;
 
-        this.health = new HealthBar(scene, x, y, 100);
+        this.health = new HealthBar(scene, x, y, this.maxHealth);
 
         this.movement_speed = 5;
         this.jump_velocity = -20;
@@ -48,10 +48,10 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         this.knockback(opp, opp.FSM.state);
         this.health.decrease(amount);
 
-          if (this.health.value <= 0) {  
-            this.die();                
+        if (this.health.value <= 0) {  
+            this.destroy();
             return;                   
-    }  
+        }  
 
         this.scene.time.delayedCall(500, () => {
             this.invincible = false;
@@ -160,6 +160,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         return new Promise(resolve => {
             this.attacking = true;
             this.scene.time.delayedCall(300, () => {
+                if (this.active) return;
                 this.direction == 'R'
                     ? this.attach_body('kicking_right')
                     : this.attach_body('kicking_left');
@@ -177,7 +178,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
     is_above(opp) {
         // 33 is a magic number, seems the displayHeight is not accurate
-        return opp.y - this.displayHeight + 38 >= this.y;
+        return opp.y - this.displayHeight + 50 >= this.y;
     }
 
 //For player
@@ -203,6 +204,11 @@ die() {
         // doing anything else
         super.preUpdate(time, delta);
         this.health.healthBarFollow(this);
+    }
+
+    destroy() {
+        this.health.deleteHealthBar();
+        super.destroy();
     }
 }
 
