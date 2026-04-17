@@ -15,6 +15,8 @@ export class StaminaBar {
   
       scene.add.existing(this.bar);
 
+      this.bar.setDepth(5);
+
       scene.time.addEvent({
           delay: 1000,
           callback: this.regenStam,
