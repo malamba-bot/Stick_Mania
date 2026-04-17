@@ -35,4 +35,6 @@ export const globals = {
 export const player_consts = {
     start_x: game.config.width / 2,
     start_y: game.config.height * 0.7,
+    basic_fizzle: 3,
+    combo_fizzle: 10,
 }

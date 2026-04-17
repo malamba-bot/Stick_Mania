@@ -3,9 +3,7 @@ export class EnemyIdleState extends State {
     enter(scene, enemy) {
         //console.log('in idle state');
         enemy.setVelocityX(0);
-        enemy.direction === 'R'
-            ? enemy.attach_body('facing_right')
-            : enemy.attach_body('facing_left');
+        enemy.attach_body('idle');
         enemy.play('Idle');
     }
 
@@ -40,10 +38,7 @@ export class EnemyAttackState extends State {
 export class EnemyChaseState extends State {
     enter(scene, enemy) {
         //console.log('in chase state');
-        enemy.direction === 'R'
-            ? enemy.attach_body('facing_right')
-            : enemy.attach_body('facing_left');
-
+        enemy.attach_body('idle');
         enemy.play('Walk');
     }
 
@@ -58,6 +53,12 @@ export class EnemyChaseState extends State {
     if(scene.player.isGrounded) {
         enemy.isJumping = false;
     }
+        // Exit chase and stop if within x pixels
+        if (dist < enemy.chill_distance) {
+            enemy.FSM.transition('idle');
+        } else if (dist < enemy.attack_distance) {
+            enemy.FSM.transition('attack');
+        }
 
         // Chase player
         enemy.reorient(scene.player);
@@ -141,3 +142,21 @@ execute(scene, enemy) {
     if (enemy.attacking) return;
     enemy.FSM.transition('chase');
 }}
+
+export class EnemyKnockbackState extends State {
+    enter(scene, stickman) {
+        stickman.play('Idle');
+    }
+
+    execute(scene, stickman) {
+        console.log("it happened!");
+        const { x, y } = stickman.body.velocity;
+        const vel = Math.sqrt(x * x + y * y);
+        /*
+        if (vel < 1 && stickman.isGrounded) {
+            stickman.FSM.transition('idle');
+        }
+        */
+    
+    }
+}

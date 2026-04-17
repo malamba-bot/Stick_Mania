@@ -10,6 +10,11 @@ export class WaveSpawner {
         this.waveActive = false;
         this.spawnedEnemies = 0;
         this.enemiesDefeated = 0;
+        this.number = 0;
+        this.waveNum = [];
+
+        let t_key = this.scene.input.keyboard.addKey('t');
+        t_key.on('down', () => {this.updateWaveDisplay()});
 
         // Wave text replaced by tally marks - Nina
         //this.waveText = this.scene.add.text(globals.width / 2, 50, 'Wave: 1', { fontFamily: 'Eraser', fontSize: '32px', color: '#ffffff' }).setOrigin(0.5).setDepth(100);
@@ -27,6 +32,8 @@ export class WaveSpawner {
         this.spawnedEnemies = 0;
         this.enemiesDefeated = 0;
 
+        this.updateWaveDisplay();
+
         this.spawnTimer = this.scene.time.addEvent({
             delay: wave.spawnInterval,
             callback: this.onSpawnTick,
@@ -36,34 +43,32 @@ export class WaveSpawner {
 
         console.log(`Started wave ${waveIndex + 1} with ${wave.enemyCount} enemies.`);
     }
-    spawnEnemy(side = 'right') {
-        const scene = this.scene;
 
+    spawnEnemy(side = 'right') {
+        //const spawnX = side === 'left' ? -50 : scene.sys.canvas.width + 50;
         const spawnX = side === 'left' ? 50 : globals.width - 50;
         const spawnY =  300;
 
-        const enemy = new EnemyStick(scene, spawnX, spawnY, 'idle', false);
+        const enemy = new EnemyStick(this.scene, spawnX, spawnY, 'idle');
         this.enemies.push(enemy);
         this.spawnedEnemies += 1;
     }
-    update() {
 
+    update() {
         //this.waveText.setText('Wave: ' + this.current_wave + 1);
-        this.enemiesLeftText.setText('Enemies Left: ')
+        this.enemiesLeftText.setText('Enemies Left: ' + (this.waves[this.current_wave].enemyCount - this.enemiesDefeated));
         //this.addNumTallymark(this.waves[this.current_wave].enemyCount - this.enemiesDefeated);
 
         if (!this.waveActive) return;
         
         //  state machine handling for each enemy stopping each enemys state machine from being handled
         //  in the play scene and instead being handled in the wave spawner
-        for (const enemy of this.enemies) {
-            if (enemy.StateMachine) {
-                enemy.StateMachine.step();
-            }
-            if (enemy.active) enemy.health.healthBarFollow(enemy); 
+        for (const enemy of this.enemies) { // TODO move this to stick class
+            enemy.health.healthBarFollow(enemy);
         }
 
         this.enemies = this.enemies.filter(enemy => {
+            //console.log(enemy.health.value);
             if (enemy.health.value <= 0) {
                 enemy.destroy();
                 enemy.health.deleteHealthBar();
@@ -113,5 +118,51 @@ export class WaveSpawner {
         }
 
         return this.tallyText;
+    }
+
+    updateWaveDisplay() {
+
+        this.number++;
+        this.spacing = 30;
+        let startingX = 325;
+
+        this.waveNum.forEach(img => {
+            if(img) img.destroy()
+            });
+
+        this.waveNum = [];
+
+        let results = [];
+
+        const ten = Phaser.Math.FloorTo(this.number / 10);
+        for(let i = 0; i < ten; i++){
+            results.push('tallymarkX');
+        }
+
+        const ones = this.number % 10;
+
+        if(ones === 9) {
+            results.push('tallymark', 'tallymarkX');
+        } else if (ones >= 5) {
+            results.push('tallymarkV');
+            for(let i = 5; i < ones; i++) {
+                results.push('tallymark');
+            }
+        } else if (ones === 4) {
+            results.push('tallymark', 'tallymarkV');
+        } else {
+            for(let i = 0; i < ones; i++) {
+                results.push('tallymark');
+            }
+        }
+
+        results.forEach((textureKey, index) => {
+
+            let image = this.scene.add.image(startingX, globals.height/2 - 45, textureKey).setScale(0.15).setOrigin(0, 0.5);
+            this.waveNum.push(image);
+            startingX = startingX + image.displayWidth;
+            
+        });
+
     }
 }
