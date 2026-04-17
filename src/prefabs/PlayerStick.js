@@ -51,10 +51,29 @@ export class PlayerStick extends Stickman {
         this.FSM.transition('idle');
     }
 
+    flashThenHide(icon, duration = 5000, flashDuration = 1000) {
+        this.scene.time.delayedCall(duration - flashDuration, () => {
+            this.scene.tweens.add({
+                targets: icon,
+                alpha: 0,
+                duration: 150,
+                yoyo: true,
+                repeat: 3,
+                onComplete: () => {
+                    icon.setVisible(false);
+                    icon.setAlpha(1);
+                }
+            });
+        });
+    }
+
     applyStaminaDebuff() {
         console.log('Stamina debuff applied');
         this.stamina.regenAmount = 2;
-        if (this.staminaIcon) this.staminaIcon.setVisible(true);
+        if (this.staminaIcon) {
+            this.staminaIcon.setVisible(true);
+            this.flashThenHide(this.staminaIcon);
+        }
 
         this.scene.time.delayedCall(5000, () => {
             this.stamina.regenAmount = 4;
