@@ -1,7 +1,6 @@
 export class EnemyIdleState extends State {
 
     enter(scene, enemy) {
-        //console.log('in idle state');
         enemy.setVelocityX(0);
         enemy.attach_body('idle');
         enemy.play('Idle');
@@ -18,7 +17,6 @@ export class EnemyIdleState extends State {
 export class EnemyAttackState extends State {
   enter(scene, enemy) {
         const rand = Phaser.Math.Between(1, 3); 
-        //console.log('attack roll:', rand, 'isGrounded:', enemy.isGrounded); // ← ADD
 
         if (rand === 1) {
             enemy.FSM.transition('punch');
@@ -26,18 +24,15 @@ export class EnemyAttackState extends State {
             enemy.FSM.transition('kick');
         } else {
             scene.time.delayedCall(1000, () => {
-                enemy.FSM.transition('idle');
+                if (enemy.active)
+                    enemy.FSM.transition('idle');
             });
         }
-    }
-
-    execute(scene, enemy) {
     }
 }
 
 export class EnemyChaseState extends State {
     enter(scene, enemy) {
-        //console.log('in chase state');
         enemy.attach_body('idle');
         enemy.play('Walk');
     }
@@ -63,13 +58,6 @@ export class EnemyChaseState extends State {
             return;
         }
 
-        /*
-        if (dist < enemy.chill_distance) {
-            enemy.FSM.transition('idle');
-            return;
-        }
-        commenting this out because im working on AI -brody */
-
         enemy.setVelocityX(enemy.getHorizontalSpeed(enemy.chase_speed));
     }
 }
@@ -83,7 +71,8 @@ export class EnemyStrafeState extends State {
         enemy.strafeTime = Phaser.Math.Between(enemy.strafe_min_duration, enemy.strafe_max_duration);
         enemy.faceDirection(enemy.strafeDir);
         scene.time.delayedCall(enemy.strafeTime, () => {
-            enemy.FSM.transition('chase');
+            if (enemy.active)
+                enemy.FSM.transition('chase');
         });
     }
     execute(scene, enemy) {
@@ -155,30 +144,12 @@ export class EnemyKickState extends State {
 
         enemy.once('animationcomplete', () => {
             enemy.attacking = false;
-    });
-}
-
-execute(scene, enemy) {
-    if (enemy.attacking) return;
-    enemy.FSM.transition('chase');
-}}
-
-export class EnemyKnockbackState extends State {
-    enter(scene, stickman) {
-        stickman.play('Idle');
-        
+        });
     }
 
-    execute(scene, stickman) {
-        console.log("it happened!");
-
-        const { x, y } = stickman.body.velocity;
-        const vel = Math.sqrt(x * x + y * y);
-        /*
-        if (vel < 1 && stickman.isGrounded) {
-            stickman.FSM.transition('idle');
-        }
-        */
-    
+    execute(scene, enemy) {
+        if (enemy.attacking) return;
+        enemy.FSM.transition('chase');
     }
 }
+
