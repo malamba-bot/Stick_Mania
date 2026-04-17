@@ -109,20 +109,8 @@ export class PunchState extends State {
             stickman.FSM.transition('idle');
             return;
         }
+        stickman.punch();
         
-        stickman.stamina.decrease(10);
-        stickman.attacking = true;
-        stickman.direction == 'R'
-            ? stickman.attach_body('punching_right')
-            : stickman.attach_body('punching_left');
-
-        stickman.punchSound.play({ seek: 0.3, volume: 0.5});
-        scene.time.delayedCall(400, () => {stickman.punchSound.play({ seek: 0.3, volume: 0.5});})
-        
-        stickman.play('Punch');
-        stickman.once('animationcomplete', () => {
-            stickman.attacking = false
-        });
     }
 
     execute(scene, stickman) {
@@ -147,21 +135,7 @@ export class KickState extends State {
             stickman.FSM.transition('idle');
             return;
         }
-        
-        stickman.stamina.decrease(10);
-        stickman.attacking = true;
-        scene.time.delayedCall(300, () => {
-            stickman.direction == 'R'
-                ? stickman.attach_body('kicking_right')
-                : stickman.attach_body('kicking_left');
-        });
-
-        stickman.kickSound.play({ volume: 0.5 });
-        
-        stickman.play('Kick');
-        stickman.once('animationcomplete', () => {
-            stickman.attacking = false
-        });
+        stickman.kick();
     }
 
     execute(scene, stickman) {

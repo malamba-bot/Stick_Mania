@@ -141,6 +141,39 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             force
         );
     }
+    
+    punch() {
+        this.stamina.decrease(10);
+        this.attacking = true;
+        this.direction == 'R'
+            ? this.attach_body('punching_right')
+            : this.attach_body('punching_left');
+
+        this.punchSound.play({ seek: 0.3, volume: 0.5});
+        this.scene.time.delayedCall(400, () => {this.punchSound.play({ seek: 0.3, volume: 0.5});})
+        
+        this.play('Punch');
+        this.once('animationcomplete', () => {
+            this.attacking = false
+        });
+    }
+
+    kick() {
+        this.stamina.decrease(10);
+        this.attacking = true;
+        this.scene.time.delayedCall(300, () => {
+            this.direction == 'R'
+                ? this.attach_body('kicking_right')
+                : this.attach_body('kicking_left');
+        });
+
+        this.kickSound.play({ volume: 0.5 });
+        
+        this.play('Kick');
+        this.once('animationcomplete', () => {
+            this.attacking = false
+        });
+    }
 
     // preUpdate will be called on sprites in the update list of a scene
     preUpdate(time, delta) {
