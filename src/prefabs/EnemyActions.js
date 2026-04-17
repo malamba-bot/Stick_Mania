@@ -1,3 +1,50 @@
+// Refractored some helper function with the help of Codex -brody
+function resetJumpFlag(enemy) {
+    if (enemy.isGrounded) {
+        enemy.isJumping = false;
+    }
+}
+
+function isPlayerAboveEnemy(scene, enemy) {
+    return scene.player.y < enemy.y - enemy.jump_trigger_height;
+}
+
+function isPlayerCloseEnoughToJump(scene, enemy, dist) {
+    return dist <= enemy.attack_distance * enemy.jump_trigger_range_multiplier;
+}
+
+function shouldEnemyJump(scene, enemy, dist) {
+    return (
+        isPlayerAboveEnemy(scene, enemy) &&
+        isPlayerCloseEnoughToJump(scene, enemy, dist) &&
+        !scene.player.isGrounded &&
+        scene.player.body.velocity.y < enemy.jump_trigger_velocity &&
+        enemy.isGrounded &&
+        !enemy.attacking &&
+        !enemy.isJumping
+    );
+}
+
+function shouldEnemyStrafe(enemy) {
+    return Math.random() < enemy.strafe_attack_chance;
+}
+
+function getHorizontalSpeed(enemy, speed) {
+    return enemy.direction === 'R' ? speed : -speed;
+}
+
+function getStrafeDirection(scene, enemy) {
+    return enemy.x < scene.player.x ? 'L' : 'R';
+}
+
+function faceDirection(enemy, direction) {
+    direction === 'R' ? enemy.flip_right() : enemy.flip_left();
+}
+
+function isOutsideStrafeRange(enemy, dist) {
+    return dist > enemy.attack_distance * enemy.jump_trigger_range_multiplier;
+}
+
 export class EnemyIdleState extends State {
 
     enter(scene, enemy) {
@@ -24,10 +71,9 @@ export class EnemyAttackState extends State {
             enemy.FSM.transition('punch');
         } else if (rand === 2) {
             enemy.FSM.transition('kick');
-        } else if (rand == 3){
-            scene.time.delayedCall(2000, () => {
-                if (enemy.active)
-                    enemy.FSM.transition('idle');
+        } else {
+            scene.time.delayedCall(1000, () => {
+                enemy.FSM.transition('idle');
             });
         }
     }
@@ -44,54 +90,73 @@ export class EnemyChaseState extends State {
     }
 
     execute(scene, enemy) {
-    if (!scene.player.active) return;
+        const dist = enemy.getDist(scene.player);
+        enemy.reorient(scene.player);
 
-    const dist = enemy.getDist(scene.player);
+        resetJumpFlag(enemy);
 
-    if (dist < enemy.attack_distance) {
-        enemy.FSM.transition('attack');
-    }
+        if (shouldEnemyJump(scene, enemy, dist)) {
+            enemy.isJumping = true;
+            enemy.FSM.transition('jump');
+            return;
+        }
 
-    if(scene.player.isGrounded) {
-        enemy.isJumping = false;
-    }
-        // Exit chase and stop if within x pixels
+        if (dist <= enemy.attack_distance) {
+            if (shouldEnemyStrafe(enemy)) {
+                enemy.FSM.transition('strafe');
+            } else {
+                enemy.FSM.transition('attack');
+            }
+            return;
+        }
+
+        /*
         if (dist < enemy.chill_distance) {
             enemy.FSM.transition('idle');
-        } else if (dist < enemy.attack_distance) {
-            enemy.FSM.transition('attack');
+            return;
         }
+        commenting this out because im working on AI -brody */
 
-        // Chase player
-        enemy.reorient(scene.player);
-        const speed = 
-            enemy.direction == 'R' ? 2.2 : -2.2;
-
-        // If player is in the air, make enemy jump instead of pathing on angle
-    if ((!scene.player.isGrounded && scene.player.body.velocity.y < -2) && enemy.isGrounded && !enemy.attacking) { 
-        if(!enemy.isJumping) {
-            const jumpChance = 0.4;
-            if(Math.random() < jumpChance) {
-                enemy.FSM.transition('jump');
-            }
-            enemy.isJumping = true;
-        }
+        enemy.setVelocityX(getHorizontalSpeed(enemy, enemy.chase_speed));
     }
+}
 
-        // Only move horizontally, don't apply vertical velocity
-        enemy.setVelocityX(speed);
+export class EnemyStrafeState extends State {
+    enter(scene, enemy) {
+        console.log('in strafe state');
+        enemy.attach_body('idle');
+        enemy.play('Walk');
+        enemy.strafeDir = getStrafeDirection(scene, enemy);
+        enemy.strafeTime = Phaser.Math.Between(enemy.strafe_min_duration, enemy.strafe_max_duration);
+        faceDirection(enemy, enemy.strafeDir);
+        scene.time.delayedCall(enemy.strafeTime, () => {
+            enemy.FSM.transition('chase');
+        });
+    }
+    execute(scene, enemy) {
+        const dist = enemy.getDist(scene.player);
+
+        if (isOutsideStrafeRange(enemy, dist) || !enemy.isGrounded) {
+            enemy.FSM.transition('chase');
+            return;
+        }
+
+        faceDirection(enemy, enemy.strafeDir);
+        enemy.setVelocityX(getHorizontalSpeed(enemy, enemy.strafe_speed));
     }
 }
 
 export class EnemyJumpState extends State {
 
     enter(scene, enemy) {
+        enemy.reorient(scene.player);
         enemy.setVelocityY(enemy.jump_velocity);
         enemy.isGrounded = false;
+        enemy.play('Jump');
     }
 
     execute(scene, enemy) {
-        const dist = enemy.getDist(scene.player);
+        enemy.setVelocityX(getHorizontalSpeed(enemy, enemy.chase_speed));
 
         if (enemy.isGrounded) {
             enemy.FSM.transition('chase');
@@ -137,12 +202,30 @@ export class EnemyKickState extends State {
 
         enemy.once('animationcomplete', () => {
             enemy.attacking = false;
-        });
-    }
-
-    execute(scene, enemy) {
-        if (enemy.attacking) return;
-        enemy.FSM.transition('chase');
-    }
+    });
 }
 
+execute(scene, enemy) {
+    if (enemy.attacking) return;
+    enemy.FSM.transition('chase');
+}}
+
+export class EnemyKnockbackState extends State {
+    enter(scene, stickman) {
+        stickman.play('Idle');
+        
+    }
+
+    execute(scene, stickman) {
+        console.log("it happened!");
+
+        const { x, y } = stickman.body.velocity;
+        const vel = Math.sqrt(x * x + y * y);
+        /*
+        if (vel < 1 && stickman.isGrounded) {
+            stickman.FSM.transition('idle');
+        }
+        */
+    
+    }
+}
