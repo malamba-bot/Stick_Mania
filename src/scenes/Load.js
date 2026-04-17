@@ -34,6 +34,7 @@ export class Load extends Phaser.Scene {
         this.load.spritesheet('kick', 'kick_spritesheet.png', { frameWidth: 1080, frameHeight: 1920});
         this.load.spritesheet('frozen', 'freeze_spritesheet.png', {frameWidth: 1080, frameHeight: 1920});
         this.load.spritesheet('melt', 'melt_spritesheet.png', {frameWidth: 1080, frameHeight: 1920});
+        this.load.spritesheet('fizzling', 'fizzling_spritesheet.png', {frameWidth: 1080, frameHeight: 1920});
     }
 
     create() {
