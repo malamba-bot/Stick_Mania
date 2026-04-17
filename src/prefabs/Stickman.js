@@ -22,10 +22,6 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
         this.setScale(0.14);
         
-        // Store the display size to maintain consistent texture scaling across all states
-        this.targetDisplayWidth = this.displayWidth;
-        this.targetDisplayHeight = this.displayHeight;
-
         this.scene.matter.add.gameObject(this)
         scene.add.existing(this);
 
@@ -125,7 +121,6 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             .setMass(10)
             .setFriction(0)
             .setOrigin(0.5)
-            .setDisplaySize(this.targetDisplayWidth, this.targetDisplayHeight);
     }
 
     knockback(opp, move) {
