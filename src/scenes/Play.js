@@ -38,6 +38,9 @@ export class Play extends Phaser.Scene {
 
         this.matter.world.setBounds(0, 0, globals.width, globals.height);
 
+        console.log(this.player.y);
+        console.log(this.displayHeight);
+
         const snowflakeImg = this.add.image(40,100, 'snowflake');
         snowflakeImg.setScale(0.15);
         snowflakeImg.setVisible(false);
@@ -134,8 +137,12 @@ export class Play extends Phaser.Scene {
                         objB.takeDamage(10, objA);
                     } else if (bodyB.label == 'hurtbox' && !objA.invincible) {
                         objA.takeDamage(10, objB);
+                    } else if (bodyA.label == 'head') {
+                        objB.isGrounded = true;
+                    } else if (bodyB.label == 'head') {
+                        objA.isGrounded = true;
                     }
-                    //} else if (bodyA.label == 'head' && objA.height
+
                 } else {
                     const obj = objA ?? objB; // get the player body
                     if (bodyA === walls.bottom || bodyB == walls.bottom) {
