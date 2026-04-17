@@ -11,7 +11,6 @@ export class WaveSpawner {
         this.spawnedEnemies = 0;
         this.enemiesDefeated = 0;
         this.number = 0;
-        //this.waveNum = this.scene.add.group();
         this.waveNum = [];
 
         let t_key = this.scene.input.keyboard.addKey('t');
@@ -123,13 +122,9 @@ export class WaveSpawner {
 
     updateWaveDisplay() {
 
-        console.log('Entered updateWaveDisplay');
-
-        //this.number = this.current_wave + 1;
         this.number++;
         this.spacing = 30;
-        let padding = 10;
-        let startingX = 350;
+        let startingX = 325;
 
         this.waveNum.forEach(img => {
             if(img) img.destroy()
@@ -161,15 +156,11 @@ export class WaveSpawner {
             }
         }
 
-        console.log(results);
-
         results.forEach((textureKey, index) => {
 
-            let image = this.scene.add.image(startingX, globals.height/2 - 45, textureKey).setScale(0.04);
-            
+            let image = this.scene.add.image(startingX, globals.height/2 - 45, textureKey).setScale(0.15).setOrigin(0, 0.5);
             this.waveNum.push(image);
-
-            startingX = startingX + image.displayWidth + padding;
+            startingX = startingX + image.displayWidth;
             
         });
 
