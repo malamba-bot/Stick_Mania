@@ -38,8 +38,6 @@ export class MoveRightState extends State {
 
         if(scene.keys.D.isDown) {
             stickman.setVelocityX(stickman.movement_speed);
-            //stickman.move(stickman.movement_speed);
-            //stickman.play('run');
         } else if (scene.keys.A.isDown) {
             stickman.FSM.transition('move_left');
         } else {
@@ -158,6 +156,9 @@ export class KickState extends State {
 export class ComboState extends State {
     enter(scene, stickman) {
         stickman.combo();
+        const slide_speed = stickman.direction == 'R' ?
+            2 : -2;
+        stickman.setVelocityX(slide_speed);
     }
 }
 
@@ -172,10 +173,6 @@ export class FreezeState extends State {
             stickman.FSM.transition('idle');
         }, [], this);
 
-    }
-
-    execute(scene, stickman) {
-    
     }
 }
 
