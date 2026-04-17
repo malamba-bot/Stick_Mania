@@ -1,4 +1,3 @@
-import {DijkstraPathfinding} from './Dijkstra.js'
 import {HealthBar} from './Healthbar.js'
 
 export class Stickman extends Phaser.GameObjects.Sprite {
