@@ -130,7 +130,8 @@ export class EnemyStrafeState extends State {
         enemy.strafeTime = Phaser.Math.Between(enemy.strafe_min_duration, enemy.strafe_max_duration);
         faceDirection(enemy, enemy.strafeDir);
         scene.time.delayedCall(enemy.strafeTime, () => {
-            enemy.FSM.transition('chase');
+            if (enemy.active)
+                enemy.FSM.transition('chase');
         });
     }
     execute(scene, enemy) {
