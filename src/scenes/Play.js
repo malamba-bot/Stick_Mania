@@ -66,12 +66,12 @@ export class Play extends Phaser.Scene {
             }
         });
         //END AI GENERATED
-        this.enemy = new EnemyStick(
+        /*this.enemy = new EnemyStick(
             this, 
             globals.width * 0.75, 
             player_consts.start_y, 
             'idle',
-            false);
+            false);*/
 
         const snowflakeImg = this.add.image(40,100, 'snowflake');
         snowflakeImg.setScale(0.15);
@@ -219,6 +219,8 @@ export class Play extends Phaser.Scene {
     update() {
         //Guard
         if (!this.player || !this.player.active) return; 
+
+        //console.log(this.player.isGrounded);
     
         this.healthText.setText('Health: ' + this.player.health.value);
 
@@ -234,8 +236,8 @@ export class Play extends Phaser.Scene {
     });
 
         // Enemy testing heatlh
-        this.enemyHealthText.setText('Enemy Health: ' + this.enemy.health.value);
-        this.enemy.health.healthBarFollow(this.enemy);
+        //this.enemyHealthText.setText('Enemy Health: ' + this.enemy.health.value);
+        //this.enemy.health.healthBarFollow(this.enemy);
 
         // TODO MOVE THIS LOGIC TO ENEMY CLASS
         /*

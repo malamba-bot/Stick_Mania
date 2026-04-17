@@ -51,18 +51,23 @@ export class EnemyChaseState extends State {
         return; 
     }
 
+    if(scene.player.isGrounded) {
+        enemy.isJumping = false;
+    }
+
         // Chase player
         enemy.reorient(scene.player);
         const speed = 
             enemy.direction == 'R' ? 2.2 : -2.2;
 
         // If player is in the air, make enemy jump instead of pathing on angle
-   if (!scene.player.isGrounded && enemy.isGrounded && !enemy.attacking) { 
-        const now = scene.time.now;
-        if (!enemy.lastJumpTime || now - enemy.lastJumpTime > 2000) {
-            enemy.lastJumpTime = now;
-            enemy.FSM.transition('jump');
-            return;
+    if ((!scene.player.isGrounded && scene.player.body.velocity.y < -2) && enemy.isGrounded && !enemy.attacking) { 
+        if(!enemy.isJumping) {
+            const jumpChance = 0.2;
+            if(Math.random() < jumpChance) {
+                enemy.FSM.transition('jump');
+            }
+            enemy.isJumping = true;
         }
     }
 
