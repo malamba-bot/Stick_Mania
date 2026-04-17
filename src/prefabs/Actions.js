@@ -166,7 +166,10 @@ export class FreezeState extends State {
     enter(scene, stickman) {
         stickman.attach_body('idle');
         stickman.play('Frozen');
-        if (stickman.snowflakeIcon) stickman.snowflakeIcon.setVisible(true);
+        if (stickman.snowflakeIcon) {
+            stickman.snowflakeIcon.setVisible(true);
+            stickman.flashThenHide(stickman.snowflakeIcon);
+        }
 
         scene.time.delayedCall(5000, () => {
             if (stickman.snowflakeIcon) stickman.snowflakeIcon.setVisible(false);
