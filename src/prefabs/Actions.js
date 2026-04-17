@@ -11,17 +11,17 @@ export class IdleState extends State {
     execute(scene, stickman) {
         if (stickman.stamina.value < 10) 
             return;
-        if (scene.keys.A.isDown) {
+        if (Phaser.Input.Keyboard.JustDown(scene.keys.A)) {
             stickman.FSM.transition('move_left');
-        } else if (scene.keys.D.isDown) {
+        } else if (Phaser.Input.Keyboard.JustDown(scene.keys.D)) {
             stickman.FSM.transition('move_right');
-        } else if (scene.keys.J.isDown && !stickman.fizzle(player_consts.basic_fizzle)) {
+        } else if (Phaser.Input.Keyboard.JustDown(scene.keys.J)) {
            stickman.FSM.transition('punch'); 
-        }  else if (scene.keys.K.isDown && !stickman.fizzle(player_consts.basic_fizzle)) {
+        }  else if (Phaser.Input.Keyboard.JustDown(scene.keys.K)) {
             stickman.FSM.transition('kick');
-        } else if (scene.keys.SPACE.isDown && stickman.isGrounded) {
+        } else if (Phaser.Input.Keyboard.JustDown(scene.keys.SPACE) && stickman.isGrounded) {
             stickman.FSM.transition('jump');
-        } else if (scene.keys.L.isDown 
+        } else if (Phaser.Input.Keyboard.JustDown(scene.keys.L) 
             && stickman.stamina.value >= 20
             && !stickman.fizzle(player_consts.combo_fizzle)) {
             stickman.FSM.transition('combo');
@@ -111,6 +111,10 @@ export class PunchState extends State {
 
     enter(scene, stickman) {
         stickman.stamina.decrease(10);
+        if (stickman.fizzle(player_consts.basic_fizzle)) {
+            stickman.FSM.transition('idle');
+            return;
+        }
         stickman.punch();
         
     }
@@ -134,6 +138,10 @@ export class KickState extends State {
 
     enter(scene, stickman) {
         stickman.stamina.decrease(10);
+        if (stickman.fizzle(player_consts.basic_fizzle)) {
+            stickman.FSM.transition('idle');
+            return;
+        }
         stickman.kick();
     }
 
