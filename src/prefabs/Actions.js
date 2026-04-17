@@ -7,6 +7,8 @@ export class IdleState extends State {
     }
 
     execute(scene, stickman) {
+        if (stickman.stamina.value < 10) 
+            return;
         if (scene.keys.A.isDown) {
             stickman.FSM.transition('move_left');
         } else if (scene.keys.D.isDown) {
@@ -17,7 +19,7 @@ export class IdleState extends State {
             stickman.FSM.transition('kick');
         } else if (scene.keys.SPACE.isDown && stickman.isGrounded) {
             stickman.FSM.transition('jump');
-        } else if (scene.keys.L.isDown) {
+        } else if (scene.keys.L.isDown && stickman.stamina.value >= 20) {
             stickman.FSM.transition('combo');
         }
     }
@@ -104,10 +106,7 @@ export class JumpState extends State {
 export class PunchState extends State {
 
     enter(scene, stickman) {
-        if (stickman.stamina.value < 10) {
-            stickman.FSM.transition('idle');
-            return;
-        }
+        stickman.stamina.decrease(10);
         stickman.punch();
         
     }
@@ -130,10 +129,7 @@ export class PunchState extends State {
 export class KickState extends State {
 
     enter(scene, stickman) {
-        if (stickman.stamina.value < 10) {
-            stickman.FSM.transition('idle');
-            return;
-        }
+        stickman.stamina.decrease(10);
         stickman.kick();
     }
 
@@ -154,6 +150,7 @@ export class KickState extends State {
 
 export class ComboState extends State {
     enter(scene, stickman) {
+        stickman.stamina.decrease(20);
         stickman.combo();
         const slide_speed = stickman.direction == 'R' ?
             2 : -2;

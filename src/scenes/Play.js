@@ -156,6 +156,8 @@ export class Play extends Phaser.Scene {
     }
 
     update() {
+        // TODO remove
+        //console.log(this.player.FSM.state);
 
         // Enemy testing heatlh
         //this.enemyHealthText.setText('Enemy Health: ' + this.enemy.health.value);

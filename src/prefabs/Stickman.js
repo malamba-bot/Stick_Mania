@@ -144,7 +144,6 @@ export class Stickman extends Phaser.GameObjects.Sprite {
     
     punch() {
         return new Promise(resolve => {
-            this.stamina.decrease(10);
             this.attacking = true;
             this.direction == 'R'
                 ? this.attach_body('punching_right')
@@ -163,7 +162,6 @@ export class Stickman extends Phaser.GameObjects.Sprite {
 
     kick() {
         return new Promise(resolve => {
-            this.stamina.decrease(10);
             this.attacking = true;
             this.scene.time.delayedCall(300, () => {
                 this.direction == 'R'
