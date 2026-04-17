@@ -19,7 +19,7 @@ export class Load extends Phaser.Scene {
 
         this.load.audio('kick_sound', 'kick.mp3');
         this.load.audio('punch_sound', 'punch.mp3');
-        this.load.audio('jump_sound', 'jump.mp3');
+        this.load.audio('jump_sound', 'impactWood_medium_002.ogg');
 
         // Load stickman assets here
         this.load.setPath('../../assets/stickman/');
@@ -38,6 +38,7 @@ export class Load extends Phaser.Scene {
     create() {
         this.init_animations();
         this.scene.start('MainMenu');
+
     }
 
     init_animations() {
