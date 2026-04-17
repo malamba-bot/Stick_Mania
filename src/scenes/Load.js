@@ -95,5 +95,13 @@ export class Load extends Phaser.Scene {
                 frameRate: 10,
             });
         }
+
+        if(!this.anims.exists('fizzling')) {
+            this.anims.create({
+                key: 'fizzling',
+                frames: this.anims.generateFrameNames('fizzling', { start: 0, end: 4 }),
+                frameRate: 10,
+            });
+        }
     }
 }

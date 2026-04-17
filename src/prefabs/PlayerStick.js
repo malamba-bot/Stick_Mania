@@ -47,8 +47,10 @@ export class PlayerStick extends Stickman {
 
     //Calculates whether of not the move fizzled. There is a one in chance likelyhood that the move fails.
     fizzle(chance) {
-        const res = Phaser.Math.Between(1, chance);
-        return res == 1;
+        const res = Phaser.Math.Between(1, chance) == 1;
+        if (res)
+            this.play('fizzling');
+        return res;
     }
 
     async combo() {
