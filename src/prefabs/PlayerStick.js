@@ -1,4 +1,4 @@
-import {globals, player_consts} from '../main.js'
+import {globals} from '../main.js'
 import {Stickman} from './Stickman.js'
 import {IdleState, MoveRightState, MoveLeftState, JumpState, PunchState, KickState, ComboState, FreezeState, KnockbackState} from './Actions.js'
 import {StaminaBar} from './StaminaBar.js'
@@ -43,6 +43,12 @@ export class PlayerStick extends Stickman {
             .setVisible(false)
             .setScrollFactor(0)
             .setDepth(100);
+    }
+
+    //Calculates whether of not the move fizzled. There is a one in chance likelyhood that the move fails.
+    fizzle(chance) {
+        const res = Phaser.Math.Between(1, chance);
+        return res == 1;
     }
 
     async combo() {

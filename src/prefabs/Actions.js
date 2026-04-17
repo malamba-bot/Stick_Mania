@@ -1,3 +1,5 @@
+import {player_consts} from '../main.js'
+
 export class IdleState extends State {
 
     enter(scene, stickman) {
@@ -13,13 +15,15 @@ export class IdleState extends State {
             stickman.FSM.transition('move_left');
         } else if (scene.keys.D.isDown) {
             stickman.FSM.transition('move_right');
-        } else if (scene.keys.J.isDown) {
+        } else if (scene.keys.J.isDown && !stickman.fizzle(player_consts.basic_fizzle)) {
            stickman.FSM.transition('punch'); 
-        }  else if (scene.keys.K.isDown) {
+        }  else if (scene.keys.K.isDown && !stickman.fizzle(player_consts.basic_fizzle)) {
             stickman.FSM.transition('kick');
         } else if (scene.keys.SPACE.isDown && stickman.isGrounded) {
             stickman.FSM.transition('jump');
-        } else if (scene.keys.L.isDown && stickman.stamina.value >= 20) {
+        } else if (scene.keys.L.isDown 
+            && stickman.stamina.value >= 20
+            && !stickman.fizzle(player_consts.combo_fizzle)) {
             stickman.FSM.transition('combo');
         }
     }
