@@ -11,7 +11,8 @@ export class WaveSpawner {
         this.spawnedEnemies = 0;
         this.enemiesDefeated = 0;
         this.number = 0;
-        this.waveNum = this.scene.add.group();
+        //this.waveNum = this.scene.add.group();
+        this.waveNum = [];
 
         let t_key = this.scene.input.keyboard.addKey('t');
         t_key.on('down', () => {this.updateWaveDisplay()});
@@ -127,8 +128,14 @@ export class WaveSpawner {
         //this.number = this.current_wave + 1;
         this.number++;
         this.spacing = 30;
+        let padding = 10;
+        let startingX = 350;
 
-        this.waveNum.clear(true, true);
+        this.waveNum.forEach(img => {
+            if(img) img.destroy()
+            });
+
+        this.waveNum = [];
 
         let results = [];
 
@@ -158,13 +165,12 @@ export class WaveSpawner {
 
         results.forEach((textureKey, index) => {
 
-            if(textureKey === 'tallymark') {
-                this.waveNum.add((this.scene.add.image(350 + (index * this.spacing), globals.height/2 - 45, textureKey).setScale(0.04)));
-            } else if(textureKey === 'tallymarkV') {
-                this.waveNum.add((this.scene.add.image(350 + (index * this.spacing + 15), globals.height/2 - 45, textureKey).setScale(0.04)));
-            } else {
-                this.waveNum.add((this.scene.add.image(350 + (index * this.spacing + 50), globals.height/2 - 45, textureKey).setScale(0.04)));
-            }
+            let image = this.scene.add.image(startingX, globals.height/2 - 45, textureKey).setScale(0.04);
+            
+            this.waveNum.push(image);
+
+            startingX = startingX + image.displayWidth + padding;
+            
         });
 
     }
