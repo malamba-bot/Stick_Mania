@@ -158,7 +158,7 @@ export class WaveSpawner {
 
         results.forEach((textureKey, index) => {
 
-            let image = this.scene.add.image(startingX, globals.height/2 - 45, textureKey).setScale(0.15).setOrigin(0, 0.5).setDepth(2);
+            let image = this.scene.add.image(startingX, globals.height/2 - 190, textureKey).setScale(0.15).setOrigin(0, 0.5).setDepth(2);
             this.waveNum.push(image);
             startingX = startingX + image.displayWidth;
             
