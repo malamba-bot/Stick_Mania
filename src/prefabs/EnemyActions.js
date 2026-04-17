@@ -65,7 +65,6 @@ export class EnemyIdleState extends State {
 export class EnemyAttackState extends State {
   enter(scene, enemy) {
         const rand = Phaser.Math.Between(1, 3); 
-        //console.log('attack roll:', rand, 'isGrounded:', enemy.isGrounded); // ← ADD
 
         if (rand === 1) {
             enemy.FSM.transition('punch');
@@ -73,18 +72,15 @@ export class EnemyAttackState extends State {
             enemy.FSM.transition('kick');
         } else {
             scene.time.delayedCall(1000, () => {
-                enemy.FSM.transition('idle');
+                if (enemy.active)
+                    enemy.FSM.transition('idle');
             });
         }
-    }
-
-    execute(scene, enemy) {
     }
 }
 
 export class EnemyChaseState extends State {
     enter(scene, enemy) {
-        //console.log('in chase state');
         enemy.attach_body('idle');
         enemy.play('Walk');
     }
@@ -109,13 +105,6 @@ export class EnemyChaseState extends State {
             }
             return;
         }
-
-        /*
-        if (dist < enemy.chill_distance) {
-            enemy.FSM.transition('idle');
-            return;
-        }
-        commenting this out because im working on AI -brody */
 
         enemy.setVelocityX(getHorizontalSpeed(enemy, enemy.chase_speed));
     }
