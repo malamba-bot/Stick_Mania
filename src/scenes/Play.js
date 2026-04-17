@@ -16,6 +16,7 @@ export class Play extends Phaser.Scene {
             A: this.input.keyboard.addKey('a'),
             D: this.input.keyboard.addKey('d'),
             W: this.input.keyboard.addKey('w'),
+            J: this.input.keyboard.addKey('j'),
             K: this.input.keyboard.addKey('k'),
             L: this.input.keyboard.addKey('l'),
             ESC: this.input.keyboard.addKey('esc'),

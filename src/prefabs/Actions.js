@@ -11,12 +11,14 @@ export class IdleState extends State {
             stickman.FSM.transition('move_left');
         } else if (scene.keys.D.isDown) {
             stickman.FSM.transition('move_right');
-        } else if (scene.keys.K.isDown) {
+        } else if (scene.keys.J.isDown) {
            stickman.FSM.transition('punch'); 
-        }  else if (scene.keys.L.isDown) {
+        }  else if (scene.keys.K.isDown) {
             stickman.FSM.transition('kick');
         } else if (scene.keys.SPACE.isDown && stickman.isGrounded) {
             stickman.FSM.transition('jump');
+        } else if (scene.keys.L.isDown) {
+            stickman.FSM.transition('combo');
         }
     }
 }
@@ -43,7 +45,7 @@ export class MoveRightState extends State {
         } else {
             stickman.FSM.transition('idle');
         }
-        if (scene.keys.K.isDown) {
+        if (scene.keys.J.isDown) {
             stickman.FSM.transition('punch');
         }
     }
@@ -67,7 +69,7 @@ export class MoveLeftState extends State {
         } else {
             stickman.FSM.transition('idle');
         }
-        if (scene.keys.K.isDown) {
+        if (scene.keys.J.isDown) {
             stickman.FSM.transition('punch');
         }
     }
@@ -153,8 +155,13 @@ export class KickState extends State {
     }
 }
 
-export class FreezeState extends State {
+export class ComboState extends State {
+    enter(scene, stickman) {
+        stickman.combo();
+    }
+}
 
+export class FreezeState extends State {
     enter(scene, stickman) {
         stickman.attach_body('idle');
         stickman.play('Frozen');

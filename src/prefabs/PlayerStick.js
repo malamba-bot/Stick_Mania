@@ -1,6 +1,6 @@
 import {globals, player_consts} from '../main.js'
 import {Stickman} from './Stickman.js'
-import {IdleState, MoveRightState, MoveLeftState, JumpState, PunchState, KickState, FreezeState, KnockbackState} from './Actions.js'
+import {IdleState, MoveRightState, MoveLeftState, JumpState, PunchState, KickState, ComboState, FreezeState, KnockbackState} from './Actions.js'
 import {StaminaBar} from './StaminaBar.js'
 
 export class PlayerStick extends Stickman {
@@ -24,6 +24,7 @@ export class PlayerStick extends Stickman {
                 jump: new JumpState(),
                 punch: new PunchState(),
                 kick: new KickState(),
+                combo: new ComboState(),
                 freeze: new FreezeState(),
                 knockback: new KnockbackState()
             }, 
@@ -42,6 +43,12 @@ export class PlayerStick extends Stickman {
             .setVisible(false)
             .setScrollFactor(0)
             .setDepth(100);
+    }
+
+    async combo() {
+        await this.punch();
+        await this.kick();
+        this.FSM.transition('idle');
     }
 
     applyStaminaDebuff() {
