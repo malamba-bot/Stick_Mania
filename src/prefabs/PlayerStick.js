@@ -46,8 +46,12 @@ export class PlayerStick extends Stickman {
     }
 
     async combo() {
-        await this.punch();
-        await this.kick();
+        for (let i = 0; i < 3; i++) {
+            const rand = Phaser.Math.Between(0, 1);
+            rand == 0 ?
+                await this.punch() :
+                await this.kick();
+        }
         this.FSM.transition('idle');
     }
 
