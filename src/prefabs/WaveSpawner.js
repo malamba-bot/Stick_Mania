@@ -18,7 +18,7 @@ export class WaveSpawner {
 
         // Wave text replaced by tally marks - Nina
         //this.waveText = this.scene.add.text(globals.width / 2, 50, 'Wave: 1', { fontFamily: 'Eraser', fontSize: '32px', color: '#ffffff' }).setOrigin(0.5).setDepth(100);
-        this.enemiesLeftText = this.scene.add.text(globals.width / 2, 100, 'Enemies Left: ', { fontSize: '24px', color: '#ffffff' }).setOrigin(0.5).setDepth(100);
+        this.enemiesLeftText = this.scene.add.text(globals.width / 2, 100, 'Enemies Left: ', { fontSize: '24px', color: '#ffffff' }).setOrigin(0.5).setDepth(2);
 
     }
 
@@ -49,7 +49,7 @@ export class WaveSpawner {
         const spawnX = side === 'left' ? 50 : globals.width - 50;
         const spawnY =  300;
 
-        const enemy = new EnemyStick(this.scene, spawnX, spawnY, 'idle');
+        const enemy = new EnemyStick(this.scene, spawnX, spawnY, 'idle').setDepth(5);
         this.enemies.push(enemy);
         this.spawnedEnemies += 1;
     }
@@ -158,7 +158,7 @@ export class WaveSpawner {
 
         results.forEach((textureKey, index) => {
 
-            let image = this.scene.add.image(startingX, globals.height/2 - 45, textureKey).setScale(0.15).setOrigin(0, 0.5);
+            let image = this.scene.add.image(startingX, globals.height/2 - 190, textureKey).setScale(0.15).setOrigin(0, 0.5).setDepth(2);
             this.waveNum.push(image);
             startingX = startingX + image.displayWidth;
             
