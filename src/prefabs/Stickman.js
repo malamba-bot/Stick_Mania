@@ -130,7 +130,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         const direction = this.x > opp.x ? 1 : -1;
         const force = move == 'punch' ?
             { x: 6 * direction, y: -3 } :
-            { x: 50 * direction, y: -50};
+            { x: 20 * direction, y: -20};
 
         this.scene.matter.body.setVelocity(
             this.body, 
@@ -141,9 +141,11 @@ export class Stickman extends Phaser.GameObjects.Sprite {
     punch() {
         return new Promise(resolve => {
             this.attacking = true;
-            this.direction == 'R'
-                ? this.attach_body('punching_right')
-                : this.attach_body('punching_left');
+            this.scene.time.delayedCall(200, () => {
+                this.direction == 'R'
+                    ? this.attach_body('punching_right')
+                    : this.attach_body('punching_left');
+            });
 
             this.punchSound.play({ seek: 0.3, volume: 0.5});
             this.scene.time.delayedCall(400, () => {this.punchSound.play({ seek: 0.3, volume: 0.5});})
