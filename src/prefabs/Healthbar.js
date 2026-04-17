@@ -12,6 +12,9 @@ export class HealthBar {
         this.draw();
 
         scene.add.existing(this.bar);
+
+        this.bar.setDepth(5);
+
     }
 
     decrease(amount) {
@@ -48,6 +51,7 @@ export class HealthBar {
         var d = Math.floor(this.p * this.value);
 
         this.bar.fillRect(this.x + 2, this.y + 2, d, 12);
+
     }
 
     deleteHealthBar() {
