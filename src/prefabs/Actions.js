@@ -1,24 +1,30 @@
+import {player_consts} from '../main.js'
+
 export class IdleState extends State {
 
     enter(scene, stickman) {
         stickman.setVelocityX(0);
-        stickman.direction === 'R'
-            ? stickman.attach_body('facing_right')
-            : stickman.attach_body('facing_left');
+        stickman.attach_body('idle');
         stickman.play('Idle');
     }
 
     execute(scene, stickman) {
+        if (stickman.stamina.value < 10) 
+            return;
         if (scene.keys.A.isDown) {
             stickman.FSM.transition('move_left');
         } else if (scene.keys.D.isDown) {
             stickman.FSM.transition('move_right');
-        } else if (scene.keys.K.isDown) {
+        } else if (scene.keys.J.isDown && !stickman.fizzle(player_consts.basic_fizzle)) {
            stickman.FSM.transition('punch'); 
-        }  else if (scene.keys.L.isDown) {
+        }  else if (scene.keys.K.isDown && !stickman.fizzle(player_consts.basic_fizzle)) {
             stickman.FSM.transition('kick');
         } else if (scene.keys.SPACE.isDown && stickman.isGrounded) {
             stickman.FSM.transition('jump');
+        } else if (scene.keys.L.isDown 
+            && stickman.stamina.value >= 20
+            && !stickman.fizzle(player_consts.combo_fizzle)) {
+            stickman.FSM.transition('combo');
         }
     }
 }
@@ -27,7 +33,7 @@ export class MoveRightState extends State {
 
     enter(scene, stickman) {
         stickman.flip_right();
-        stickman.attach_body('facing_right');
+        stickman.attach_body('idle');
         stickman.play('Walk');
     }
 
@@ -38,14 +44,12 @@ export class MoveRightState extends State {
 
         if(scene.keys.D.isDown) {
             stickman.setVelocityX(stickman.movement_speed);
-            //stickman.move(stickman.movement_speed);
-            //stickman.play('run');
         } else if (scene.keys.A.isDown) {
             stickman.FSM.transition('move_left');
         } else {
             stickman.FSM.transition('idle');
         }
-        if (scene.keys.K.isDown) {
+        if (scene.keys.J.isDown) {
             stickman.FSM.transition('punch');
         }
     }
@@ -55,7 +59,7 @@ export class MoveLeftState extends State {
 
     enter(scene, stickman) {
         stickman.flip_left();
-        stickman.attach_body('facing_left');
+        stickman.attach_body('idle');
         stickman.play('Walk');
     }
 
@@ -69,7 +73,7 @@ export class MoveLeftState extends State {
         } else {
             stickman.FSM.transition('idle');
         }
-        if (scene.keys.K.isDown) {
+        if (scene.keys.J.isDown) {
             stickman.FSM.transition('punch');
         }
     }
@@ -80,6 +84,8 @@ export class JumpState extends State {
     enter(scene, stickman) {
         stickman.setVelocityY(stickman.jump_velocity);
         stickman.isGrounded = false;
+        
+        scene.sound.play('jump_sound', { volume: 0.5 });
         stickman.play('Jump');
     }
 
@@ -104,21 +110,9 @@ export class JumpState extends State {
 export class PunchState extends State {
 
     enter(scene, stickman) {
-        if (stickman.stamina.value < 10) {
-            stickman.FSM.transition('idle');
-            return;
-        }
-        
         stickman.stamina.decrease(10);
-        stickman.attacking = true;
-        stickman.direction == 'R'
-            ? stickman.attach_body('punching_right')
-            : stickman.attach_body('punching_left');
-
-        stickman.play('Punch');
-        stickman.once('animationcomplete', () => {
-            stickman.attacking = false
-        });
+        stickman.punch();
+        
     }
 
     execute(scene, stickman) {
@@ -139,23 +133,8 @@ export class PunchState extends State {
 export class KickState extends State {
 
     enter(scene, stickman) {
-        if (stickman.stamina.value < 10) {
-            stickman.FSM.transition('idle');
-            return;
-        }
-        
         stickman.stamina.decrease(10);
-        stickman.attacking = true;
-        scene.time.delayedCall(300, () => {
-            stickman.direction == 'R'
-                ? stickman.attach_body('kicking_right')
-                : stickman.attach_body('kicking_left');
-        });
-
-        stickman.play('Kick');
-        stickman.once('animationcomplete', () => {
-            stickman.attacking = false
-        });
+        stickman.kick();
     }
 
     execute(scene, stickman) {
@@ -173,14 +152,24 @@ export class KickState extends State {
     }
 }
 
-export class freezeDebuff extends State {
-
+export class ComboState extends State {
     enter(scene, stickman) {
+        stickman.stamina.decrease(20);
+        stickman.combo();
+        const slide_speed = stickman.direction == 'R' ?
+            2 : -2;
+        stickman.setVelocityX(slide_speed);
+    }
+}
 
-        console.log("this bish ain't movin");
+export class FreezeState extends State {
+    enter(scene, stickman) {
+        stickman.attach_body('idle');
         stickman.play('Frozen');
-        if (stickman.snowflakeIcon) stickman.snowflakeIcon.setVisible(true);
-        stickman.setVelocityX(0);
+        if (stickman.snowflakeIcon) {
+            stickman.snowflakeIcon.setVisible(true);
+            stickman.flashThenHide(stickman.snowflakeIcon);
+        }
 
         scene.time.delayedCall(5000, () => {
             if (stickman.snowflakeIcon) stickman.snowflakeIcon.setVisible(false);
@@ -188,8 +177,19 @@ export class freezeDebuff extends State {
         }, [], this);
 
     }
+}
+
+export class KnockbackState extends State {
+    enter(scene, stickman) {
+        stickman.play('Idle');
+    }
 
     execute(scene, stickman) {
+        const { x, y } = stickman.body.velocity;
+        const vel = Math.sqrt(x * x + y * y);
+        if (vel < 1 && stickman.isGrounded) {
+            stickman.FSM.transition('idle');
+        }
     
     }
 }
