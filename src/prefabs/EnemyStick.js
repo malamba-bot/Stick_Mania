@@ -6,8 +6,8 @@ export class EnemyStick extends Stickman {
 
     constructor(scene, x, y, texture) {
         super(scene, x, y, texture);
-        this.chill_distance = 100;
-        this.attack_distance = 0;
+        this.chill_distance = 0;
+        this.attack_distance = 100;
         this.isJumping = false;
         this.attach_statemachine();
     }

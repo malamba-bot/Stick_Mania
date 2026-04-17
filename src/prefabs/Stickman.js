@@ -14,6 +14,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         this.isGrounded = true;
         this.attacking = false;
         this.invincible = false;
+        this.ground_level = this.y;
 
         this.health = new HealthBar(scene, x, y, 100);
 
@@ -75,7 +76,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             const { Bodies, Body } = Phaser.Physics.Matter.Matter
             const coords = hitbox_coords[state];
 
-            let torso  = Bodies.rectangle(coords.torso[0],  coords.torso[1],  coords.torso[2],  coords.torso[3]);
+            let torso  = Bodies.rectangle(coords.torso[0],  coords.torso[1],  coords.torso[2],  coords.torso[3], { label: 'torso' });
             let head   = Bodies.circle(coords.head[0], coords.head[1], coords.head[2], { label: 'head' });
 
             let parts = [torso, head];
@@ -172,6 +173,11 @@ export class Stickman extends Phaser.GameObjects.Sprite {
                 resolve();
             });
         });
+    }
+
+    is_above(opp) {
+        // 33 is a magic number, seems the displayHeight is not accurate
+        return opp.y - this.displayHeight + 38 >= this.y;
     }
 
 //For player

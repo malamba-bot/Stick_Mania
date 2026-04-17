@@ -39,16 +39,13 @@ export class Play extends Phaser.Scene {
         this.matter.world.setBounds(0, 0, globals.width, globals.height);
 
         console.log(this.player.y);
-        console.log(this.displayHeight);
+        console.log(this.player.displayHeight);
 
         const snowflakeImg = this.add.image(40,100, 'snowflake');
         snowflakeImg.setScale(0.15);
         snowflakeImg.setVisible(false);
 
         // Added enemy health text for testing purposes
-        // TODO remove
-        //this.enemyHealthText = this.add.text(20, 50, 'Enemy Health: 100', { fontSize: '20px', color: '#ffffff' }).setDepth(100);
-
         // gameTimer will go off every 45 seconds and give a random number from 1-3 which represent the debuffs we have in the game
         // I will add a function that later calls each debuff and spawns their respective icons
 
@@ -137,9 +134,10 @@ export class Play extends Phaser.Scene {
                         objB.takeDamage(10, objA);
                     } else if (bodyB.label == 'hurtbox' && !objA.invincible) {
                         objA.takeDamage(10, objB);
-                    } else if (bodyA.label == 'head') {
+                    } else if (bodyA.label == 'head' && bodyB.label == 'torso' && objB.is_above(objA)) {
                         objB.isGrounded = true;
-                    } else if (bodyB.label == 'head') {
+                    } else if (bodyB.label == 'head' && bodyA.label == 'torso' && objA.is_above(objB)) {
+                        console.log(objB.y - objA.displayHeight, objA.y);
                         objA.isGrounded = true;
                     }
 
@@ -165,7 +163,8 @@ export class Play extends Phaser.Scene {
     }
 
     update() {
-        //console.log(this.player.y);
+        //console.log(this.player.displayHeight);
+      // console.log(this.player.y);
         // TODO remove
         //console.log(this.player.FSM.state);
 
