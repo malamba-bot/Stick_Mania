@@ -159,13 +159,6 @@ export class Play extends Phaser.Scene {
         // TODO remove
         console.log(this.player.FSM.state, this.player.isGrounded);
 
-        //TEMP enable AI
-        this.waveSpawner.enemies.forEach(enemy => {
-            if (enemy && enemy.active) {
-            enemy.FSM.step();
-        }
-    });
-
         // Enemy testing heatlh
         //this.enemyHealthText.setText('Enemy Health: ' + this.enemy.health.value);
         //this.enemy.health.healthBarFollow(this.enemy);
