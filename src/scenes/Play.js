@@ -130,10 +130,12 @@ export class Play extends Phaser.Scene {
                 if (!objA && !objB) continue;
 
                 if(objA && objB) {
-                    if (bodyA.label == 'hurtbox' && !objB.invincible) 
+                    if (bodyA.label == 'hurtbox' && !objB.invincible) {
                         objB.takeDamage(10, objA);
-                    if (bodyB.label == 'hurtbox' && !objA.invincible) 
+                    } else if (bodyB.label == 'hurtbox' && !objA.invincible) {
                         objA.takeDamage(10, objB);
+                    }
+                    //} else if (bodyA.label == 'head' && objA.height
                 } else {
                     const obj = objA ?? objB; // get the player body
                     if (bodyA === walls.bottom || bodyB == walls.bottom) {
@@ -156,6 +158,7 @@ export class Play extends Phaser.Scene {
     }
 
     update() {
+        //console.log(this.player.y);
         // TODO remove
         //console.log(this.player.FSM.state);
 
