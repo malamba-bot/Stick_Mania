@@ -19,14 +19,18 @@ export class EnemyIdleState extends State {
 
 export class EnemyAttackState extends State {
   enter(scene, enemy) {
-        const rand = Phaser.Math.Between(1, 2); 
-        console.log('attack roll:', rand, 'isGrounded:', enemy.isGrounded); // ← ADD
+        const rand = Phaser.Math.Between(1, 3); 
+        //console.log('attack roll:', rand, 'isGrounded:', enemy.isGrounded); // ← ADD
 
         if (rand === 1) {
             enemy.FSM.transition('punch');
         } else if (rand === 2) {
             enemy.FSM.transition('kick');
-        } 
+        } else {
+            scene.time.delayedCall(2000, () => {
+                enemy.FSM.transition('idle');
+            });
+        }
     }
 
     execute(scene, enemy) {
@@ -63,7 +67,7 @@ export class EnemyChaseState extends State {
         // If player is in the air, make enemy jump instead of pathing on angle
     if ((!scene.player.isGrounded && scene.player.body.velocity.y < -2) && enemy.isGrounded && !enemy.attacking) { 
         if(!enemy.isJumping) {
-            const jumpChance = 0.2;
+            const jumpChance = 0.4;
             if(Math.random() < jumpChance) {
                 enemy.FSM.transition('jump');
             }
