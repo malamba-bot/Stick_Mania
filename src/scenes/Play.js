@@ -32,9 +32,6 @@ export class Play extends Phaser.Scene {
 
         this.matter.world.setBounds(0, 0, globals.width, globals.height);
 
-        console.log(this.player.y);
-        console.log(this.player.displayHeight);
-
         const snowflakeImg = this.add.image(40,100, 'snowflake');
         snowflakeImg.setScale(0.15);
         snowflakeImg.setVisible(false);

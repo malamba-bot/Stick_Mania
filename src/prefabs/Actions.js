@@ -195,7 +195,7 @@ export class KnockbackState extends State {
     execute(scene, stickman) {
         const { x, y } = stickman.body.velocity;
         const vel = Math.sqrt(x * x + y * y);
-        if (vel < 1 && stickman.isGrounded) {
+        if (vel < 5 && stickman.isGrounded) {
             stickman.FSM.transition('idle');
         }
     

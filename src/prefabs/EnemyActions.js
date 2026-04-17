@@ -137,28 +137,12 @@ export class EnemyKickState extends State {
 
         enemy.once('animationcomplete', () => {
             enemy.attacking = false;
-    });
-}
-
-execute(scene, enemy) {
-    if (enemy.attacking) return;
-    enemy.FSM.transition('chase');
-}}
-
-export class EnemyKnockbackState extends State {
-    enter(scene, stickman) {
-        stickman.play('Idle');
+        });
     }
 
-    execute(scene, stickman) {
-        console.log("it happened!");
-        const { x, y } = stickman.body.velocity;
-        const vel = Math.sqrt(x * x + y * y);
-        /*
-        if (vel < 1 && stickman.isGrounded) {
-            stickman.FSM.transition('idle');
-        }
-        */
-    
+    execute(scene, enemy) {
+        if (enemy.attacking) return;
+        enemy.FSM.transition('chase');
     }
 }
+

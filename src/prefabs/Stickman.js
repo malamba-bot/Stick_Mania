@@ -160,7 +160,6 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         return new Promise(resolve => {
             this.attacking = true;
             this.scene.time.delayedCall(300, () => {
-                if (this.active) return;
                 this.direction == 'R'
                     ? this.attach_body('kicking_right')
                     : this.attach_body('kicking_left');
