@@ -34,7 +34,7 @@ export class Play extends Phaser.Scene {
             this, 
             player_consts.start_x, 
             player_consts.start_y, 
-            'idle');
+            'idle').setDepth(5);
 
         this.matter.world.setBounds(0, 0, globals.width, globals.height);
 
