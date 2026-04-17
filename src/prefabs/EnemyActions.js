@@ -1,50 +1,3 @@
-// Refractored some helper function with the help of Codex -brody
-function resetJumpFlag(enemy) {
-    if (enemy.isGrounded) {
-        enemy.isJumping = false;
-    }
-}
-
-function isPlayerAboveEnemy(scene, enemy) {
-    return scene.player.y < enemy.y - enemy.jump_trigger_height;
-}
-
-function isPlayerCloseEnoughToJump(scene, enemy, dist) {
-    return dist <= enemy.attack_distance * enemy.jump_trigger_range_multiplier;
-}
-
-function shouldEnemyJump(scene, enemy, dist) {
-    return (
-        isPlayerAboveEnemy(scene, enemy) &&
-        isPlayerCloseEnoughToJump(scene, enemy, dist) &&
-        !scene.player.isGrounded &&
-        scene.player.body.velocity.y < enemy.jump_trigger_velocity &&
-        enemy.isGrounded &&
-        !enemy.attacking &&
-        !enemy.isJumping
-    );
-}
-
-function shouldEnemyStrafe(enemy) {
-    return Math.random() < enemy.strafe_attack_chance;
-}
-
-function getHorizontalSpeed(enemy, speed) {
-    return enemy.direction === 'R' ? speed : -speed;
-}
-
-function getStrafeDirection(scene, enemy) {
-    return enemy.x < scene.player.x ? 'L' : 'R';
-}
-
-function faceDirection(enemy, direction) {
-    direction === 'R' ? enemy.flip_right() : enemy.flip_left();
-}
-
-function isOutsideStrafeRange(enemy, dist) {
-    return dist > enemy.attack_distance * enemy.jump_trigger_range_multiplier;
-}
-
 export class EnemyIdleState extends State {
 
     enter(scene, enemy) {
@@ -93,16 +46,16 @@ export class EnemyChaseState extends State {
         const dist = enemy.getDist(scene.player);
         enemy.reorient(scene.player);
 
-        resetJumpFlag(enemy);
+        enemy.resetJumpFlag();
 
-        if (shouldEnemyJump(scene, enemy, dist)) {
+        if (enemy.shouldJump(scene, dist)) {
             enemy.isJumping = true;
             enemy.FSM.transition('jump');
             return;
         }
 
         if (dist <= enemy.attack_distance) {
-            if (shouldEnemyStrafe(enemy)) {
+            if (enemy.shouldStrafe()) {
                 enemy.FSM.transition('strafe');
             } else {
                 enemy.FSM.transition('attack');
@@ -117,7 +70,7 @@ export class EnemyChaseState extends State {
         }
         commenting this out because im working on AI -brody */
 
-        enemy.setVelocityX(getHorizontalSpeed(enemy, enemy.chase_speed));
+        enemy.setVelocityX(enemy.getHorizontalSpeed(enemy.chase_speed));
     }
 }
 
@@ -126,24 +79,23 @@ export class EnemyStrafeState extends State {
         console.log('in strafe state');
         enemy.attach_body('idle');
         enemy.play('Walk');
-        enemy.strafeDir = getStrafeDirection(scene, enemy);
+        enemy.strafeDir = enemy.getStrafeDirection(scene);
         enemy.strafeTime = Phaser.Math.Between(enemy.strafe_min_duration, enemy.strafe_max_duration);
-        faceDirection(enemy, enemy.strafeDir);
+        enemy.faceDirection(enemy.strafeDir);
         scene.time.delayedCall(enemy.strafeTime, () => {
-            if (enemy.active)
-                enemy.FSM.transition('chase');
+            enemy.FSM.transition('chase');
         });
     }
     execute(scene, enemy) {
         const dist = enemy.getDist(scene.player);
 
-        if (isOutsideStrafeRange(enemy, dist) || !enemy.isGrounded) {
+        if (enemy.isOutsideStrafeRange(dist) || !enemy.isGrounded) {
             enemy.FSM.transition('chase');
             return;
         }
 
-        faceDirection(enemy, enemy.strafeDir);
-        enemy.setVelocityX(getHorizontalSpeed(enemy, enemy.strafe_speed));
+        enemy.faceDirection(enemy.strafeDir);
+        enemy.setVelocityX(enemy.getHorizontalSpeed(enemy.strafe_speed));
     }
 }
 
@@ -157,7 +109,7 @@ export class EnemyJumpState extends State {
     }
 
     execute(scene, enemy) {
-        enemy.setVelocityX(getHorizontalSpeed(enemy, enemy.chase_speed));
+        enemy.setVelocityX(enemy.getHorizontalSpeed(enemy.chase_speed));
 
         if (enemy.isGrounded) {
             enemy.FSM.transition('chase');
