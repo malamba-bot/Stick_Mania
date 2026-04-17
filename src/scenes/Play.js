@@ -154,14 +154,6 @@ export class Play extends Phaser.Scene {
     }
 
     update() {
-        //console.log(this.player.displayHeight);
-      // console.log(this.player.y);
-        // TODO remove
-        console.log(this.player.FSM.state, this.player.isGrounded);
-
-        // Enemy testing heatlh
-        //this.enemyHealthText.setText('Enemy Health: ' + this.enemy.health.value);
-        //this.enemy.health.healthBarFollow(this.enemy);
         this.waveSpawner.update();
     }
 }

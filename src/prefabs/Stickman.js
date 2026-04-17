@@ -180,23 +180,6 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         return opp.y - this.displayHeight + 50 >= this.y;
     }
 
-//For player
-die() {
-    this.health.deleteHealthBar();
-    this.setVelocity(0, 0);
-    this.scene.matter.world.remove(this.body);
-
-    const scene = this.scene;
-
-    const isPlayer = this === scene.player; 
-
-    this.destroy();
-
-    if (isPlayer) {
-        scene.scene.restart();
-    }
-}
-
     // preUpdate will be called on sprites in the update list of a scene
     preUpdate(time, delta) {
         // since this is overriding the sprite object's preUpdate, run the usual preUpdate sequence before
