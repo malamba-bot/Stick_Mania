@@ -80,9 +80,8 @@ export class JumpState extends State {
     enter(scene, stickman) {
         stickman.setVelocityY(stickman.jump_velocity);
         stickman.isGrounded = false;
-        scene.sound.play("jump_sound", {
-            volume: 0.5
-        });
+        
+        scene.sound.play('jump_sound', { volume: 0.5 });
         stickman.play('Jump');
     }
 
