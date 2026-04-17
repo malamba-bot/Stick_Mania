@@ -51,9 +51,10 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         this.knockback(opp, opp.FSM.state);
         this.health.decrease(amount);
 
-        if (this.health < 0) {
-            this.health = 0;
-        }
+          if (this.health.value <= 0) {  
+            this.die();                
+            return;                   
+    }  
 
         this.scene.time.delayedCall(500, () => {
             this.invincible = false;
@@ -177,6 +178,23 @@ export class Stickman extends Phaser.GameObjects.Sprite {
             });
         });
     }
+
+//For player
+die() {
+    this.health.deleteHealthBar();
+    this.setVelocity(0, 0);
+    this.scene.matter.world.remove(this.body);
+
+    const scene = this.scene;
+
+    const isPlayer = this === scene.player; 
+
+    this.destroy();
+
+    if (isPlayer) {
+        scene.scene.restart();
+    }
+}
 
     // preUpdate will be called on sprites in the update list of a scene
     preUpdate(time, delta) {
