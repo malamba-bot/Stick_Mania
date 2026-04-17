@@ -111,7 +111,7 @@ export class EnemyStick extends Stickman {
 
     destroy() {
         if (this.scene) {
-            this.scene.enemiesDefeated++;
+            this.scene.waveSpawner.enemiesDefeated++;
             // AI GENERATED @claude.ai
             const list = this.scene.waveSpawner.enemies;
             const index = list.indexOf(this);
