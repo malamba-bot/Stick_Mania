@@ -118,6 +118,7 @@ export class PlayerStick extends Stickman {
 
     destroy() {
         if (this.scene)
+            //this.scene.time.removeAllEvents();
             this.scene.scene.start("MainMenu");
         super.destroy();
     }
