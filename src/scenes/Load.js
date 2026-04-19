@@ -4,7 +4,7 @@ export class Load extends Phaser.Scene {
     }
 
     preload() {
-        this.load.setPath('../../assets/');
+        this.load.setPath('./assets/');
 
         this.load.json('hitboxes', 'json/hitboxes.json');
 
@@ -22,7 +22,7 @@ export class Load extends Phaser.Scene {
         this.load.audio('jump_sound', 'impactWood_medium_002.ogg');
 
         // Load stickman assets here
-        this.load.setPath('../../assets/stickman/');
+        this.load.setPath('./assets/stickman/');
 
         this.load.aseprite('player', 'StickManIdle.png', 'StickManIdle.json');
         this.load.image('base_stance', 'base_stance.png');
