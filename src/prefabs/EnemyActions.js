@@ -64,7 +64,6 @@ export class EnemyChaseState extends State {
 
 export class EnemyStrafeState extends State {
     enter(scene, enemy) {
-        console.log('in strafe state');
         enemy.attach_body('idle');
         enemy.play('Walk');
         enemy.strafeDir = enemy.getStrafeDirection(scene);
@@ -108,8 +107,7 @@ export class EnemyJumpState extends State {
 
 export class EnemyPunchState extends State {
 
-    enter(scene, enemy) {
-        //console.log('punching state');        
+    enter(scene, enemy) {    
         enemy.reorient(scene.player);
         enemy.attacking = true;
         enemy.direction == 'R'
