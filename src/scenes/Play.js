@@ -50,47 +50,6 @@ export class Play extends Phaser.Scene {
 
         gameTimer.paused = false;
 
-        //Stamina debuff (still need to work on it)
-        function applyStaminaDebuff() {
-            //console.log('Stamina debuff applied!');
-            //this.staminaDrainMultiplier = 2;
-            //this.time.delayedCall(5000, () => {
-                //this.staminaDrainMultiplier = 1;
-                //console.log('Stamina debuff expired!');
-            //});
-
-        }
-
-        function onEvent() {
-            //console.log(Phaser.Math.Between(1,3));
-            //console.log('45 seconds have passed');
-            //if (randomNum() === 1) {
-                //applyStaminaDebuff();
-            //}
-             //else if (randomNum() === 2) {
-                //apply another debuff
-            //}
-             //else if (randomNum() === 3) {
-                //apply another debuff
-            //}
-        }
-
-        /*
-        var debuffTimer = this.time.addEvent({
-
-            delay: 300,
-            callback: this.randomNum,
-            callbackScope: this,
-            loop: true,
-
-        })
-
-        function randomNum(){
-            console.log("3 seconds have passed")
-            return Phaser.Math.Between(1,3)
-        }
-        */
-
         // PAUSE MENU 
         this.keys.ESC.on('down', () => {
             this.scene.pause();
@@ -128,7 +87,6 @@ export class Play extends Phaser.Scene {
                     } else if (bodyA.label == 'head' && bodyB.label == 'torso' && objB.is_above(objA)) {
                         objB.isGrounded = true;
                     } else if (bodyB.label == 'head' && bodyA.label == 'torso' && objA.is_above(objB)) {
-                        console.log(objB.y - objA.displayHeight, objA.y);
                         objA.isGrounded = true;
                     }
 
