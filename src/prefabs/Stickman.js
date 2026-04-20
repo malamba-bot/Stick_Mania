@@ -133,7 +133,7 @@ export class Stickman extends Phaser.GameObjects.Sprite {
                 });
             return; 
         }
-        let randomNum = Phaser.Math.Between(1, 10);
+        let randomNum = Phaser.Math.Between(1, 8);
         if (randomNum === 1) {
             this.FSM.transition('freeze');
         } else {

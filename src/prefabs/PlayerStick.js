@@ -79,7 +79,6 @@ export class PlayerStick extends Stickman {
     }
 
     applyStaminaDebuff() {
-        console.log('Stamina debuff applied');
         this.stamina.regenAmount = 2;
         if (this.staminaIcon) {
             this.staminaIcon.setVisible(true);
@@ -103,7 +102,6 @@ export class PlayerStick extends Stickman {
 
     destroy() {
         if (this.scene)
-            //this.scene.time.removeAllEvents();
             this.scene.scene.start("MainMenu");
         super.destroy();
     }
