@@ -103,5 +103,14 @@ export class Load extends Phaser.Scene {
                 frameRate: 10,
             });
         }
+
+
+        if(!this.anims.exists('melt')) {
+            this.anims.create({
+                key: 'melt',
+                frames: this.anims.generateFrameNames('melt', { start: 0, end: 7 }),
+                frameRate: 6,
+            });
+        }
     }
 }
