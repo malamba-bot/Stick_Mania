@@ -93,22 +93,6 @@ export class PlayerStick extends Stickman {
         });
     }
 
-    appliedDebuff() {
-
-        console.log(Phaser.Math.Between(1,2));
-        console.log('45 seconds have passed');
-        let randomNum = Phaser.Math.Between(1,2);
-        if (randomNum === 1) {
-            this.FSM.transition('freeze');
-        }
-        else if (randomNum === 2) {
-            this.applyStaminaDebuff();
-        }
-        //else if (randomNum() === 3) {
-            //apply another debuff
-            //}
-    }
-
     preUpdate(time, delta) {
         // since this is overriding the sprite object's preUpdate, run the usual preUpdate sequence before
         // doing anything else

@@ -42,7 +42,7 @@ export class Play extends Phaser.Scene {
 
         var gameTimer = this.time.addEvent({
             delay: 45000,
-            callback: this.player.appliedDebuff,
+            callback: () => { this.player.applyStaminaDebuff() },
             callbackScope: this.player,
             loop: true,
 

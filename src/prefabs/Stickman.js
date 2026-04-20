@@ -125,8 +125,21 @@ export class Stickman extends Phaser.GameObjects.Sprite {
     }
 
     knockback(opp, move) {
-        this.isGrounded = false;
-        this.FSM.transition('knockback');
+        if (this.FSM.state == 'freeze') {
+            if (this.snowflakeIcon) this.snowflakeIcon.setVisible(false);
+                this.play('melt');
+                this.once('animationcomplete', () => {
+                    this.FSM.transition('idle');
+                });
+            return; 
+        }
+        let randomNum = Phaser.Math.Between(1, 10);
+        if (randomNum === 1) {
+            this.FSM.transition('freeze');
+        } else {
+            this.isGrounded = false;
+            this.FSM.transition('knockback');
+        }
         const direction = this.x > opp.x ? 1 : -1;
         const force = move == 'punch' ?
             { x: 6 * direction, y: -3 } :
@@ -142,9 +155,11 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         return new Promise(resolve => {
             this.attacking = true;
             this.scene.time.delayedCall(200, () => {
-                this.direction == 'R'
-                    ? this.attach_body('punching_right')
-                    : this.attach_body('punching_left');
+                if (this.FSM.state == 'punch' || this.FSM.state == 'combo') {
+                    this.direction == 'R'
+                        ? this.attach_body('punching_right')
+                        : this.attach_body('punching_left');
+                }
             });
 
             this.punchSound.play({ seek: 0.3, volume: 0.5});
@@ -162,9 +177,11 @@ export class Stickman extends Phaser.GameObjects.Sprite {
         return new Promise(resolve => {
             this.attacking = true;
             this.scene.time.delayedCall(300, () => {
-                this.direction == 'R'
-                    ? this.attach_body('kicking_right')
-                    : this.attach_body('kicking_left');
+                if (this.FSM.state == 'kick' || this.FSM.state == 'combo') {
+                    this.direction == 'R'
+                        ? this.attach_body('kicking_right')
+                        : this.attach_body('kicking_left');
+                }
             });
 
             this.kickSound.play({ volume: 0.5 });

@@ -182,17 +182,21 @@ export class FreezeState extends State {
             stickman.snowflakeIcon.setVisible(true);
             stickman.flashThenHide(stickman.snowflakeIcon);
         }
-
         scene.time.delayedCall(5000, () => {
-            if (stickman.snowflakeIcon) stickman.snowflakeIcon.setVisible(false);
-            stickman.FSM.transition('idle');
-        }, [], this);
-
+            if (stickman.active && stickman.FSM.state == 'freeze') {
+                stickman.play('melt');
+                stickman.once('animationcomplete', () => {
+                    stickman.FSM.transition('idle');
+                });
+            }
+        }
+        )
     }
 }
 
 export class KnockbackState extends State {
     enter(scene, stickman) {
+        stickman.attach_body('idle');
         stickman.play('Idle');
     }
 

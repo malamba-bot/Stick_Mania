@@ -24,7 +24,8 @@ export class EnemyAttackState extends State {
             enemy.FSM.transition('kick');
         } else {
             scene.time.delayedCall(1000, () => {
-                if (enemy.active)
+                if (enemy.active && 
+                    enemy.FSM.state != 'freeze' || enemy.FSM.state != 'knockback')
                     enemy.FSM.transition('idle');
             });
         }
@@ -71,7 +72,8 @@ export class EnemyStrafeState extends State {
         enemy.strafeTime = Phaser.Math.Between(enemy.strafe_min_duration, enemy.strafe_max_duration);
         enemy.faceDirection(enemy.strafeDir);
         scene.time.delayedCall(enemy.strafeTime, () => {
-            if (enemy.active)
+            if (enemy.active && 
+                enemy.FSM.state != 'freeze' || enemy.FSM.state != 'knockback')
                 enemy.FSM.transition('chase');
         });
     }
