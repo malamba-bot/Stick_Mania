@@ -65,7 +65,6 @@ export class EnemyChaseState extends State {
 
 export class EnemyStrafeState extends State {
     enter(scene, enemy) {
-        console.log('in strafe state');
         enemy.attach_body('idle');
         enemy.play('Walk');
         enemy.strafeDir = enemy.getStrafeDirection(scene);
@@ -73,7 +72,7 @@ export class EnemyStrafeState extends State {
         enemy.faceDirection(enemy.strafeDir);
         scene.time.delayedCall(enemy.strafeTime, () => {
             if (enemy.active && 
-                enemy.FSM.state != 'freeze' || enemy.FSM.state != 'knockback')
+                (enemy.FSM.state != 'freeze' || enemy.FSM.state != 'knockback'))
                 enemy.FSM.transition('chase');
         });
     }
@@ -110,8 +109,7 @@ export class EnemyJumpState extends State {
 
 export class EnemyPunchState extends State {
 
-    enter(scene, enemy) {
-        //console.log('punching state');        
+    enter(scene, enemy) {    
         enemy.reorient(scene.player);
         enemy.attacking = true;
         enemy.direction == 'R'
